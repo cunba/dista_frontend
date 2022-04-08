@@ -122,7 +122,7 @@ export default function DrawerContent(props: any) {
             size={100}
           />
           <Title style={styles.title}>{name} {surname}</Title>
-          <Title style={styles.title}>{email}</Title>
+          <Title style={{color: 'black'}}>{email}</Title>
         </View>
         <View
           style={{
