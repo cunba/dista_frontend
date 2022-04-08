@@ -1,0 +1,101 @@
+{
+    "camera.option.camera":"Abrir cámara",
+    "camera.option.file":"Abrir desde la libreria",
+    "camera.option.cancel":"Cancelar",
+
+    "cancel": "Cancelar",
+    "ok": "Aceptar",
+    "continue": "Continuar",
+    "back": "Atrás",
+    
+    "login.title": "Iniciar sesión",
+    "login.button": "Entrar",
+    "login.skip": "Omitir",
+    "login.email.label": "Correo electrónico",
+    "login.password.label": "Contraseña",
+    "login.error.noEmail": "Necesitas añadir el usuario",
+    "login.error.noPassword": "Necesitas añadir la contraseña",
+    "login.error.credentialsError": "Usuario o contraseña erroneos",
+    "login.error.defaultError": "Error inesperado",
+    "login.error.noUserameNoPassword": "Tienes que llenar todos los campos",
+    "login.recover_password": "¿Has olvidado la contraseña?",
+    "login.sign_up": "¿No dispones de cuenta? Registrate ",
+    "login.here": "aquí",
+
+    "recovery.title": "Recuperar contraseña",
+    "recovery.button": "Enviar correo",
+    "recovery.email.alert": "Comprueba el correo",
+
+    "sign_up.title": "Crear cuenta",
+    "sign_up.name.label": "Nombre",
+    "sign_up.surname.label": "Apellido",
+    "sign_up.birthday.label": "Cumpleaños",
+    "sign_up.studies.label": "Estudios",
+    "sign_up.studies.placeholder": "Selecciona los estudios",
+    "sign_up.school_year.label": "Curso",
+    "sign_up.disorder.label": "Tipo de trastorno",
+    "sign_up.disorder.placeholder": "Selecciona el trastorno",
+    "sign_up.email.label": "Email",
+    "sign_up.password.label": "Contraseña",
+    "sign_up.repeat_password.label": "Repite",
+    "sign_up.repeat_password.placeholder": "Confirmar contraseña",
+    "sign_up.select": "Selecciona",
+    "sign_up.select_study": "Selecciona estudio",
+    "sign_up.check.label": "Trastornos del desarrollo",
+    "sign_up.error.fields": "Todos los campos deben estar rellenos",
+    "sign_up.error.undefined": "Ha ocurrido un error inesperado",
+    "sign_up.error.password": "Las contraseñas no coinciden",
+    "sign_up.error.password_length": "Las contraseñas deben tener más de 6 caracteres",
+    "sign_up.error.birthday": "La fecha es incorrecta (formato dd/mm/yyyy)",
+    "sign_up.success": "Compruebe el email para completar el registro",
+
+    "logout": "Cerrar sesión",
+    "email": "email@gmail.com",
+
+    "home.title": "Menú principal",
+    "home.event.title": "Eventos de hoy",
+
+    "agenda.title": "Agenda",
+
+    "data.title": "Data",
+    
+    "timetable.title": "Horario",
+    "timetable.save": "Guardar clase",
+    "timetable.title.subject": "Asignatura",
+    "timetable.title.subject.select": "Selecciona una asignatura",
+    "timetable.selectDay": "Selecciona el día de la semana",
+    "timetable.selectTime.start": "Selecciona hora de inicio",
+    "timetable.selectTime.end": "Selecciona hora de final",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+
+    "tips.title": "Tips de estudio",
+
+    "additional.title": "Material adicional",
+
+    "tasks.title": "Tareas",
+    
+    "camera.waiting": "Esperando...",
+    "camera.title": "Cámara",
+
+    "camera.permission.title" : "Permisos de cámara",
+    "camera.permission.message" : "La aplicación require permisos de cámara",
+    "camera.permission.accept" : "OK",
+    "camera.permission.reject" : "Cancelar",
+    "camera.permission.neutral" : "Preguntarme más tarde",
+
+    "writing.permission.title" : "Permisos de escritura",
+    "writing.permission.message" :  "La aplicación require permisos de escritura",
+    "writing.permission.accept" : "OK",
+    "writing.permission.reject" : "Cancelar",
+    "writing.permission.neutral" : "Preguntarme más tarde",
+
+    "location.permission.title" : "Permisos de localización",
+    "location.permission.message" :  "La aplicación require permisos de localización",
+    "location.permission.accept" : "OK",
+    "location.permission.reject" : "Cancelar",
+    "location.permission.neutral" : "Preguntarme más tarde"
+}

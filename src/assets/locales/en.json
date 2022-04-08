@@ -1,0 +1,98 @@
+{
+    "camera.option.camera":"Open camera",
+    "camera.option.file":"Open files",
+    "camera.option.cancel":"Cancel",
+
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "continue": "Continue",
+    "back": "Back",
+    
+    "login.title" : "Login", 
+    "login.button" : "Sign in",
+    "login.skip" : "Skip",
+    "login.error.noEmail": "You need to write the email",
+    "login.error.noPassword": "You need to write the password",
+    "login.error.credentialsError": "The email or the password are wrong",
+    "login.error.defaultError": "Unexpected error",
+    "login.error.noUserameNoPassword": "You must complete all the fields",
+    "login.email.label" : "Email",
+    "login.password.label" : "Password",
+    "login.recover_password": "Have you forgotten your password?",
+    "login.sign_up": "Don't you have an account? Sign up ",
+    "login.here": "here",
+
+    "recovery.title": "Recover password",
+    "recovery.button": "Send email",
+    "recovery.email.alert": "Check your email",
+
+    "sign_up.title": "Sign up",
+    "sign_up.name.label": "Name",
+    "sign_up.surname.label": "Surname",
+    "sign_up.birthday.label": "Birthday",
+    "sign_up.studies.label": "Study",
+    "sign_up.studies.placeholder": "Select study",
+    "sign_up.school_year.label": "School year",
+    "sign_up.disorder.label": "Disorder",
+    "sign_up.disorder.placeholder": "Select disorder",
+    "sign_up.email.label": "Email",
+    "sign_up.password.label": "Password",
+    "sign_up.repeat_password.label": "Repeat",
+    "sign_up.repeat_password.placeholder": "Repeat password",
+    "sign_up.select": "Select",
+    "sign_up.select_study": "Select study",
+    "sign_up.check.label": "Development disorders",
+    "sign_up.error.fields": "All the fields must be completed",
+    "sign_up.error.undefined": "An error occurred",
+    "sign_up.error.password": "The passwords do not match",
+    "sign_up.error.password_length": "The passwords must have more than 6 characters",
+    "sign_up.error.birthday": "The birthday is wrong (format dd/mm/yyyy)",
+    "sign_up.success": "Check your email to complete the sign up",
+    
+    "logout" : "Logout",
+    "email" : "email@gmail.com",
+
+    "home.title" : "Home",
+    "home.event.title" : "Today's events",
+    
+    "agenda.title": "Agenda",
+    
+    "data.title": "Data",
+    
+    "timetable.title": "Timetable",
+    "timetable.save": "Save",
+    "timetable.title.subject": "Subject",
+    "timetable.title.subject.select": "Select a subject",
+    "timetable.selectDay": "Select week day",
+    "timetable.selectTime.start": "Select start time",
+    "timetable.selectTime.end": "Select end time",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+
+    "tips.title": "Study tips",
+
+    "additional.title": "Additional material",
+
+    "tasks.title": "Tasks",
+
+    "camera.permission.title" : "Camera permission",
+    "camera.permission.message" : "The app requires camera permission",
+    "camera.permission.accept" : "OK",
+    "camera.permission.reject" : "Cancel",
+    "camera.permission.neutral" : "Ask later",
+
+    "writing.permission.title" : "Writing permission",
+    "writing.permission.message" : "The app requires writing permission",
+    "writing.permission.accept" : "OK",
+    "writing.permission.reject" : "Cancel",
+    "writing.permission.neutral" : "Ask me later",
+
+    "location.permission.title" : "Location permission",
+    "location.permission.message" : "The app requires location permission",
+    "location.permission.accept" : "OK",
+    "location.permission.reject" : "Cancel",
+    "location.permission.neutral" : "Ask me later"
+}
