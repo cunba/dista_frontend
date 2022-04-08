@@ -4,7 +4,7 @@ import { COLORS } from "config/Colors"
 import i18n from "infrastructure/localization/i18n"
 import { observer } from 'mobx-react'
 import React from "react"
-import { Text, View } from "react-native"
+import { StatusBar, Text, View } from "react-native"
 import { Card, Divider } from "react-native-paper"
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -55,6 +55,12 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
 
     return (
         <>
+            <StatusBar animated={false}
+                backgroundColor={COLORS.primaryDark}
+                barStyle={'default'}
+                showHideTransition={'fade'}
+                hidden={false}
+            />
             <Toolbar
                 isIconLeft={true}
                 iconLeft={iconLeftProps}

@@ -5,9 +5,8 @@ export const COLORS = {
     text_dark: "#FEF9EF",
     textButtons: "white",
     touchables: "#3EA68E",
+    primaryDark: "#458774",
     button: "#3EA68E",
-    // movicodersBlue: "#324191"
-    // colorApp: "#3EA68E"
 
     //PALETA
     CGBlue: "#227C9D",

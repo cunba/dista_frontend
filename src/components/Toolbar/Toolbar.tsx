@@ -1,74 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-    TouchableOpacity,
-    Text,
-    StyleSheet,
-    StatusBar,
-} from 'react-native';
-import { Header, Left, Body, Right, Icon } from 'native-base';
 import { COLORS } from 'config/Colors';
-
-const Colors = {
-    background: '#BCC4DB',
-    b1: '#C0A9B0',
-    b2: '#7880B5',
-    b3: '#69852C9',
-    b4: '#6BBAEC',
-    b5: '#00b33c',
-    b6: '#ff3333',
-    inputsColor: 'black',
-    cardColor: 'white',
-    headerColor: COLORS.button,
-    blackWithOpacity: 'rgba(0, 0, 0, 0.85)',
-    whiteWithOpacity: 'rgba(255, 255, 255, 0.6)',
-    backgroundColorLogin: 'rgba(245, 245, 245, 0.7)',
-    error: 'rgba(223, 38, 38, 0.74)',
-    buttonsColor: 'rgba(0, 0, 0, 0.85)',
-    separator: '#CED0CE',
-    confirmButtonColor: '#DD6B55',
-    backgroundConfirmButton: '#ff4d4d',
-    inputsEditModalTheme: 'red',
-};
-const styles = StyleSheet.create({
-    header: {
-        height: 58,
-        alignItems: 'center',
-        backgroundColor: Colors.headerColor,
-        flexDirection: 'row',
-    },
-    headerHome: {
-
-        backgroundColor: 'transparent',
-
-    },
-    textHeader: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: 'bold'
-    },
-    position: {
-        paddingTop: 5,
-        maxWidth: 50,
-    },
-    textPosition: {
-        paddingTop: 5,
-        alignItems: 'center',
-    },
-    imageHeaderMenu: {
-        width: 25,
-        height: 25,
-        marginRight: 5
-
-    },
-    avatar: {
-        backgroundColor: Colors.blackWithOpacity,
-    },
-});
+import { Body, Header, Icon, Left, Right } from 'native-base';
+import React from 'react';
+import { StatusBar, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export interface IconProps {
     type: "AntDesign" | "Entypo" | "EvilIcons" | "Feather" | "FontAwesome" | "FontAwesome5" | "Foundation" | "Ionicons" | "MaterialCommunityIcons" | "MaterialIcons" | "Octicons" | "SimpleLineIcons" | "Zocial" | undefined,
@@ -120,3 +53,19 @@ export const Toolbar = (props: ToolbarProps) => {
 };
 
 export default Toolbar;
+
+const styles = StyleSheet.create({
+    headerHome: {
+
+        backgroundColor: 'transparent',
+
+    },
+    position: {
+        paddingTop: 5,
+        maxWidth: 50,
+    },
+    textPosition: {
+        paddingTop: 5,
+        alignItems: 'center',
+    },
+});
