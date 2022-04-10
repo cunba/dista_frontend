@@ -105,7 +105,7 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
                     />
                 </Card>
             </View>
-            <View style={commonStyles.container}>
+            <View style={homeStyles.container}>
                 <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
                     <Text style={homeStyles.title}>{i18n.t('tasks.title')}</Text>
                     <MaterialCommunityIcons
