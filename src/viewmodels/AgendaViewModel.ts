@@ -29,8 +29,6 @@ export class AgendaViewModel {
 
     constructor() {
         makeAutoObservable(this)
-        this.setDateFrom()
-        this.constructorFunctions()
     }
 
     @action async constructorFunctions() {

@@ -39,6 +39,11 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     )
 
     useEffect(() => {
+        vm.setDateFrom()
+        vm.constructorFunctions()
+    }, [])
+
+    useEffect(() => {
         vm.dateSelected = dateFormat(selected)
         vm.markedDatesToJson()
     }, [selected])
@@ -70,7 +75,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
             <Card elevation={3} mode={"elevated"} style={[stylesRicyclerList.card, { backgroundColor: color! }]}
                 onPress={() => onPressEvent(item)}
             >
-                <Card.Content style={[stylesRicyclerList.rowCellContainerCalendar, { opacity: 100 }]}>
+                <Card.Content style={stylesRicyclerList.rowCellContainerCalendar}>
                     <Title style={stylesRicyclerList.title}>{item.name}</Title>
                     <View >
                         <Text >{dateFormat(item.startDate, 'HH:mm')}</Text>
