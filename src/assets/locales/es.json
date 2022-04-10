@@ -58,6 +58,12 @@
     "agenda.title": "Agenda",
     "agenda.empty": "No hay eventos para hoy",
 
+    "addEvent.title": "Añadir evento",
+    "addEvent.name.label": "Nombre",
+    "addEvent.notes.label": "Notas",
+
+    "showEvent.title": "Detalles",
+
     "data.title": "Data",
     
     "timetable.title": "Horario",

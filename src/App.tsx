@@ -25,7 +25,9 @@ import { RecoveryViewModel } from 'viewmodels/RecoveryViewModel';
 import { SendEmailViewModel } from 'viewmodels/SendEmailViewModel';
 import { SignUpViewModel } from 'viewmodels/SignUpViewModel';
 import { TimetableViewModel } from 'viewmodels/TimetableViewModel';
+import { AddEventView } from 'views/agenda/AddEventView';
 import { AgendaView } from 'views/agenda/AgendaView';
+import { ShowEventView } from 'views/agenda/ShowEventView';
 import { HomeView } from 'views/home/HomeView';
 import { LoginView } from 'views/login/LoginView';
 import { RecoveryView } from 'views/recovery/RecoveryView';
@@ -77,7 +79,11 @@ const SendEmailScreen = () => <SendEmailView vm={new SendEmailViewModel()} />
 const RecoveryScreen = () => <RecoveryView vm={new RecoveryViewModel()} />
 const SignUpScreen = () => <SignUpView vm={new SignUpViewModel()} />
 const HomeScreen = () => <HomeView vm={new HomeViewModel()} />
-const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
+
+const agendaViewModel = new AgendaViewModel()
+const AgendaScreen = () => <AgendaView vm={agendaViewModel} />
+const AddEventScreen = () => <AddEventView vm={agendaViewModel} />
+const ShowEventScreen = () => <ShowEventView vm={agendaViewModel} />
 const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
 
 const Stack = createStackNavigator();
@@ -286,11 +292,23 @@ const App = () => {
 									options={{ headerShown: false }}
 								/>
 							) :
-								<Stack.Screen
-									name={ROUTES.HOME}
-									component={NavigationDrawer}
-									options={{ headerShown: false }}
-								/>
+								<>
+									<Stack.Screen
+										name={ROUTES.HOME}
+										component={NavigationDrawer}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.ADD_EVENT}
+										component={AddEventScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.SHOW_EVENT}
+										component={ShowEventScreen}
+										options={{ headerShown: false }}
+									/>
+								</>
 							}
 							<Stack.Screen
 								name={ROUTES.SEND_EMAIL}

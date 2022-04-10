@@ -9,6 +9,8 @@ export enum ROUTES {
     SEND_EMAIL = "SendEmail",
     SIGN_UP = "SignUp",
     AGENDA = "Agenda",
+    ADD_EVENT = "AddEvent",
+    SHOW_EVENT = "ShowEvent",
     TIMETABLE = "Timetable",
     HOMEWORK = "Homework",
     STUDY_TIPS = "StudyTips",
@@ -26,7 +28,7 @@ export const isAndroid = Platform.OS === 'android'
 export const isiOS = !isAndroid
 
 export const PHOTO_ALBUM_NAME = APP
-export const SHARED_PREFERENCES_PACKAGE_NAME = APP.toLowerCase() + "_preferences" 
+export const SHARED_PREFERENCES_PACKAGE_NAME = APP.toLowerCase() + "_preferences"
 export const VERSION = "0.0.1"
 
 export const REQUEST_TRIES_LIMIT = 3

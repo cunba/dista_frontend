@@ -19,6 +19,8 @@ import { hexToRgb } from 'utils/utils';
 import { AgendaViewModel } from 'viewmodels/AgendaViewModel';
 import XDate from 'xdate';
 import { agendaStyles } from './AgendaStyles';
+import { navigate } from '../../RootNavigation';
+import { ROUTES } from '../../config/Constants';
 
 export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => {
     const [startDay, setStartDay] = useState(new XDate(new Date()))
@@ -55,14 +57,18 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
         return dataSource.cloneWithRows(vm.agendaArray.get(dateFormat(selected))!.events)
     }
 
-
+    const onPressEvent = (item: Event) => {
+        vm.setEventPressed(item)
+        console.log(vm.eventPressed)
+        navigate(ROUTES.SHOW_EVENT, null)
+    }
 
     const renderItem = (type: any, item: Event) => {
         const color = hexToRgb(item.eventType.color!)
 
         return (
             <Card elevation={3} mode={"elevated"} style={[stylesRicyclerList.card, { backgroundColor: color! }]}
-            // onPress={() => onPressEditItem(item)} onLongPress={() => onPressTrashItem(item)}
+                onPress={() => onPressEvent(item)}
             >
                 <Card.Content style={[stylesRicyclerList.rowCellContainerCalendar, { opacity: 100 }]}>
                     <Title style={stylesRicyclerList.title}>{item.name}</Title>
@@ -200,7 +206,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     }
 
     const iconRightProps: IconProps = {
-        onPress: () => { },
+        onPress: () => { navigate(ROUTES.ADD_EVENT, null) },
         name: 'plus',
         type: 'AntDesign'
     }

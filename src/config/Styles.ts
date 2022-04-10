@@ -104,12 +104,11 @@ export const formStyles = StyleSheet.create({
 })
 
 export const commonStyles = StyleSheet.create({
-    container: {
-        // flex: 6,
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        // backgroundColor: COLORS.background,
+    container: {    
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: COLORS.background,
         paddingTop: 10
     },
     spinner: {

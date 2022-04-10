@@ -13,11 +13,19 @@ export class AgendaViewModel {
     @observable renderMarkedDates: any = []
     @observable markedDatesToAgenda: any = {}
     @observable dateSelected: string = dateFormat(new Date())
+    @observable eventPressed?: Event
     @observable dateTo: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 59)
     @observable dateFrom: Date = new Date().getMonth() + 1 > 2 ?
         new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1, 0, 0, 0, 0)
         :
         new Date(new Date().getFullYear() - 1, new Date().getMonth() - 2, 1, 0, 0, 0, 0)
+
+    // Add event
+    @observable name: string | undefined = undefined
+    @observable notes: string | undefined = undefined
+    @observable startDate: Date = new Date()
+    @observable endDate: Date = new Date()
+    @observable eventTypeId: string | undefined = undefined
 
     constructor() {
         makeAutoObservable(this)
@@ -223,6 +231,26 @@ export class AgendaViewModel {
         this.renderMarkedDates.forEach((item: any) => {
             this.markedDatesToAgenda = Object.assign(this.markedDatesToAgenda, item)
         })
+    }
+
+    @action setEventPressed(item: Event) {
+        this.eventPressed = item
+    }
+
+    @action setName(name: string) {
+        this.name = name
+    }
+    @action setNotes(notes: string) {
+        this.notes = notes
+    }
+    @action setStartDate(startDate: Date) {
+        this.startDate = startDate
+    }
+    @action setEndDate(endDate: Date) {
+        this.endDate = endDate
+    }
+    @action setEventTypeId(eventTypeId: string) {
+        this.eventTypeId = eventTypeId
     }
 }
 
