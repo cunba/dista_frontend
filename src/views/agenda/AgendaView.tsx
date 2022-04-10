@@ -2,9 +2,11 @@ import { DrawerActions } from '@react-navigation/native';
 import Toolbar, { IconProps } from 'components/Toolbar/Toolbar';
 import { COLORS } from 'config/Colors';
 import { commonStyles, stylesRicyclerList } from 'config/Styles';
+import { Event } from 'data/model/Event';
 import i18n from 'infrastructure/localization/i18n';
 import { FunctionalView } from 'infrastructure/views/FunctionalView';
 import { observer } from 'mobx-react-lite';
+import { Title } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { Agenda } from 'react-native-calendars';
@@ -13,6 +15,7 @@ import { Card } from 'react-native-paper';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { dispatch } from 'RootNavigation';
 import { dateFormat, getMonthText } from 'utils/datetimeFormatterHelper';
+import { hexToRgb } from 'utils/utils';
 import { AgendaViewModel } from 'viewmodels/AgendaViewModel';
 import XDate from 'xdate';
 import { agendaStyles } from './AgendaStyles';
@@ -49,16 +52,25 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     )
 
     const getDataSource = (): DataProvider => {
-        return dataSource.cloneWithRows(vm.agendaArray.get(dateFormat(selected))!)
+        return dataSource.cloneWithRows(vm.agendaArray.get(dateFormat(selected))!.events)
     }
 
+
+
     const renderItem = (type: any, item: Event) => {
+        const color = hexToRgb(item.eventType.color!)
+
         return (
-            <Card elevation={3} mode={"elevated"} style={stylesRicyclerList.card}
+            <Card elevation={3} mode={"elevated"} style={[stylesRicyclerList.card, { backgroundColor: color! }]}
             // onPress={() => onPressEditItem(item)} onLongPress={() => onPressTrashItem(item)}
             >
-                <Card.Content style={stylesRicyclerList.rowCellContainerCalendar}>
-
+                <Card.Content style={[stylesRicyclerList.rowCellContainerCalendar, { opacity: 100 }]}>
+                    <Title style={stylesRicyclerList.title}>{item.name}</Title>
+                    <View >
+                        <Text >{dateFormat(item.startDate, 'HH:mm')}</Text>
+                        <Text style={{ textAlign: 'center' }}>-</Text>
+                        <Text >{dateFormat(item.endDate, 'HH:mm')}</Text>
+                    </View>
                 </Card.Content>
             </Card>
         )
@@ -115,7 +127,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                     containerStyle={{ width: '100%', height: '100%' }}
                 >
                     <View style={agendaStyles.recyclerListViewContainer}>
-                        {vm.agendaArray?.has(dateFormat(selected)) && vm.agendaArray.get(dateFormat(selected))!.length > 0 ?
+                        {vm.agendaArray?.has(dateFormat(selected)) && vm.agendaArray.get(dateFormat(selected))!.events.length > 0 ?
                             <RecyclerListView
                                 ref={(c) => { setScroll(c) }}
                                 showsVerticalScrollIndicator={false}
@@ -144,7 +156,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                                     />
                                 }
                             >
-                                <Text style={stylesRicyclerList.emptyList}>{i18n.t('emptySignings')}</Text>
+                                <Text style={stylesRicyclerList.emptyList}>{i18n.t('agenda.empty')}</Text>
                             </ScrollView>
                         }
                     </View>
@@ -221,7 +233,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                 topDay={startDay}
                 maxDate={dateFormat(new Date())}
                 onVisibleMonthsChange={onMonthChange}
-                /* renderEmptyData={renderDate} */
+                renderEmptyData={renderDate}
                 hideKnob={false}
                 allowSelectionOutOfRange={false}
                 onCalendarToggled={(calendarOpened) => setCalendarOpened(!calendarOpened)}
@@ -229,6 +241,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                 firstDay={1}
                 animateScroll={false}
                 markedDates={vm.markedDatesToAgenda}
+                markingType={'multi-dot'}
                 theme={{
                     selectedDayBackgroundColor: 'transparent',
                     selectedDayTextColor: COLORS.text

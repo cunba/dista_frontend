@@ -56,6 +56,7 @@
     "home.event.title" : "Today's events",
     
     "agenda.title": "Agenda",
+    "agenda.empty": "No events for today",
     
     "data.title": "Data",
     

@@ -9,7 +9,7 @@ export const agendaStyles = StyleSheet.create({
         alignContent: 'center',
         flexDirection: 'column',
         width: '100%',
-        maxHeight: Dimensions.get('window').height * 0.55,
+        maxHeight: Dimensions.get('window').height - 70,
         minHeight: 80
     },
     date: {

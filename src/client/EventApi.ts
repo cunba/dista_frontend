@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
 import { API } from '../config/Constants'
 import { EventFlat } from '../data/model/Event';
+import { dateFormat } from '../utils/datetimeFormatterHelper';
 
 export class EventApi {
 
@@ -26,7 +27,10 @@ export class EventApi {
     }
 
     async getByStartDateAndEndDateAndUser(startDate: Date, endDate: Date, userId: string) {
-        return axios.get(API.BASE_URL + `/events?start_date=gte.${startDate}&start_date=lte.${endDate}&user_id = eq.${userId}&select=*`,
+        const start = dateFormat(startDate, 'YYYY-MM-DDTHH:mm:SS')
+        const end = dateFormat(endDate, 'YYYY-MM-DDTHH:mm:SS')
+        
+        return axios.get(API.BASE_URL + `/events?start_date=gte.${start}&start_date=lte.${end}&user_id=eq.${userId}&select=*`,
             {
                 headers: {
                     'apikey': API.APIKEY,
