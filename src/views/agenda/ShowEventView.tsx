@@ -8,9 +8,9 @@ import { Title } from "native-base"
 import React, { useEffect } from "react"
 import { Text, View } from "react-native"
 import { back } from "RootNavigation"
-import { AgendaViewModel } from "viewmodels/AgendaViewModel"
+import { ShowEventViewModel } from "viewmodels/agenda/ShowEventViewModel"
 
-export const ShowEventView: FunctionalView<AgendaViewModel> = observer(({ vm }) => {
+export const ShowEventView: FunctionalView<ShowEventViewModel> = observer(({ vm }) => {
 
     const iconLeftProps: IconProps = {
         onPress: () => back(),

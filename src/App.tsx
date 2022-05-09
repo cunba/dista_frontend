@@ -39,8 +39,10 @@ import { isiOS, ROUTES } from './config/Constants';
 import { UserFlat } from './data/model/User';
 import i18n from './infrastructure/localization/i18n';
 import { navigate } from './RootNavigation';
-import { AgendaViewModel } from './viewmodels/AgendaViewModel';
+import { AgendaViewModel } from './viewmodels/agenda/AgendaViewModel';
 import DrawerContent from '/components/DrawerContent/DrawerContent';
+import { AddEventViewModel } from './viewmodels/agenda/AddEventViewModel';
+import { ShowEventViewModel } from 'viewmodels/agenda/ShowEventViewModel';
 
 export const AuthContext = React.createContext<any>({});
 
@@ -79,12 +81,13 @@ const SendEmailScreen = () => <SendEmailView vm={new SendEmailViewModel()} />
 const RecoveryScreen = () => <RecoveryView vm={new RecoveryViewModel()} />
 const SignUpScreen = () => <SignUpView vm={new SignUpViewModel()} />
 const HomeScreen = () => <HomeView vm={new HomeViewModel()} />
-
-const agendaViewModel = new AgendaViewModel()
-const AgendaScreen = () => <AgendaView vm={agendaViewModel} />
-const AddEventScreen = () => <AddEventView vm={agendaViewModel} />
-const ShowEventScreen = () => <ShowEventView vm={agendaViewModel} />
 const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
+
+// Agenda
+const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
+const AddEventScreen = () => <AddEventView vm={new AddEventViewModel()} />
+const ShowEventScreen = () => <ShowEventView vm={new ShowEventViewModel()} />
+
 
 const Stack = createStackNavigator();
 

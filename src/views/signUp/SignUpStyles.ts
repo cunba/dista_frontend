@@ -38,7 +38,6 @@ export const signUpStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: 300,
-        // height: 40,
         marginBottom: 10
     },
     containerInputDate: {

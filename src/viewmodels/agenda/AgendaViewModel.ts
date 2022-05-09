@@ -3,9 +3,9 @@ import { COLORS } from 'config/Colors';
 import { Event } from 'data/model/Event';
 import { action, makeAutoObservable, observable } from 'mobx';
 import { dateFormat } from 'utils/datetimeFormatterHelper';
-import { EventApi } from '../client/EventApi';
-import { EventTypeApi } from '../client/EventTypeApi';
-import { EventType } from '../data/model/EventType';
+import { EventApi } from '../../client/EventApi';
+import { EventTypeApi } from '../../client/EventTypeApi';
+import { EventType } from '../../data/model/EventType';
 
 export class AgendaViewModel {
     @observable agendaArray: Map<string, DataEvent> = new Map()
@@ -19,13 +19,6 @@ export class AgendaViewModel {
         new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1, 0, 0, 0, 0)
         :
         new Date(new Date().getFullYear() - 1, new Date().getMonth() - 2, 1, 0, 0, 0, 0)
-
-    // Add event
-    @observable name: string | undefined = undefined
-    @observable notes: string | undefined = undefined
-    @observable startDate: Date = new Date()
-    @observable endDate: Date = new Date()
-    @observable eventTypeId: string | undefined = undefined
 
     constructor() {
         makeAutoObservable(this)
@@ -233,22 +226,6 @@ export class AgendaViewModel {
 
     @action setEventPressed(item: Event) {
         this.eventPressed = item
-    }
-
-    @action setName(name: string) {
-        this.name = name
-    }
-    @action setNotes(notes: string) {
-        this.notes = notes
-    }
-    @action setStartDate(startDate: Date) {
-        this.startDate = startDate
-    }
-    @action setEndDate(endDate: Date) {
-        this.endDate = endDate
-    }
-    @action setEventTypeId(eventTypeId: string) {
-        this.eventTypeId = eventTypeId
     }
 }
 

@@ -81,5 +81,25 @@ export const agendaStyles = StyleSheet.create({
         borderRadius: 2,
         backgroundColor: COLORS.background,
         marginTop: '70%',
-    }
+    },
+    textinput: {
+        fontSize: SIZES.text,
+        width: '100%',
+        height: 40,
+        color: COLORS.text,
+        paddingLeft: 20,
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius: 5
+    },
+    commentInput: {
+        fontSize: SIZES.text,
+        width: '100%',
+        height: 100,
+        color: COLORS.text,
+        paddingLeft: 20,
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius: 5,
+    },
 })

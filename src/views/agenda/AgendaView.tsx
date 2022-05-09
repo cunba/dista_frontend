@@ -16,7 +16,7 @@ import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview
 import { dispatch } from 'RootNavigation';
 import { dateFormat, getMonthText } from 'utils/datetimeFormatterHelper';
 import { hexToRgb } from 'utils/utils';
-import { AgendaViewModel } from 'viewmodels/AgendaViewModel';
+import { AgendaViewModel } from 'viewmodels/agenda/AgendaViewModel';
 import XDate from 'xdate';
 import { agendaStyles } from './AgendaStyles';
 import { navigate } from '../../RootNavigation';
