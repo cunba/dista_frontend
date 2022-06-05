@@ -59,6 +59,7 @@
     "react-native-qrcode-scanner": "^1.5.4",
     "react-native-qrcode-scanner-plus": "^1.5.8",
     "react-native-reanimated": "^2.1.0",
+    "react-native-responsive-linechart": "^5.7.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.1.1",
     "react-native-sqlite-storage": "^5.0.0",
