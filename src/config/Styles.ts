@@ -32,10 +32,11 @@ export const stylesRicyclerList = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
     },
-    dateTextCell: {
+    title: {
         fontSize: SIZES.h1,
         fontWeight: 'bold',
-        color: COLORS.text
+        color: COLORS.text,
+        paddingTop: 10
     },
     location: {
         flexDirection: "row",
@@ -56,7 +57,7 @@ export const stylesRicyclerList = StyleSheet.create({
         height: 70,
         width: "90%",
         flexDirection: 'row',
-        backgroundColor: COLORS.background,
+        // backgroundColor: COLORS.background,
         alignSelf: "center",
     },
     containerOptions: {
@@ -65,11 +66,6 @@ export const stylesRicyclerList = StyleSheet.create({
         marginVertical: 10,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    latitudeLongitude: {
-        color: COLORS.text,
-        height: '100%',
-        paddingTop: 5
     }
 })
 
@@ -108,12 +104,11 @@ export const formStyles = StyleSheet.create({
 })
 
 export const commonStyles = StyleSheet.create({
-    container: {
-        // flex: 6,
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        // backgroundColor: COLORS.background,
+    container: {    
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: COLORS.background,
         paddingTop: 10
     },
     spinner: {

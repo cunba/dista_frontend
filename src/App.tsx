@@ -25,7 +25,9 @@ import { RecoveryViewModel } from 'viewmodels/RecoveryViewModel';
 import { SendEmailViewModel } from 'viewmodels/SendEmailViewModel';
 import { SignUpViewModel } from 'viewmodels/SignUpViewModel';
 import { TimetableViewModel } from 'viewmodels/TimetableViewModel';
+import { AddEventView } from 'views/agenda/AddEventView';
 import { AgendaView } from 'views/agenda/AgendaView';
+import { ShowEventView } from 'views/agenda/ShowEventView';
 import { HomeView } from 'views/home/HomeView';
 import { LoginView } from 'views/login/LoginView';
 import { RecoveryView } from 'views/recovery/RecoveryView';
@@ -37,8 +39,10 @@ import { isiOS, ROUTES } from './config/Constants';
 import { UserFlat } from './data/model/User';
 import i18n from './infrastructure/localization/i18n';
 import { navigate } from './RootNavigation';
-import { AgendaViewModel } from './viewmodels/AgendaViewModel';
+import { AgendaViewModel } from './viewmodels/agenda/AgendaViewModel';
 import DrawerContent from '/components/DrawerContent/DrawerContent';
+import { AddEventViewModel } from './viewmodels/agenda/AddEventViewModel';
+import { ShowEventViewModel } from 'viewmodels/agenda/ShowEventViewModel';
 
 export const AuthContext = React.createContext<any>({});
 
@@ -77,8 +81,13 @@ const SendEmailScreen = () => <SendEmailView vm={new SendEmailViewModel()} />
 const RecoveryScreen = () => <RecoveryView vm={new RecoveryViewModel()} />
 const SignUpScreen = () => <SignUpView vm={new SignUpViewModel()} />
 const HomeScreen = () => <HomeView vm={new HomeViewModel()} />
-const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
 const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
+
+// Agenda
+const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
+const AddEventScreen = () => <AddEventView vm={new AddEventViewModel()} />
+const ShowEventScreen = () => <ShowEventView vm={new ShowEventViewModel()} />
+
 
 const Stack = createStackNavigator();
 
@@ -286,11 +295,23 @@ const App = () => {
 									options={{ headerShown: false }}
 								/>
 							) :
-								<Stack.Screen
-									name={ROUTES.HOME}
-									component={NavigationDrawer}
-									options={{ headerShown: false }}
-								/>
+								<>
+									<Stack.Screen
+										name={ROUTES.HOME}
+										component={NavigationDrawer}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.ADD_EVENT}
+										component={AddEventScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.SHOW_EVENT}
+										component={ShowEventScreen}
+										options={{ headerShown: false }}
+									/>
+								</>
 							}
 							<Stack.Screen
 								name={ROUTES.SEND_EMAIL}

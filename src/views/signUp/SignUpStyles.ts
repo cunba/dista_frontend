@@ -3,13 +3,6 @@ import { SIZES } from 'config/Sizes';
 import { StyleSheet } from 'react-native';
 
 export const signUpStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: COLORS.background,
-        paddingTop: 10
-    },
     title: {
         textAlign: 'center',
         fontSize: SIZES.title,
@@ -45,7 +38,6 @@ export const signUpStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: 300,
-        // height: 40,
         marginBottom: 10
     },
     containerInputDate: {

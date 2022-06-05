@@ -141,7 +141,7 @@ export const SignUpView: FunctionalView<SignUpViewModel> = observer(({ vm }) => 
                 color={COLORS.button}
                 isIconRight={false}
             />
-            <View style={signUpStyles.container}>
+            <View style={commonStyles.container}>
                 <Text style={signUpStyles.title}>{i18n.t('sign_up.title')}</Text>
                 <View style={signUpStyles.containerInput}>
                     <Text style={commonStyles.text}>{i18n.t('sign_up.name.label')}:</Text>
