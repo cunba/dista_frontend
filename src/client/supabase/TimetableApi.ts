@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { API } from '../config/Constants';
-import { TimetableFlat } from '../data/model/Timetable';
-import { SessionStoreFactory } from '../infrastructure/data/SessionStoreFactory';
+import { API } from '../../config/Constants';
+import { TimetableFlat } from '../../data/model/Timetable';
+import { SessionStoreFactory } from '../../infrastructure/data/SessionStoreFactory';
 
 export class TimetableApi {
 

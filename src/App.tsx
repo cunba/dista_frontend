@@ -19,6 +19,8 @@ import { Dimensions, NativeModules, StyleSheet, Text, View } from 'react-native'
 import { LocaleConfig } from 'react-native-calendars';
 import RNLocation, { Location } from "react-native-location";
 import { navigationRef } from 'RootNavigation';
+import { ShowEventViewModel } from 'viewmodels/agenda/ShowEventViewModel';
+import { DataViewModel } from 'viewmodels/data/DataViewModel';
 import { HomeViewModel } from 'viewmodels/HomeViewModel';
 import { LoginViewModel } from 'viewmodels/LoginViewModel';
 import { RecoveryViewModel } from 'viewmodels/RecoveryViewModel';
@@ -34,15 +36,15 @@ import { RecoveryView } from 'views/recovery/RecoveryView';
 import { SendEmailView } from 'views/sendEmail/SendEmailView';
 import { SignUpView } from 'views/signUp/SignUpView';
 import { TimetableView } from 'views/timetable/TimetableView';
-import { UserApi } from './client/UserApi';
+import { DataView } from 'views/data/DataView';
+import { UserApi } from './client/supabase/UserApi';
 import { isiOS, ROUTES } from './config/Constants';
 import { UserFlat } from './data/model/User';
 import i18n from './infrastructure/localization/i18n';
 import { navigate } from './RootNavigation';
+import { AddEventViewModel } from './viewmodels/agenda/AddEventViewModel';
 import { AgendaViewModel } from './viewmodels/agenda/AgendaViewModel';
 import DrawerContent from '/components/DrawerContent/DrawerContent';
-import { AddEventViewModel } from './viewmodels/agenda/AddEventViewModel';
-import { ShowEventViewModel } from 'viewmodels/agenda/ShowEventViewModel';
 
 export const AuthContext = React.createContext<any>({});
 
@@ -82,6 +84,7 @@ const RecoveryScreen = () => <RecoveryView vm={new RecoveryViewModel()} />
 const SignUpScreen = () => <SignUpView vm={new SignUpViewModel()} />
 const HomeScreen = () => <HomeView vm={new HomeViewModel()} />
 const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
+const DataScreen = () => <DataView vm={new DataViewModel()} />
 
 // Agenda
 const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
@@ -118,10 +121,10 @@ const NavigationDrawer = () => {
 			/>
 			<Drawer.Screen
 				options={{
-					title: i18n.t('agenda.title'),
+					title: i18n.t('data.title'),
 				}}
-				name={ROUTES.AGENDA}
-				component={AgendaScreen}
+				name={ROUTES.DATA}
+				component={DataScreen}
 			/>
 			<Drawer.Screen
 				options={{
@@ -129,6 +132,13 @@ const NavigationDrawer = () => {
 				}}
 				name={ROUTES.TIMETABLE}
 				component={TimetableScreen}
+			/>
+			<Drawer.Screen
+				options={{
+					title: i18n.t('agenda.title'),
+				}}
+				name={ROUTES.AGENDA}
+				component={AgendaScreen}
 			/>
 		</Drawer.Navigator>
 	);

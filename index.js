@@ -1,10 +1,10 @@
+import * as React from 'react';
+import { AppRegistry, LogBox } from 'react-native';
 import 'react-native-gesture-handler';
-import * as React from 'react'
-import { AppRegistry } from 'react-native';
-import App from './src/App';
-import { name as appName } from './app.json';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { name as appName } from './app.json';
+import App from './src/App';
 
 export const Main = () => {
     return (
@@ -16,4 +16,9 @@ export const Main = () => {
     );
 }
 
+LogBox.ignoreLogs([
+    "Require cycle: node_modules/victory",
+    "Require cycle: node_modules/axios/lib/defaults.js",
+    "Require cycle: src/App.tsx"
+]);
 AppRegistry.registerComponent(appName, () => Main);

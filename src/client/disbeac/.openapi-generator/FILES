@@ -1,0 +1,13 @@
+.openapi-generator-ignore
+apis/DisbeacsApi.ts
+apis/LocationsApi.ts
+apis/index.ts
+index.ts
+models/Disbeac.ts
+models/DisbeacDTO.ts
+models/ErrorResponse.ts
+models/HandledResponse.ts
+models/Location.ts
+models/LocationDTO.ts
+models/index.ts
+runtime.ts

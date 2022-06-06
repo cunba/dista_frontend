@@ -1,9 +1,9 @@
-import { SchoolYearApi } from "client/SchoolYearApi";
-import { StudyApi } from "client/StudyApi";
+import { SchoolYearApi } from "client/supabase/SchoolYearApi";
+import { StudyApi } from "client/supabase/StudyApi";
 import { Disorder } from "data/model/Disorder";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { dateFormat } from "utils/datetimeFormatterHelper";
-import { DisorderApi } from '../client/DisorderApi';
+import { DisorderApi } from '../client/supabase/DisorderApi';
 import { SchoolYearFlat } from '../data/model/SchoolYear';
 import { Study } from '../data/model/Study';
 import { UserFlat } from '../data/model/User';

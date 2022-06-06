@@ -35,6 +35,8 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
             case 'timetable':
                 navigate(ROUTES.TIMETABLE, null)
                 break
+            case 'data':
+                navigate(ROUTES.DATA, null)
             case 'homework':
                 navigate(ROUTES.HOMEWORK, null)
                 break
@@ -72,12 +74,14 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
                 isIconRight={false}
             />
             <Card mode={"outlined"} style={homeStyles.eventsContainer}>
-                <Text style={commonStyles.title}>{i18n.t('home.event.title')}</Text>
+                <Card.Title title={i18n.t('home.event.title')} style={commonStyles.title} />
                 <Divider style={{ width: '85%' }} />
-                <Text>Deberes de inglés</Text>
+                <Card.Content>
+                    <Text>Deberes de inglés</Text>
+                </Card.Content>
             </Card>
             <View style={homeStyles.container}>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
+                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('data')}>
                     <Text style={homeStyles.title}>{i18n.t('data.title')}</Text>
                     <Entypo
                         name="line-graph"
