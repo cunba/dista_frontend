@@ -13,7 +13,16 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ICredentials, SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
+import { AlarmsApi, AmbientNoisesApi, DisbandsApi, HeartRateApi, HumidityApi, LightningsApi, OxygenApi, PressureApi, TemperaturesApi } from 'client/disband';
+import { DisbeacsApi, LocationsApi } from 'client/disbeac';
+import { DisordersApi, EventsApi, HomeworksApi, JwtRequest, JwtResponse, LoginApi, SchoolYearsApi, SubjectsApi, TimetablesApi, UserDTO, UsersApi } from 'client/disheap';
+import { UserRepository } from 'data/repository/disheap/impl/UserRepository';
+import { LoginRepository } from 'data/repository/LoginRepository';
+import DisbandApiClient, { DisbandApi } from 'infrastructure/data/DisbandApiClient';
+import DisbeacApiClient, { DisbeacApi } from 'infrastructure/data/DisbeacApiClient';
+import DisheapApiClient, { DisheapApi } from 'infrastructure/data/DisheapApiClient';
+import { ICredentials } from 'infrastructure/data/ICredentials';
+import { SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, NativeModules, StyleSheet, Text, View } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
@@ -30,21 +39,44 @@ import { TimetableViewModel } from 'viewmodels/TimetableViewModel';
 import { AddEventView } from 'views/agenda/AddEventView';
 import { AgendaView } from 'views/agenda/AgendaView';
 import { ShowEventView } from 'views/agenda/ShowEventView';
+import { DataView } from 'views/data/DataView';
 import { HomeView } from 'views/home/HomeView';
 import { LoginView } from 'views/login/LoginView';
 import { RecoveryView } from 'views/recovery/RecoveryView';
 import { SendEmailView } from 'views/sendEmail/SendEmailView';
 import { SignUpView } from 'views/signUp/SignUpView';
 import { TimetableView } from 'views/timetable/TimetableView';
-import { DataView } from 'views/data/DataView';
-import { UserApi } from './client/supabase/UserApi';
 import { isiOS, ROUTES } from './config/Constants';
-import { UserFlat } from './data/model/User';
 import i18n from './infrastructure/localization/i18n';
 import { navigate } from './RootNavigation';
 import { AddEventViewModel } from './viewmodels/agenda/AddEventViewModel';
 import { AgendaViewModel } from './viewmodels/agenda/AgendaViewModel';
 import DrawerContent from '/components/DrawerContent/DrawerContent';
+
+// Register Disheap api clients
+DisheapApiClient.register(DisheapApi.DisorderApi, new DisordersApi)
+DisheapApiClient.register(DisheapApi.EventApi, new EventsApi)
+DisheapApiClient.register(DisheapApi.HomeworkApi, new HomeworksApi)
+DisheapApiClient.register(DisheapApi.SchoolYearApi, new SchoolYearsApi)
+DisheapApiClient.register(DisheapApi.SubjectApi, new SubjectsApi)
+DisheapApiClient.register(DisheapApi.TimetableApi, new TimetablesApi)
+DisheapApiClient.register(DisheapApi.UserApi, new UsersApi)
+DisheapApiClient.register(DisheapApi.LoginApi, new LoginApi)
+
+// Register Disbeac Api clients
+DisbeacApiClient.register(DisbeacApi.DisbeacApi, new DisbeacsApi)
+DisbeacApiClient.register(DisbeacApi.LocationApi, new LocationsApi)
+
+// Register Disband Api clients
+DisbandApiClient.register(DisbandApi.AlarmApi, new AlarmsApi)
+DisbandApiClient.register(DisbandApi.AmbientNoiseApi, new AmbientNoisesApi)
+DisbandApiClient.register(DisbandApi.DisbandApi, new DisbandsApi)
+DisbandApiClient.register(DisbandApi.HeartRateApi, new HeartRateApi)
+DisbandApiClient.register(DisbandApi.HumidityApi, new HumidityApi)
+DisbandApiClient.register(DisbandApi.LightningApi, new LightningsApi)
+DisbandApiClient.register(DisbandApi.OxygenApi, new OxygenApi)
+DisbandApiClient.register(DisbandApi.PressureApi, new PressureApi)
+DisbandApiClient.register(DisbandApi.TemperatureApi, new TemperaturesApi)
 
 export const AuthContext = React.createContext<any>({});
 
@@ -194,11 +226,11 @@ const App = () => {
 			const recoverPassword = await SessionStoreFactory.getSessionStore().getRecoverPassword()
 
 			if (isLogged) {
-				const user = await SessionStoreFactory.getSessionStore().getUser()
+				const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
 				let userToken = ''
-				if (user && user.password && user.email) {
-					const signin = await new UserApi().signIn(user.email, user.password)
-					userToken = signin.access_token
+				if (credentials && credentials.password && credentials.email) {
+					const response: JwtResponse = await new LoginRepository().login(credentials.email!, credentials.password!)
+					userToken = response.token!
 				}
 				dispatch({ type: 'RESTORE_TOKEN', token: userToken });
 			}
@@ -213,27 +245,21 @@ const App = () => {
 	const authContext = React.useMemo(
 		() => ({
 			signIn: async (email: string, password: string) => {
-				const signin = await new UserApi().signIn(email, password)
-				const user = {
-					name: signin.user.user_metadata.name,
-					surname: signin.user.user_metadata.surname,
-					birthday: signin.user.user_metadata.birthday,
-					schoolYearId: signin.user.user_metadata.schoolYearId,
-					disorderId: signin.user.user_metadata.disorderId,
-					email: email,
-					password: password
-				}
-				SessionStoreFactory.getSessionStore().setToken(signin.access_token);
-				SessionStoreFactory.getSessionStore().setUser(user as ICredentials);
-				dispatch({ type: 'SIGN_IN', token: signin.access_token });
+				const response = await new LoginRepository().login(email, password)
+				SessionStoreFactory.getSessionStore().setToken(response.token!);
+				SessionStoreFactory.getSessionStore().setCredentials({ email: email, password: password } as ICredentials)
+				const user = await new UserRepository().getByEmail(email)
+				SessionStoreFactory.getSessionStore().setUser(user)
+				dispatch({ type: 'SIGN_IN', token: response.token });
 			},
 			signOut: () => {
 				SessionStoreFactory.getSessionStore().setToken('');
+				SessionStoreFactory.getSessionStore().setCredentials(undefined)
 				SessionStoreFactory.getSessionStore().setUser(undefined);
 				dispatch({ type: 'SIGN_OUT' });
 			},
-			signUp: async (user: UserFlat) => {
-				await new UserApi().signUp(user)
+			signUp: async (user: UserDTO) => {
+				await new UserRepository().save(user)
 			}
 		}),
 		[],

@@ -1,12 +1,10 @@
-import { SchoolYearApi } from "client/supabase/SchoolYearApi";
-import { StudyApi } from "client/supabase/StudyApi";
-import { Disorder } from "data/model/Disorder";
-import { action, makeAutoObservable, observable, runInAction } from "mobx";
+import { UserDTO } from "client/disheap";
+import { Disorder } from "client/disheap/models/Disorder";
+import { SchoolYear } from "client/disheap/models/SchoolYear";
+import { DisorderRepository } from "data/repository/disheap/impl/DisorderRepository";
+import { SchoolYearRepository } from "data/repository/disheap/impl/SchoolYearRepository";
+import { action, makeAutoObservable, observable } from "mobx";
 import { dateFormat } from "utils/datetimeFormatterHelper";
-import { DisorderApi } from '../client/supabase/DisorderApi';
-import { SchoolYearFlat } from '../data/model/SchoolYear';
-import { Study } from '../data/model/Study';
-import { UserFlat } from '../data/model/User';
 
 export class SignUpViewModel {
     @observable email?: string
@@ -18,10 +16,9 @@ export class SignUpViewModel {
     @observable isDisorder?: boolean = false
     @observable disorder?: string = ''
     @observable repeatPassword?: string
-    @observable allStudies?: Array<Study> = observable([])
-    @observable allSchoolYears?: Map<string, SchoolYearFlat[]> = new Map()
-    @observable allDisorders?: Array<Disorder> = observable([])
-    @observable user?: UserFlat
+    @observable allSchoolYears?: Map<string, SchoolYear[]> = new Map()
+    @observable allDisorders?: Disorder[] = observable([])
+    @observable user?: UserDTO
 
     constructor() {
         makeAutoObservable(this)
@@ -34,38 +31,36 @@ export class SignUpViewModel {
     }
 
     @action async getAllDisorders() {
-        const res = await new DisorderApi().getAll()
-
-        res.map((item: any) => {
-            runInAction(() => {
-                this.allDisorders?.push(new Disorder(item.id, item.disorder))
-            })
+        await new DisorderRepository().getAll().then(disorders => {
+            this.setAllDisorders(disorders ?? [])
         })
     }
 
     @action async getAllSchoolYears() {
-        const res = await new SchoolYearApi().getAll()
+        const res = await new SchoolYearRepository().getAll()
 
-        Promise.all(res.map(async (item: SchoolYearFlat) => {
-            const study = await new StudyApi().getById(item.study_id)
-
-            if (this.allSchoolYears!.has(study[0].study)) {
-                this.allSchoolYears!.get(study[0].study)!.push(item)
+        Promise.all(res!.map(async (item: SchoolYear) => {
+            if (this.allSchoolYears!.has(item.study!)) {
+                this.allSchoolYears!.get(item.study!)!.push(item)
             } else {
-                this.allSchoolYears!.set(study[0].study, [item])
+                this.allSchoolYears!.set(item.study!, [item])
             }
-            this.allSchoolYears!.get(study[0].study)!.sort(this.orderDesc)
+            this.allSchoolYears!.get(item.study!)!.sort(this.orderDesc)
         }))
     }
 
-    orderDesc = (a: SchoolYearFlat, b: SchoolYearFlat) => {
-        if (a.school_year.substring(0, 1) > b.school_year.substring(0, 1)) {
+    orderDesc = (a: SchoolYear, b: SchoolYear) => {
+        if (a.name!.substring(0, 1) > b.name!.substring(0, 1)) {
             return -1
-        } else if (a.school_year.substring(0, 1) < b.school_year.substring(0, 1)) {
+        } else if (a.name!.substring(0, 1) < b.name!.substring(0, 1)) {
             return 1
         } else {
             return 0
         }
+    }
+
+    @action setAllDisorders(disorders: Disorder[]) {
+        this.allDisorders = disorders
     }
 
     @action setEmail(email: string) {
@@ -114,7 +109,19 @@ export class SignUpViewModel {
     }
 
     @action setUser() {
-        this.user = new UserFlat(this.name!, this.surname!, dateFormat(this.birthday!, 'DD/MM/YYYY'), this.disorder!, this.schoolYear!, this.email!, this.password!)
+        const user: UserDTO = {
+            name: this.name!,
+            surname: this.surname!,
+            birthday: dateFormat(this.birthday!, "dd-MM-yyyy"),
+            isDisorder: this.isDisorder!,
+            disorderId: this.isDisorder ? this.disorder : undefined,
+            email: this.email!,
+            password: this.password!,
+            schoolYearId: this.schoolYear!,
+            role: "USER"
+        }
+        
+        this.user = user
     }
 
     isPasswordValid() {

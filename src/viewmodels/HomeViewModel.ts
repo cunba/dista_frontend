@@ -1,5 +1,6 @@
+import { UserRepository } from "data/repository/disheap/impl/UserRepository";
+import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
 import { makeAutoObservable } from "mobx";
-import RNLocation from "react-native-location";
 
 
 export class HomeViewModel {

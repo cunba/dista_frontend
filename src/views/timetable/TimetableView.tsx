@@ -1,9 +1,10 @@
 import { DrawerActions } from "@react-navigation/native";
-import { UserApi } from "client/UserApi";
+import { Subject } from "client/disheap/models/Subject";
+import { TimetableDTO } from "client/disheap/models/TimetableDTO";
 import Toolbar, { IconProps } from "components/Toolbar/Toolbar";
 import { COLORS } from "config/Colors";
 import { commonStyles } from "config/Styles";
-import { TimetableFlat } from "data/model/Timetable";
+import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
 import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import { observer } from "mobx-react-lite";
@@ -18,7 +19,6 @@ import TimeTableView, { genTimeBlock } from "react-native-timetable";
 import { dispatch } from "RootNavigation";
 import { getWeekDayFullString, getWeekDayString, timeFormatter } from "utils/datetimeFormatterHelper";
 import { TimetableViewModel } from "viewmodels/TimetableViewModel";
-import { Subject } from "../../data/model/Subject";
 import { DataTimetable } from '../../viewmodels/TimetableViewModel';
 import { timetableStyles } from "./TimetableStyles";
 
@@ -104,8 +104,14 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
 
         const timetableStart = timeFormatter(startTime.getHours(), startTime.getMinutes())
         const timetableEnd = timeFormatter(endTime.getHours(), endTime.getMinutes())
-        const user = await new UserApi().getUser()
-        const timetable = new TimetableFlat(timetableStart, timetableEnd, daySelected, subjectId!.toString(), user.id)
+        const user = await SessionStoreFactory.getSessionStore().getUser()
+        const timetable: TimetableDTO = {
+            endTime: timetableEnd,
+            startTime: timetableStart,
+            weekDay: daySelected,
+            subjectId: subjectId!.toString(),
+            userId: user!.id
+        }
         vm.newData.push(timetable)
     }
 
@@ -133,8 +139,8 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
                 timetableData.splice(index, 1)
             }
         })
-        vm.newData.map((item: TimetableFlat, index: number) => {
-            if (item.end_time === timetableEnd && item.start_time === timetableStart && item.week_day === day) {
+        vm.newData.map((item: TimetableDTO, index: number) => {
+            if (item.endTime === timetableEnd && item.startTime === timetableStart && item.weekDay === day) {
                 vm.newData.splice(index, 1)
             }
         })

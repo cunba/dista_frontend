@@ -1,5 +1,5 @@
 import { action, makeAutoObservable } from "mobx"
-import { Event } from "../../data/model/Event"
+import {Event} from "client/disheap/models/Event"
 
 export class ShowEventViewModel {
     eventPressed?: Event

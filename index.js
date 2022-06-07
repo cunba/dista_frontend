@@ -18,7 +18,6 @@ export const Main = () => {
 
 LogBox.ignoreLogs([
     "Require cycle: node_modules/victory",
-    "Require cycle: node_modules/axios/lib/defaults.js",
-    "Require cycle: src/App.tsx"
+    "Require cycle: node_modules/axios/lib/defaults.js"
 ]);
 AppRegistry.registerComponent(appName, () => Main);

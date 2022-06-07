@@ -1,4 +1,4 @@
-import { UserApi } from "client/UserApi";
+// import { UserApi } from "client/UserApi";
 import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
 import { action, makeAutoObservable, observable } from "mobx";
 
@@ -15,7 +15,7 @@ export class SendEmailViewModel {
     }
 
     @action async passwordRecover() {
-        await new UserApi().passwordRecover(this.email!)
+        // await new UserApi().passwordRecover(this.email!)
         SessionStoreFactory.getSessionStore().setRecoverPassword("true");
     }
 }

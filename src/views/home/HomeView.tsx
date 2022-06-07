@@ -3,7 +3,7 @@ import Toolbar, { IconProps, ToolbarProps } from "components/Toolbar/Toolbar"
 import { COLORS } from "config/Colors"
 import i18n from "infrastructure/localization/i18n"
 import { observer } from 'mobx-react'
-import React from "react"
+import React, { useEffect } from "react"
 import { StatusBar, Text, View } from "react-native"
 import { Card, Divider } from "react-native-paper"
 import AntDesign from 'react-native-vector-icons/AntDesign'
