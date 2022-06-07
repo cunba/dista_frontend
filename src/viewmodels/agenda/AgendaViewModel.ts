@@ -78,7 +78,7 @@ export class AgendaViewModel {
         const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
         const events: Event[] = []
 
-        const res = await new EventRepository().getByStartDateBetweenAndUserId(from, to, userId)
+        const res = await new EventRepository().getByStartDateBetweenAndUserId(from, to, userId!)
 
         if (res!.length > 0) {
             res!.map(async (item: any) => {

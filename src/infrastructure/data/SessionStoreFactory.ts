@@ -1,8 +1,8 @@
-import { NotImplementedException } from '../exceptions/NotImplementedException';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SessionStore } from './ISessionStore';
-import { ICredentials } from './ICredentials';
+import { Disband } from "client/disband/models/Disband";
 import { UserModel } from 'client/disheap/models/UserModel';
+import { ICredentials } from './ICredentials';
+import { SessionStore } from './ISessionStore';
 
 export enum SessionStoreType {
   SessionAsyncStorage, ContextStorage, LocalStorage, SessionStorage
@@ -53,6 +53,15 @@ const sessionAsyncStorage = (): SessionStore => {
     },
     setUser: (user: UserModel | undefined) => {
       user ? AsyncStorage.setItem("user", JSON.stringify(user)) : AsyncStorage.removeItem("user")
+    },
+    getDisband: async () => {
+      const disband = await AsyncStorage.getItem("disband")
+      if (disband)
+        return JSON.parse(disband)
+      return undefined
+    },
+    setDisband: (disband: Disband) => {
+      disband ? AsyncStorage.setItem("disband", JSON.stringify(disband)) : AsyncStorage.removeItem("disband")
     },
     isLoggedIn: async () => {
       const logged = await AsyncStorage.getItem("token")

@@ -5,13 +5,25 @@ import { commonStyles } from "config/Styles";
 import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card } from "react-native-paper";
 import { dispatch } from "RootNavigation";
 import { DataViewModel } from "viewmodels/data/DataViewModel";
 
 export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        onRefresh()
+    }, [])
+
+    const onRefresh = () => {
+        setLoading(true)
+        vm.constructorFunctions()
+        setLoading(false)
+    }
 
     const iconLeftProps: IconProps = {
         onPress: () => dispatch(DrawerActions.openDrawer()),
@@ -31,10 +43,18 @@ export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
 
                 isIconRight={false}
             />
-            <ScrollView style={{ paddingTop: 15, paddingHorizontal: 10 }}>
+            <ScrollView
+                style={{ paddingTop: 15, paddingHorizontal: 10 }}
+                refreshControl={(
+                    <RefreshControl
+                        refreshing={loading}
+                        onRefresh={onRefresh}
+                    />
+                )}
+            >
                 <Card onPress={() => { }} style={{ height: 150 }}>
                     <Card.Content >
-
+                        
                     </Card.Content>
                 </Card>
                 <Card onPress={() => { }} style={{ height: 150, marginTop: 15 }}>

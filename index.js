@@ -16,8 +16,5 @@ export const Main = () => {
     );
 }
 
-LogBox.ignoreLogs([
-    "Require cycle: node_modules/victory",
-    "Require cycle: node_modules/axios/lib/defaults.js"
-]);
+LogBox.ignoreAllLogs();
 AppRegistry.registerComponent(appName, () => Main);

@@ -16,6 +16,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AlarmsApi, AmbientNoisesApi, DisbandsApi, HeartRateApi, HumidityApi, LightningsApi, OxygenApi, PressureApi, TemperaturesApi } from 'client/disband';
 import { DisbeacsApi, LocationsApi } from 'client/disbeac';
 import { DisordersApi, EventsApi, HomeworksApi, JwtRequest, JwtResponse, LoginApi, SchoolYearsApi, SubjectsApi, TimetablesApi, UserDTO, UsersApi } from 'client/disheap';
+import { DisbandRepository } from 'data/repository/disband/impl/DisbandRepository';
 import { UserRepository } from 'data/repository/disheap/impl/UserRepository';
 import { LoginRepository } from 'data/repository/LoginRepository';
 import DisbandApiClient, { DisbandApi } from 'infrastructure/data/DisbandApiClient';
@@ -24,7 +25,7 @@ import DisheapApiClient, { DisheapApi } from 'infrastructure/data/DisheapApiClie
 import { ICredentials } from 'infrastructure/data/ICredentials';
 import { SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, NativeModules, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, LogBox, NativeModules, StyleSheet, Text, View } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
 import RNLocation, { Location } from "react-native-location";
 import { navigationRef } from 'RootNavigation';
@@ -168,6 +169,7 @@ const NavigationDrawer = () => {
 			<Drawer.Screen
 				options={{
 					title: i18n.t('agenda.title'),
+					swipeEnabled: false
 				}}
 				name={ROUTES.AGENDA}
 				component={AgendaScreen}
@@ -250,12 +252,15 @@ const App = () => {
 				SessionStoreFactory.getSessionStore().setCredentials({ email: email, password: password } as ICredentials)
 				const user = await new UserRepository().getByEmail(email)
 				SessionStoreFactory.getSessionStore().setUser(user)
+				const disband = await new DisbandRepository().getByUserId(user!.id!)
+				SessionStoreFactory.getSessionStore().setDisband(disband![0])
 				dispatch({ type: 'SIGN_IN', token: response.token });
 			},
 			signOut: () => {
 				SessionStoreFactory.getSessionStore().setToken('');
 				SessionStoreFactory.getSessionStore().setCredentials(undefined)
 				SessionStoreFactory.getSessionStore().setUser(undefined);
+				SessionStoreFactory.getSessionStore().setDisband(undefined);
 				dispatch({ type: 'SIGN_OUT' });
 			},
 			signUp: async (user: UserDTO) => {

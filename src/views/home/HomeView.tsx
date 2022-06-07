@@ -37,6 +37,7 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
                 break
             case 'data':
                 navigate(ROUTES.DATA, null)
+                break
             case 'homework':
                 navigate(ROUTES.HOMEWORK, null)
                 break
