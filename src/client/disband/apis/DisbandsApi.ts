@@ -37,11 +37,11 @@ export interface DeleteDisbandsByUserIdRequest {
     userId: string;
 }
 
-export interface GetById6Request {
+export interface GetDisbandByIdRequest {
     id: string;
 }
 
-export interface GetDisbandsByMacRequest {
+export interface GetDisbandByMacRequest {
     mac: string;
 }
 
@@ -49,7 +49,7 @@ export interface GetDisbandsByUserIdRequest {
     userId: string;
 }
 
-export interface SavedisbandRequest {
+export interface SaveDisbandRequest {
     disbandDTO: DisbandDTO;
 }
 
@@ -58,7 +58,7 @@ export interface UpdateDisbandRequest {
     disbandDTO: DisbandDTO;
 }
 
-export interface UpdateUserIdRequest {
+export interface UpdateDisbandUserIdRequest {
     id: string;
     userId: string;
 }
@@ -108,12 +108,12 @@ export interface DisbandsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbandsApiInterface
      */
-    getById6Raw(requestParameters: GetById6Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>>;
+    getDisbandByIdRaw(requestParameters: GetDisbandByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>>;
 
     /**
      * Get disband by ID
      */
-    getById6(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband>;
+    getDisbandById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband>;
 
     /**
      * 
@@ -123,12 +123,12 @@ export interface DisbandsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbandsApiInterface
      */
-    getDisbandsByMacRaw(requestParameters: GetDisbandsByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Disband>>>;
+    getDisbandByMacRaw(requestParameters: GetDisbandByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>>;
 
     /**
      * Get disbands by mac
      */
-    getDisbandsByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Disband>>;
+    getDisbandByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband>;
 
     /**
      * 
@@ -153,12 +153,12 @@ export interface DisbandsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbandsApiInterface
      */
-    savedisbandRaw(requestParameters: SavedisbandRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>>;
+    saveDisbandRaw(requestParameters: SaveDisbandRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>>;
 
     /**
      * Save disband
      */
-    savedisband(disbandDTO: DisbandDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband>;
+    saveDisband(disbandDTO: DisbandDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband>;
 
     /**
      * 
@@ -185,12 +185,12 @@ export interface DisbandsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbandsApiInterface
      */
-    updateUserIdRaw(requestParameters: UpdateUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>>;
+    updateDisbandUserIdRaw(requestParameters: UpdateDisbandUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>>;
 
     /**
      * Update user ID
      */
-    updateUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse>;
+    updateDisbandUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse>;
 
 }
 
@@ -278,9 +278,9 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
     /**
      * Get disband by ID
      */
-    async getById6Raw(requestParameters: GetById6Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>> {
+    async getDisbandByIdRaw(requestParameters: GetDisbandByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById6.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDisbandById.');
         }
 
         const queryParameters: any = {};
@@ -308,17 +308,17 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
     /**
      * Get disband by ID
      */
-    async getById6(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband> {
-        const response = await this.getById6Raw({ id: id }, initOverrides);
+    async getDisbandById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband> {
+        const response = await this.getDisbandByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 
     /**
      * Get disbands by mac
      */
-    async getDisbandsByMacRaw(requestParameters: GetDisbandsByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Disband>>> {
+    async getDisbandByMacRaw(requestParameters: GetDisbandByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>> {
         if (requestParameters.mac === null || requestParameters.mac === undefined) {
-            throw new runtime.RequiredError('mac','Required parameter requestParameters.mac was null or undefined when calling getDisbandsByMac.');
+            throw new runtime.RequiredError('mac','Required parameter requestParameters.mac was null or undefined when calling getDisbandByMac.');
         }
 
         const queryParameters: any = {};
@@ -340,14 +340,14 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DisbandFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => DisbandFromJSON(jsonValue));
     }
 
     /**
      * Get disbands by mac
      */
-    async getDisbandsByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Disband>> {
-        const response = await this.getDisbandsByMacRaw({ mac: mac }, initOverrides);
+    async getDisbandByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband> {
+        const response = await this.getDisbandByMacRaw({ mac: mac }, initOverrides);
         return await response.value();
     }
 
@@ -392,9 +392,9 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
     /**
      * Save disband
      */
-    async savedisbandRaw(requestParameters: SavedisbandRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>> {
+    async saveDisbandRaw(requestParameters: SaveDisbandRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disband>> {
         if (requestParameters.disbandDTO === null || requestParameters.disbandDTO === undefined) {
-            throw new runtime.RequiredError('disbandDTO','Required parameter requestParameters.disbandDTO was null or undefined when calling savedisband.');
+            throw new runtime.RequiredError('disbandDTO','Required parameter requestParameters.disbandDTO was null or undefined when calling saveDisband.');
         }
 
         const queryParameters: any = {};
@@ -425,8 +425,8 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
     /**
      * Save disband
      */
-    async savedisband(disbandDTO: DisbandDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband> {
-        const response = await this.savedisbandRaw({ disbandDTO: disbandDTO }, initOverrides);
+    async saveDisband(disbandDTO: DisbandDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disband> {
+        const response = await this.saveDisbandRaw({ disbandDTO: disbandDTO }, initOverrides);
         return await response.value();
     }
 
@@ -478,13 +478,13 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
     /**
      * Update user ID
      */
-    async updateUserIdRaw(requestParameters: UpdateUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>> {
+    async updateDisbandUserIdRaw(requestParameters: UpdateDisbandUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateUserId.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateDisbandUserId.');
         }
 
         if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling updateUserId.');
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling updateDisbandUserId.');
         }
 
         const queryParameters: any = {};
@@ -512,8 +512,8 @@ export class DisbandsApi extends runtime.BaseAPI implements DisbandsApiInterface
     /**
      * Update user ID
      */
-    async updateUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse> {
-        const response = await this.updateUserIdRaw({ id: id, userId: userId }, initOverrides);
+    async updateDisbandUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse> {
+        const response = await this.updateDisbandUserIdRaw({ id: id, userId: userId }, initOverrides);
         return await response.value();
     }
 

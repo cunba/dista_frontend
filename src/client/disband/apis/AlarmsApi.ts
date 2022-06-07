@@ -34,6 +34,10 @@ export interface DeleteAlarmsByDisbandIdRequest {
     disbandId: string;
 }
 
+export interface GetAlarmByIdRequest {
+    id: string;
+}
+
 export interface GetAlarmsByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
@@ -42,10 +46,6 @@ export interface GetAlarmsByDateBetweenAndDisbandIdRequest {
 
 export interface GetAlarmsByDisbandIdRequest {
     disbandId: string;
-}
-
-export interface GetById8Request {
-    id: string;
 }
 
 export interface SaveAlarmRequest {
@@ -96,6 +96,21 @@ export interface AlarmsApiInterface {
 
     /**
      * 
+     * @summary Get alarm by ID
+     * @param {string} id Alarm ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AlarmsApiInterface
+     */
+    getAlarmByIdRaw(requestParameters: GetAlarmByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Alarm>>;
+
+    /**
+     * Get alarm by ID
+     */
+    getAlarmById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Alarm>;
+
+    /**
+     * 
      * @summary Get alarms by date between and disband ID
      * @param {number} minDate Min date
      * @param {number} maxDate Max date
@@ -125,21 +140,6 @@ export interface AlarmsApiInterface {
      * Get alarms by disband ID
      */
     getAlarmsByDisbandId(disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Alarm>>;
-
-    /**
-     * 
-     * @summary Get alarm by ID
-     * @param {string} id Alarm ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AlarmsApiInterface
-     */
-    getById8Raw(requestParameters: GetById8Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Alarm>>;
-
-    /**
-     * Get alarm by ID
-     */
-    getById8(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Alarm>;
 
     /**
      * 
@@ -256,6 +256,44 @@ export class AlarmsApi extends runtime.BaseAPI implements AlarmsApiInterface {
     }
 
     /**
+     * Get alarm by ID
+     */
+    async getAlarmByIdRaw(requestParameters: GetAlarmByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Alarm>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAlarmById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/alarms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AlarmFromJSON(jsonValue));
+    }
+
+    /**
+     * Get alarm by ID
+     */
+    async getAlarmById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Alarm> {
+        const response = await this.getAlarmByIdRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get alarms by date between and disband ID
      */
     async getAlarmsByDateBetweenAndDisbandIdRaw(requestParameters: GetAlarmsByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Alarm>>> {
@@ -344,44 +382,6 @@ export class AlarmsApi extends runtime.BaseAPI implements AlarmsApiInterface {
      */
     async getAlarmsByDisbandId(disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Alarm>> {
         const response = await this.getAlarmsByDisbandIdRaw({ disbandId: disbandId }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get alarm by ID
-     */
-    async getById8Raw(requestParameters: GetById8Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Alarm>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById8.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/alarms/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlarmFromJSON(jsonValue));
-    }
-
-    /**
-     * Get alarm by ID
-     */
-    async getById8(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Alarm> {
-        const response = await this.getById8Raw({ id: id }, initOverrides);
         return await response.value();
     }
 

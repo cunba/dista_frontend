@@ -30,14 +30,14 @@ export interface DeleteLightningsByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetById3Request {
-    id: string;
-}
-
-export interface GetLast1ByDisbandId3Request {
+export interface GetLast1LightningByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
     disbandId: string;
+}
+
+export interface GetLightningByIdRequest {
+    id: string;
 }
 
 export interface GetLightningsByDateBetweenRequest {
@@ -88,27 +88,12 @@ export interface LightningsApiInterface {
      * @throws {RequiredError}
      * @memberof LightningsApiInterface
      */
-    getAllLightningRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Lightning>>>;
+    getAllLightningaRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Lightning>>>;
 
     /**
      * Get all lightnings
      */
-    getAllLightning(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Lightning>>;
-
-    /**
-     * 
-     * @summary Get lightnint by ID
-     * @param {string} id Lightnint ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LightningsApiInterface
-     */
-    getById3Raw(requestParameters: GetById3Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>>;
-
-    /**
-     * Get lightnint by ID
-     */
-    getById3(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning>;
+    getAllLightninga(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Lightning>>;
 
     /**
      * 
@@ -120,12 +105,27 @@ export interface LightningsApiInterface {
      * @throws {RequiredError}
      * @memberof LightningsApiInterface
      */
-    getLast1ByDisbandId3Raw(requestParameters: GetLast1ByDisbandId3Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>>;
+    getLast1LightningByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1LightningByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>>;
 
     /**
      * Get last lightning by disband ID
      */
-    getLast1ByDisbandId3(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning>;
+    getLast1LightningByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning>;
+
+    /**
+     * 
+     * @summary Get lightnint by ID
+     * @param {string} id Lightnint ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LightningsApiInterface
+     */
+    getLightningByIdRaw(requestParameters: GetLightningByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>>;
+
+    /**
+     * Get lightnint by ID
+     */
+    getLightningById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning>;
 
     /**
      * 
@@ -238,7 +238,7 @@ export class LightningsApi extends runtime.BaseAPI implements LightningsApiInter
     /**
      * Get all lightnings
      */
-    async getAllLightningRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Lightning>>> {
+    async getAllLightningaRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Lightning>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,63 +264,25 @@ export class LightningsApi extends runtime.BaseAPI implements LightningsApiInter
     /**
      * Get all lightnings
      */
-    async getAllLightning(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Lightning>> {
-        const response = await this.getAllLightningRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get lightnint by ID
-     */
-    async getById3Raw(requestParameters: GetById3Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById3.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/lightnings/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => LightningFromJSON(jsonValue));
-    }
-
-    /**
-     * Get lightnint by ID
-     */
-    async getById3(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning> {
-        const response = await this.getById3Raw({ id: id }, initOverrides);
+    async getAllLightninga(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Lightning>> {
+        const response = await this.getAllLightningaRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get last lightning by disband ID
      */
-    async getLast1ByDisbandId3Raw(requestParameters: GetLast1ByDisbandId3Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>> {
+    async getLast1LightningByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1LightningByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbandId3.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1LightningByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbandId3.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1LightningByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.disbandId === null || requestParameters.disbandId === undefined) {
-            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1ByDisbandId3.');
+            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1LightningByDateBetweenAndDisbandId.');
         }
 
         const queryParameters: any = {};
@@ -356,8 +318,46 @@ export class LightningsApi extends runtime.BaseAPI implements LightningsApiInter
     /**
      * Get last lightning by disband ID
      */
-    async getLast1ByDisbandId3(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning> {
-        const response = await this.getLast1ByDisbandId3Raw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+    async getLast1LightningByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning> {
+        const response = await this.getLast1LightningByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get lightnint by ID
+     */
+    async getLightningByIdRaw(requestParameters: GetLightningByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Lightning>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getLightningById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/lightnings/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => LightningFromJSON(jsonValue));
+    }
+
+    /**
+     * Get lightnint by ID
+     */
+    async getLightningById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Lightning> {
+        const response = await this.getLightningByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 

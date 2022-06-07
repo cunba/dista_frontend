@@ -30,6 +30,10 @@ export interface DeleteAmbientNoisesByDisbandIdRequest {
     disbandId: string;
 }
 
+export interface GetAmbientNoiseByIdRequest {
+    id: string;
+}
+
 export interface GetAmbientNoisesByDateBetweenRequest {
     minDate: number;
     maxDate: number;
@@ -45,11 +49,7 @@ export interface GetAmbientNoisesByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetById7Request {
-    id: string;
-}
-
-export interface GetLast1ByDisbandId6Request {
+export interface GetLast1AmbientNoiseByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
     disbandId: string;
@@ -88,12 +88,27 @@ export interface AmbientNoisesApiInterface {
      * @throws {RequiredError}
      * @memberof AmbientNoisesApiInterface
      */
-    getAllAmbientNoiseRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AmbientNoise>>>;
+    getAllAmbientNoisesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AmbientNoise>>>;
 
     /**
      * Get all ambient noises
      */
-    getAllAmbientNoise(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AmbientNoise>>;
+    getAllAmbientNoises(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AmbientNoise>>;
+
+    /**
+     * 
+     * @summary Get ambient noise by ID
+     * @param {string} id Ambient noise ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AmbientNoisesApiInterface
+     */
+    getAmbientNoiseByIdRaw(requestParameters: GetAmbientNoiseByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>>;
+
+    /**
+     * Get ambient noise by ID
+     */
+    getAmbientNoiseById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise>;
 
     /**
      * 
@@ -145,21 +160,6 @@ export interface AmbientNoisesApiInterface {
 
     /**
      * 
-     * @summary Get ambient noise by ID
-     * @param {string} id Ambient noise ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AmbientNoisesApiInterface
-     */
-    getById7Raw(requestParameters: GetById7Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>>;
-
-    /**
-     * Get ambient noise by ID
-     */
-    getById7(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise>;
-
-    /**
-     * 
      * @summary Get last ambient noise by disband ID
      * @param {number} minDate Min date
      * @param {number} maxDate Max date
@@ -168,12 +168,12 @@ export interface AmbientNoisesApiInterface {
      * @throws {RequiredError}
      * @memberof AmbientNoisesApiInterface
      */
-    getLast1ByDisbandId6Raw(requestParameters: GetLast1ByDisbandId6Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>>;
+    getLast1AmbientNoiseByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1AmbientNoiseByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>>;
 
     /**
      * Get last ambient noise by disband ID
      */
-    getLast1ByDisbandId6(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise>;
+    getLast1AmbientNoiseByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise>;
 
     /**
      * 
@@ -238,7 +238,7 @@ export class AmbientNoisesApi extends runtime.BaseAPI implements AmbientNoisesAp
     /**
      * Get all ambient noises
      */
-    async getAllAmbientNoiseRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AmbientNoise>>> {
+    async getAllAmbientNoisesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AmbientNoise>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,8 +264,46 @@ export class AmbientNoisesApi extends runtime.BaseAPI implements AmbientNoisesAp
     /**
      * Get all ambient noises
      */
-    async getAllAmbientNoise(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AmbientNoise>> {
-        const response = await this.getAllAmbientNoiseRaw(initOverrides);
+    async getAllAmbientNoises(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AmbientNoise>> {
+        const response = await this.getAllAmbientNoisesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get ambient noise by ID
+     */
+    async getAmbientNoiseByIdRaw(requestParameters: GetAmbientNoiseByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAmbientNoiseById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/ambient-noises/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AmbientNoiseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get ambient noise by ID
+     */
+    async getAmbientNoiseById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise> {
+        const response = await this.getAmbientNoiseByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 
@@ -412,57 +450,19 @@ export class AmbientNoisesApi extends runtime.BaseAPI implements AmbientNoisesAp
     }
 
     /**
-     * Get ambient noise by ID
-     */
-    async getById7Raw(requestParameters: GetById7Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById7.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/ambient-noises/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => AmbientNoiseFromJSON(jsonValue));
-    }
-
-    /**
-     * Get ambient noise by ID
-     */
-    async getById7(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise> {
-        const response = await this.getById7Raw({ id: id }, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Get last ambient noise by disband ID
      */
-    async getLast1ByDisbandId6Raw(requestParameters: GetLast1ByDisbandId6Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>> {
+    async getLast1AmbientNoiseByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1AmbientNoiseByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<AmbientNoise>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbandId6.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1AmbientNoiseByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbandId6.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1AmbientNoiseByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.disbandId === null || requestParameters.disbandId === undefined) {
-            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1ByDisbandId6.');
+            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1AmbientNoiseByDateBetweenAndDisbandId.');
         }
 
         const queryParameters: any = {};
@@ -498,8 +498,8 @@ export class AmbientNoisesApi extends runtime.BaseAPI implements AmbientNoisesAp
     /**
      * Get last ambient noise by disband ID
      */
-    async getLast1ByDisbandId6(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise> {
-        const response = await this.getLast1ByDisbandId6Raw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+    async getLast1AmbientNoiseByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<AmbientNoise> {
+        const response = await this.getLast1AmbientNoiseByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }
 

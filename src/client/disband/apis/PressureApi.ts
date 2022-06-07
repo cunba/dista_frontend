@@ -30,14 +30,14 @@ export interface DeletePressuresByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetById1Request {
-    id: string;
-}
-
-export interface GetLast1ByDisbandId1Request {
+export interface GetLast1PressureByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
     disbandId: string;
+}
+
+export interface GetPressureByIdRequest {
+    id: string;
 }
 
 export interface GetPressuresByDateBetweenRequest {
@@ -88,27 +88,12 @@ export interface PressureApiInterface {
      * @throws {RequiredError}
      * @memberof PressureApiInterface
      */
-    getAllPressureRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Pressure>>>;
+    getAllPressuresRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Pressure>>>;
 
     /**
      * Get all pressures
      */
-    getAllPressure(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Pressure>>;
-
-    /**
-     * 
-     * @summary Get pressure by ID
-     * @param {string} id Pressure ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PressureApiInterface
-     */
-    getById1Raw(requestParameters: GetById1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>>;
-
-    /**
-     * Get pressure by ID
-     */
-    getById1(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure>;
+    getAllPressures(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Pressure>>;
 
     /**
      * 
@@ -120,12 +105,27 @@ export interface PressureApiInterface {
      * @throws {RequiredError}
      * @memberof PressureApiInterface
      */
-    getLast1ByDisbandId1Raw(requestParameters: GetLast1ByDisbandId1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>>;
+    getLast1PressureByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1PressureByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>>;
 
     /**
      * Get last pressure by disband ID
      */
-    getLast1ByDisbandId1(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure>;
+    getLast1PressureByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure>;
+
+    /**
+     * 
+     * @summary Get pressure by ID
+     * @param {string} id Pressure ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PressureApiInterface
+     */
+    getPressureByIdRaw(requestParameters: GetPressureByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>>;
+
+    /**
+     * Get pressure by ID
+     */
+    getPressureById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure>;
 
     /**
      * 
@@ -238,7 +238,7 @@ export class PressureApi extends runtime.BaseAPI implements PressureApiInterface
     /**
      * Get all pressures
      */
-    async getAllPressureRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Pressure>>> {
+    async getAllPressuresRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Pressure>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,63 +264,25 @@ export class PressureApi extends runtime.BaseAPI implements PressureApiInterface
     /**
      * Get all pressures
      */
-    async getAllPressure(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Pressure>> {
-        const response = await this.getAllPressureRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get pressure by ID
-     */
-    async getById1Raw(requestParameters: GetById1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById1.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/pressures/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PressureFromJSON(jsonValue));
-    }
-
-    /**
-     * Get pressure by ID
-     */
-    async getById1(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure> {
-        const response = await this.getById1Raw({ id: id }, initOverrides);
+    async getAllPressures(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Pressure>> {
+        const response = await this.getAllPressuresRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get last pressure by disband ID
      */
-    async getLast1ByDisbandId1Raw(requestParameters: GetLast1ByDisbandId1Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>> {
+    async getLast1PressureByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1PressureByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbandId1.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1PressureByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbandId1.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1PressureByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.disbandId === null || requestParameters.disbandId === undefined) {
-            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1ByDisbandId1.');
+            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1PressureByDateBetweenAndDisbandId.');
         }
 
         const queryParameters: any = {};
@@ -356,8 +318,46 @@ export class PressureApi extends runtime.BaseAPI implements PressureApiInterface
     /**
      * Get last pressure by disband ID
      */
-    async getLast1ByDisbandId1(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure> {
-        const response = await this.getLast1ByDisbandId1Raw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+    async getLast1PressureByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure> {
+        const response = await this.getLast1PressureByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get pressure by ID
+     */
+    async getPressureByIdRaw(requestParameters: GetPressureByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Pressure>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getPressureById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/pressures/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PressureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get pressure by ID
+     */
+    async getPressureById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Pressure> {
+        const response = await this.getPressureByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 

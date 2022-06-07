@@ -30,14 +30,14 @@ export interface DeleteTemperaturesByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetByIdRequest {
-    id: string;
-}
-
-export interface GetLast1ByDisbandIdRequest {
+export interface GetLast1TemperatureByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
     disbandId: string;
+}
+
+export interface GetTemperatureByIdRequest {
+    id: string;
 }
 
 export interface GetTemperaturesByDateBetweenRequest {
@@ -88,27 +88,12 @@ export interface TemperaturesApiInterface {
      * @throws {RequiredError}
      * @memberof TemperaturesApiInterface
      */
-    getAllTemperatureRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Temperature>>>;
+    getAllTemperaturesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Temperature>>>;
 
     /**
      * Get all temperatures
      */
-    getAllTemperature(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Temperature>>;
-
-    /**
-     * 
-     * @summary Get temperature by ID
-     * @param {string} id Temperature ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof TemperaturesApiInterface
-     */
-    getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>>;
-
-    /**
-     * Get temperature by ID
-     */
-    getById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature>;
+    getAllTemperatures(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Temperature>>;
 
     /**
      * 
@@ -120,12 +105,27 @@ export interface TemperaturesApiInterface {
      * @throws {RequiredError}
      * @memberof TemperaturesApiInterface
      */
-    getLast1ByDisbandIdRaw(requestParameters: GetLast1ByDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>>;
+    getLast1TemperatureByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1TemperatureByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>>;
 
     /**
      * Get last temperature by disband ID
      */
-    getLast1ByDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature>;
+    getLast1TemperatureByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature>;
+
+    /**
+     * 
+     * @summary Get temperature by ID
+     * @param {string} id Temperature ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemperaturesApiInterface
+     */
+    getTemperatureByIdRaw(requestParameters: GetTemperatureByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>>;
+
+    /**
+     * Get temperature by ID
+     */
+    getTemperatureById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature>;
 
     /**
      * 
@@ -238,7 +238,7 @@ export class TemperaturesApi extends runtime.BaseAPI implements TemperaturesApiI
     /**
      * Get all temperatures
      */
-    async getAllTemperatureRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Temperature>>> {
+    async getAllTemperaturesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Temperature>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,63 +264,25 @@ export class TemperaturesApi extends runtime.BaseAPI implements TemperaturesApiI
     /**
      * Get all temperatures
      */
-    async getAllTemperature(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Temperature>> {
-        const response = await this.getAllTemperatureRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get temperature by ID
-     */
-    async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/temperatures/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TemperatureFromJSON(jsonValue));
-    }
-
-    /**
-     * Get temperature by ID
-     */
-    async getById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature> {
-        const response = await this.getByIdRaw({ id: id }, initOverrides);
+    async getAllTemperatures(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Temperature>> {
+        const response = await this.getAllTemperaturesRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get last temperature by disband ID
      */
-    async getLast1ByDisbandIdRaw(requestParameters: GetLast1ByDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>> {
+    async getLast1TemperatureByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1TemperatureByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbandId.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1TemperatureByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbandId.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1TemperatureByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.disbandId === null || requestParameters.disbandId === undefined) {
-            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1ByDisbandId.');
+            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1TemperatureByDateBetweenAndDisbandId.');
         }
 
         const queryParameters: any = {};
@@ -356,8 +318,46 @@ export class TemperaturesApi extends runtime.BaseAPI implements TemperaturesApiI
     /**
      * Get last temperature by disband ID
      */
-    async getLast1ByDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature> {
-        const response = await this.getLast1ByDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+    async getLast1TemperatureByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature> {
+        const response = await this.getLast1TemperatureByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get temperature by ID
+     */
+    async getTemperatureByIdRaw(requestParameters: GetTemperatureByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Temperature>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getTemperatureById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/temperatures/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TemperatureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get temperature by ID
+     */
+    async getTemperatureById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Temperature> {
+        const response = await this.getTemperatureByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 

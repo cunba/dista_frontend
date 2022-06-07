@@ -26,32 +26,32 @@ import {
     LocationDTOToJSON,
 } from '../models';
 
-export interface DeleteByDisbeacIdRequest {
-    disbeacId: string;
-}
-
 export interface DeleteLocationRequest {
     id: string;
 }
 
-export interface GetLast1ByDisbeacIdRequest {
-    minDate: number;
-    maxDate: number;
+export interface DeleteLocationsByDisbeacIdRequest {
     disbeacId: string;
 }
 
-export interface GetLocationByDateBetweenAndDisbeacIdRequest {
+export interface GetLast1LocationByDateBetweenAndDisbeacIdRequest {
     minDate: number;
     maxDate: number;
-    disbeacId: string;
-}
-
-export interface GetLocationByDisbeacIdRequest {
     disbeacId: string;
 }
 
 export interface GetLocationByIdRequest {
     id: string;
+}
+
+export interface GetLocationsByDateBetweenAndDisbeacIdRequest {
+    minDate: number;
+    maxDate: number;
+    disbeacId: string;
+}
+
+export interface GetLocationsByDisbeacIdRequest {
+    disbeacId: string;
 }
 
 export interface SaveLocationRequest {
@@ -65,21 +65,6 @@ export interface SaveLocationRequest {
  * @interface LocationsApiInterface
  */
 export interface LocationsApiInterface {
-    /**
-     * 
-     * @summary Delete all locations by disbeac ID
-     * @param {string} disbeacId Disbeac ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LocationsApiInterface
-     */
-    deleteByDisbeacIdRaw(requestParameters: DeleteByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
-
-    /**
-     * Delete all locations by disbeac ID
-     */
-    deleteByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
-
     /**
      * 
      * @summary Delete location by id
@@ -97,17 +82,32 @@ export interface LocationsApiInterface {
 
     /**
      * 
+     * @summary Delete all locations by disbeac ID
+     * @param {string} disbeacId Disbeac ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LocationsApiInterface
+     */
+    deleteLocationsByDisbeacIdRaw(requestParameters: DeleteLocationsByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
+
+    /**
+     * Delete all locations by disbeac ID
+     */
+    deleteLocationsByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
+
+    /**
+     * 
      * @summary Get all locations
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LocationsApiInterface
      */
-    getAllLocationRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
+    getAllLocationsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
 
     /**
      * Get all locations
      */
-    getAllLocation(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
+    getAllLocations(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
 
     /**
      * 
@@ -119,44 +119,12 @@ export interface LocationsApiInterface {
      * @throws {RequiredError}
      * @memberof LocationsApiInterface
      */
-    getLast1ByDisbeacIdRaw(requestParameters: GetLast1ByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Location>>;
+    getLast1LocationByDateBetweenAndDisbeacIdRaw(requestParameters: GetLast1LocationByDateBetweenAndDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Location>>;
 
     /**
      * Get last location by disbeac ID
      */
-    getLast1ByDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Location>;
-
-    /**
-     * 
-     * @summary Get location by date between and disbeac ID
-     * @param {number} minDate Min date
-     * @param {number} maxDate Max date
-     * @param {string} disbeacId Disbeac ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LocationsApiInterface
-     */
-    getLocationByDateBetweenAndDisbeacIdRaw(requestParameters: GetLocationByDateBetweenAndDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
-
-    /**
-     * Get location by date between and disbeac ID
-     */
-    getLocationByDateBetweenAndDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
-
-    /**
-     * 
-     * @summary Get location by disbeac ID
-     * @param {string} disbeacId Disbeac ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LocationsApiInterface
-     */
-    getLocationByDisbeacIdRaw(requestParameters: GetLocationByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
-
-    /**
-     * Get location by disbeac ID
-     */
-    getLocationByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
+    getLast1LocationByDateBetweenAndDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Location>;
 
     /**
      * 
@@ -172,6 +140,38 @@ export interface LocationsApiInterface {
      * Get location by ID
      */
     getLocationById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Location>;
+
+    /**
+     * 
+     * @summary Get location by date between and disbeac ID
+     * @param {number} minDate Min date
+     * @param {number} maxDate Max date
+     * @param {string} disbeacId Disbeac ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LocationsApiInterface
+     */
+    getLocationsByDateBetweenAndDisbeacIdRaw(requestParameters: GetLocationsByDateBetweenAndDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
+
+    /**
+     * Get location by date between and disbeac ID
+     */
+    getLocationsByDateBetweenAndDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
+
+    /**
+     * 
+     * @summary Get location by disbeac ID
+     * @param {string} disbeacId Disbeac ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LocationsApiInterface
+     */
+    getLocationsByDisbeacIdRaw(requestParameters: GetLocationsByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>>;
+
+    /**
+     * Get location by disbeac ID
+     */
+    getLocationsByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>>;
 
     /**
      * 
@@ -194,44 +194,6 @@ export interface LocationsApiInterface {
  * 
  */
 export class LocationsApi extends runtime.BaseAPI implements LocationsApiInterface {
-
-    /**
-     * Delete all locations by disbeac ID
-     */
-    async deleteByDisbeacIdRaw(requestParameters: DeleteByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
-        if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
-            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling deleteByDisbeacId.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/locations/disbeac/{disbeacId}`.replace(`{${"disbeacId"}}`, encodeURIComponent(String(requestParameters.disbeacId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LocationFromJSON));
-    }
-
-    /**
-     * Delete all locations by disbeac ID
-     */
-    async deleteByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
-        const response = await this.deleteByDisbeacIdRaw({ disbeacId: disbeacId }, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Delete location by id
@@ -272,9 +234,47 @@ export class LocationsApi extends runtime.BaseAPI implements LocationsApiInterfa
     }
 
     /**
+     * Delete all locations by disbeac ID
+     */
+    async deleteLocationsByDisbeacIdRaw(requestParameters: DeleteLocationsByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
+        if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
+            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling deleteLocationsByDisbeacId.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/locations/disbeac/{disbeacId}`.replace(`{${"disbeacId"}}`, encodeURIComponent(String(requestParameters.disbeacId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LocationFromJSON));
+    }
+
+    /**
+     * Delete all locations by disbeac ID
+     */
+    async deleteLocationsByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
+        const response = await this.deleteLocationsByDisbeacIdRaw({ disbeacId: disbeacId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get all locations
      */
-    async getAllLocationRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
+    async getAllLocationsRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -300,25 +300,25 @@ export class LocationsApi extends runtime.BaseAPI implements LocationsApiInterfa
     /**
      * Get all locations
      */
-    async getAllLocation(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
-        const response = await this.getAllLocationRaw(initOverrides);
+    async getAllLocations(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
+        const response = await this.getAllLocationsRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get last location by disbeac ID
      */
-    async getLast1ByDisbeacIdRaw(requestParameters: GetLast1ByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Location>> {
+    async getLast1LocationByDateBetweenAndDisbeacIdRaw(requestParameters: GetLast1LocationByDateBetweenAndDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Location>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbeacId.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1LocationByDateBetweenAndDisbeacId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbeacId.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1LocationByDateBetweenAndDisbeacId.');
         }
 
         if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
-            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling getLast1ByDisbeacId.');
+            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling getLast1LocationByDateBetweenAndDisbeacId.');
         }
 
         const queryParameters: any = {};
@@ -354,100 +354,8 @@ export class LocationsApi extends runtime.BaseAPI implements LocationsApiInterfa
     /**
      * Get last location by disbeac ID
      */
-    async getLast1ByDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Location> {
-        const response = await this.getLast1ByDisbeacIdRaw({ minDate: minDate, maxDate: maxDate, disbeacId: disbeacId }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get location by date between and disbeac ID
-     */
-    async getLocationByDateBetweenAndDisbeacIdRaw(requestParameters: GetLocationByDateBetweenAndDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
-        if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLocationByDateBetweenAndDisbeacId.');
-        }
-
-        if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLocationByDateBetweenAndDisbeacId.');
-        }
-
-        if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
-            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling getLocationByDateBetweenAndDisbeacId.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['min date'] = requestParameters.minDate;
-        }
-
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['max date'] = requestParameters.maxDate;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/locations/date/between/disbeacId/{disbeacId}`.replace(`{${"disbeacId"}}`, encodeURIComponent(String(requestParameters.disbeacId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LocationFromJSON));
-    }
-
-    /**
-     * Get location by date between and disbeac ID
-     */
-    async getLocationByDateBetweenAndDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
-        const response = await this.getLocationByDateBetweenAndDisbeacIdRaw({ minDate: minDate, maxDate: maxDate, disbeacId: disbeacId }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get location by disbeac ID
-     */
-    async getLocationByDisbeacIdRaw(requestParameters: GetLocationByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
-        if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
-            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling getLocationByDisbeacId.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/locations/disbeacId/{disbeacId}`.replace(`{${"disbeacId"}}`, encodeURIComponent(String(requestParameters.disbeacId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LocationFromJSON));
-    }
-
-    /**
-     * Get location by disbeac ID
-     */
-    async getLocationByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
-        const response = await this.getLocationByDisbeacIdRaw({ disbeacId: disbeacId }, initOverrides);
+    async getLast1LocationByDateBetweenAndDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Location> {
+        const response = await this.getLast1LocationByDateBetweenAndDisbeacIdRaw({ minDate: minDate, maxDate: maxDate, disbeacId: disbeacId }, initOverrides);
         return await response.value();
     }
 
@@ -486,6 +394,98 @@ export class LocationsApi extends runtime.BaseAPI implements LocationsApiInterfa
      */
     async getLocationById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Location> {
         const response = await this.getLocationByIdRaw({ id: id }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get location by date between and disbeac ID
+     */
+    async getLocationsByDateBetweenAndDisbeacIdRaw(requestParameters: GetLocationsByDateBetweenAndDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
+        if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLocationsByDateBetweenAndDisbeacId.');
+        }
+
+        if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLocationsByDateBetweenAndDisbeacId.');
+        }
+
+        if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
+            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling getLocationsByDateBetweenAndDisbeacId.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.minDate !== undefined) {
+            queryParameters['min date'] = requestParameters.minDate;
+        }
+
+        if (requestParameters.maxDate !== undefined) {
+            queryParameters['max date'] = requestParameters.maxDate;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/locations/date/between/disbeacId/{disbeacId}`.replace(`{${"disbeacId"}}`, encodeURIComponent(String(requestParameters.disbeacId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LocationFromJSON));
+    }
+
+    /**
+     * Get location by date between and disbeac ID
+     */
+    async getLocationsByDateBetweenAndDisbeacId(minDate: number, maxDate: number, disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
+        const response = await this.getLocationsByDateBetweenAndDisbeacIdRaw({ minDate: minDate, maxDate: maxDate, disbeacId: disbeacId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get location by disbeac ID
+     */
+    async getLocationsByDisbeacIdRaw(requestParameters: GetLocationsByDisbeacIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Location>>> {
+        if (requestParameters.disbeacId === null || requestParameters.disbeacId === undefined) {
+            throw new runtime.RequiredError('disbeacId','Required parameter requestParameters.disbeacId was null or undefined when calling getLocationsByDisbeacId.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/locations/disbeacId/{disbeacId}`.replace(`{${"disbeacId"}}`, encodeURIComponent(String(requestParameters.disbeacId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LocationFromJSON));
+    }
+
+    /**
+     * Get location by disbeac ID
+     */
+    async getLocationsByDisbeacId(disbeacId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Location>> {
+        const response = await this.getLocationsByDisbeacIdRaw({ disbeacId: disbeacId }, initOverrides);
         return await response.value();
     }
 

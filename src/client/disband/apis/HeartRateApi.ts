@@ -30,7 +30,7 @@ export interface DeleteHeartRatesByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetById5Request {
+export interface GetHeartRateByIdRequest {
     id: string;
 }
 
@@ -49,7 +49,7 @@ export interface GetHeartRatesByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetLast1ByDisbandId5Request {
+export interface GetLast1HeartRateByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
     disbandId: string;
@@ -88,12 +88,12 @@ export interface HeartRateApiInterface {
      * @throws {RequiredError}
      * @memberof HeartRateApiInterface
      */
-    getAllHeartRateRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<HeartRate>>>;
+    getAllHeartRatesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<HeartRate>>>;
 
     /**
      * Get all heart rates
      */
-    getAllHeartRate(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<HeartRate>>;
+    getAllHeartRates(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<HeartRate>>;
 
     /**
      * 
@@ -103,12 +103,12 @@ export interface HeartRateApiInterface {
      * @throws {RequiredError}
      * @memberof HeartRateApiInterface
      */
-    getById5Raw(requestParameters: GetById5Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>>;
+    getHeartRateByIdRaw(requestParameters: GetHeartRateByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>>;
 
     /**
      * Get heart rate by ID
      */
-    getById5(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate>;
+    getHeartRateById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate>;
 
     /**
      * 
@@ -168,12 +168,12 @@ export interface HeartRateApiInterface {
      * @throws {RequiredError}
      * @memberof HeartRateApiInterface
      */
-    getLast1ByDisbandId5Raw(requestParameters: GetLast1ByDisbandId5Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>>;
+    getLast1HeartRateByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1HeartRateByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>>;
 
     /**
      * Get last heart rate by disband ID
      */
-    getLast1ByDisbandId5(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate>;
+    getLast1HeartRateByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate>;
 
     /**
      * 
@@ -238,7 +238,7 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
     /**
      * Get all heart rates
      */
-    async getAllHeartRateRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<HeartRate>>> {
+    async getAllHeartRatesRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<HeartRate>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,17 +264,17 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
     /**
      * Get all heart rates
      */
-    async getAllHeartRate(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<HeartRate>> {
-        const response = await this.getAllHeartRateRaw(initOverrides);
+    async getAllHeartRates(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<HeartRate>> {
+        const response = await this.getAllHeartRatesRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get heart rate by ID
      */
-    async getById5Raw(requestParameters: GetById5Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>> {
+    async getHeartRateByIdRaw(requestParameters: GetHeartRateByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById5.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getHeartRateById.');
         }
 
         const queryParameters: any = {};
@@ -302,8 +302,8 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
     /**
      * Get heart rate by ID
      */
-    async getById5(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate> {
-        const response = await this.getById5Raw({ id: id }, initOverrides);
+    async getHeartRateById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate> {
+        const response = await this.getHeartRateByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 
@@ -452,17 +452,17 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
     /**
      * Get last heart rate by disband ID
      */
-    async getLast1ByDisbandId5Raw(requestParameters: GetLast1ByDisbandId5Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>> {
+    async getLast1HeartRateByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1HeartRateByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HeartRate>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbandId5.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1HeartRateByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbandId5.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1HeartRateByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.disbandId === null || requestParameters.disbandId === undefined) {
-            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1ByDisbandId5.');
+            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1HeartRateByDateBetweenAndDisbandId.');
         }
 
         const queryParameters: any = {};
@@ -498,8 +498,8 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
     /**
      * Get last heart rate by disband ID
      */
-    async getLast1ByDisbandId5(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate> {
-        const response = await this.getLast1ByDisbandId5Raw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+    async getLast1HeartRateByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HeartRate> {
+        const response = await this.getLast1HeartRateByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }
 

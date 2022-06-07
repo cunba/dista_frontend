@@ -30,14 +30,14 @@ export interface DeleteOxygensByDisbandIdRequest {
     disbandId: string;
 }
 
-export interface GetById2Request {
-    id: string;
-}
-
-export interface GetLast1ByDisbandId2Request {
+export interface GetLast1OxygenByDateBetweenAndDisbandIdRequest {
     minDate: number;
     maxDate: number;
     disbandId: string;
+}
+
+export interface GetOxygenByIdRequest {
+    id: string;
 }
 
 export interface GetOxygensByDateBetweenRequest {
@@ -88,27 +88,12 @@ export interface OxygenApiInterface {
      * @throws {RequiredError}
      * @memberof OxygenApiInterface
      */
-    getAllOxygenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Oxygen>>>;
+    getAllOxygensRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Oxygen>>>;
 
     /**
      * Get all oxygens
      */
-    getAllOxygen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Oxygen>>;
-
-    /**
-     * 
-     * @summary Get oxygen by ID
-     * @param {string} id Oxygen ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OxygenApiInterface
-     */
-    getById2Raw(requestParameters: GetById2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>>;
-
-    /**
-     * Get oxygen by ID
-     */
-    getById2(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen>;
+    getAllOxygens(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Oxygen>>;
 
     /**
      * 
@@ -120,12 +105,27 @@ export interface OxygenApiInterface {
      * @throws {RequiredError}
      * @memberof OxygenApiInterface
      */
-    getLast1ByDisbandId2Raw(requestParameters: GetLast1ByDisbandId2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>>;
+    getLast1OxygenByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1OxygenByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>>;
 
     /**
      * Get last oxygen by disband ID
      */
-    getLast1ByDisbandId2(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen>;
+    getLast1OxygenByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen>;
+
+    /**
+     * 
+     * @summary Get oxygen by ID
+     * @param {string} id Oxygen ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OxygenApiInterface
+     */
+    getOxygenByIdRaw(requestParameters: GetOxygenByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>>;
+
+    /**
+     * Get oxygen by ID
+     */
+    getOxygenById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen>;
 
     /**
      * 
@@ -238,7 +238,7 @@ export class OxygenApi extends runtime.BaseAPI implements OxygenApiInterface {
     /**
      * Get all oxygens
      */
-    async getAllOxygenRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Oxygen>>> {
+    async getAllOxygensRaw(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Oxygen>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,63 +264,25 @@ export class OxygenApi extends runtime.BaseAPI implements OxygenApiInterface {
     /**
      * Get all oxygens
      */
-    async getAllOxygen(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Oxygen>> {
-        const response = await this.getAllOxygenRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get oxygen by ID
-     */
-    async getById2Raw(requestParameters: GetById2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById2.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/oxygens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => OxygenFromJSON(jsonValue));
-    }
-
-    /**
-     * Get oxygen by ID
-     */
-    async getById2(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen> {
-        const response = await this.getById2Raw({ id: id }, initOverrides);
+    async getAllOxygens(initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Oxygen>> {
+        const response = await this.getAllOxygensRaw(initOverrides);
         return await response.value();
     }
 
     /**
      * Get last oxygen by disband ID
      */
-    async getLast1ByDisbandId2Raw(requestParameters: GetLast1ByDisbandId2Request, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>> {
+    async getLast1OxygenByDateBetweenAndDisbandIdRaw(requestParameters: GetLast1OxygenByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1ByDisbandId2.');
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getLast1OxygenByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1ByDisbandId2.');
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getLast1OxygenByDateBetweenAndDisbandId.');
         }
 
         if (requestParameters.disbandId === null || requestParameters.disbandId === undefined) {
-            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1ByDisbandId2.');
+            throw new runtime.RequiredError('disbandId','Required parameter requestParameters.disbandId was null or undefined when calling getLast1OxygenByDateBetweenAndDisbandId.');
         }
 
         const queryParameters: any = {};
@@ -356,8 +318,46 @@ export class OxygenApi extends runtime.BaseAPI implements OxygenApiInterface {
     /**
      * Get last oxygen by disband ID
      */
-    async getLast1ByDisbandId2(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen> {
-        const response = await this.getLast1ByDisbandId2Raw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+    async getLast1OxygenByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen> {
+        const response = await this.getLast1OxygenByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get oxygen by ID
+     */
+    async getOxygenByIdRaw(requestParameters: GetOxygenByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Oxygen>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getOxygenById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/oxygens/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OxygenFromJSON(jsonValue));
+    }
+
+    /**
+     * Get oxygen by ID
+     */
+    async getOxygenById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Oxygen> {
+        const response = await this.getOxygenByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 

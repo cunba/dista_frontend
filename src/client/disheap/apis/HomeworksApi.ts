@@ -38,6 +38,13 @@ export interface GetHomeworkByIdRequest {
     id: string;
 }
 
+export interface GetHomeworksByDeadlineBetweenAndSubjectIdAndUserIdRequest {
+    minDate: number;
+    maxDate: number;
+    subjectId: string;
+    userId: string;
+}
+
 export interface GetHomeworksByDeadlineBetweenAndUserIdRequest {
     minDate: number;
     maxDate: number;
@@ -45,13 +52,6 @@ export interface GetHomeworksByDeadlineBetweenAndUserIdRequest {
 }
 
 export interface GetHomeworksByUserIdRequest {
-    userId: string;
-}
-
-export interface HomeworksByDeadlineBetweenAndSubjectIdAndUserIdRequest {
-    minDate: number;
-    maxDate: number;
-    subjectId: string;
     userId: string;
 }
 
@@ -118,6 +118,24 @@ export interface HomeworksApiInterface {
 
     /**
      * 
+     * @summary Get homeworks by deadline between and subject ID and user ID
+     * @param {number} minDate Min date
+     * @param {number} maxDate Max date
+     * @param {string} subjectId Subject ID
+     * @param {string} userId User ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof HomeworksApiInterface
+     */
+    getHomeworksByDeadlineBetweenAndSubjectIdAndUserIdRaw(requestParameters: GetHomeworksByDeadlineBetweenAndSubjectIdAndUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Homework>>>;
+
+    /**
+     * Get homeworks by deadline between and subject ID and user ID
+     */
+    getHomeworksByDeadlineBetweenAndSubjectIdAndUserId(minDate: number, maxDate: number, subjectId: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Homework>>;
+
+    /**
+     * 
      * @summary Get homeworks by deadline between and user ID
      * @param {number} minDate Min date
      * @param {number} maxDate Max date
@@ -147,24 +165,6 @@ export interface HomeworksApiInterface {
      * Get homeworks by user ID
      */
     getHomeworksByUserId(userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Homework>>;
-
-    /**
-     * 
-     * @summary Get homeworks by deadline between and subject ID and user ID
-     * @param {number} minDate Min date
-     * @param {number} maxDate Max date
-     * @param {string} subjectId Subject ID
-     * @param {string} userId User ID
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof HomeworksApiInterface
-     */
-    homeworksByDeadlineBetweenAndSubjectIdAndUserIdRaw(requestParameters: HomeworksByDeadlineBetweenAndSubjectIdAndUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Homework>>>;
-
-    /**
-     * Get homeworks by deadline between and subject ID and user ID
-     */
-    homeworksByDeadlineBetweenAndSubjectIdAndUserId(minDate: number, maxDate: number, subjectId: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Homework>>;
 
     /**
      * 
@@ -319,6 +319,64 @@ export class HomeworksApi extends runtime.BaseAPI implements HomeworksApiInterfa
     }
 
     /**
+     * Get homeworks by deadline between and subject ID and user ID
+     */
+    async getHomeworksByDeadlineBetweenAndSubjectIdAndUserIdRaw(requestParameters: GetHomeworksByDeadlineBetweenAndSubjectIdAndUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Homework>>> {
+        if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
+            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getHomeworksByDeadlineBetweenAndSubjectIdAndUserId.');
+        }
+
+        if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
+            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling getHomeworksByDeadlineBetweenAndSubjectIdAndUserId.');
+        }
+
+        if (requestParameters.subjectId === null || requestParameters.subjectId === undefined) {
+            throw new runtime.RequiredError('subjectId','Required parameter requestParameters.subjectId was null or undefined when calling getHomeworksByDeadlineBetweenAndSubjectIdAndUserId.');
+        }
+
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling getHomeworksByDeadlineBetweenAndSubjectIdAndUserId.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.minDate !== undefined) {
+            queryParameters['min date'] = requestParameters.minDate;
+        }
+
+        if (requestParameters.maxDate !== undefined) {
+            queryParameters['max date'] = requestParameters.maxDate;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/homeworks/deadline/between/subjects/{subjectId}/users/{userId}`.replace(`{${"subjectId"}}`, encodeURIComponent(String(requestParameters.subjectId))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(HomeworkFromJSON));
+    }
+
+    /**
+     * Get homeworks by deadline between and subject ID and user ID
+     */
+    async getHomeworksByDeadlineBetweenAndSubjectIdAndUserId(minDate: number, maxDate: number, subjectId: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Homework>> {
+        const response = await this.getHomeworksByDeadlineBetweenAndSubjectIdAndUserIdRaw({ minDate: minDate, maxDate: maxDate, subjectId: subjectId, userId: userId }, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get homeworks by deadline between and user ID
      */
     async getHomeworksByDeadlineBetweenAndUserIdRaw(requestParameters: GetHomeworksByDeadlineBetweenAndUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Homework>>> {
@@ -407,64 +465,6 @@ export class HomeworksApi extends runtime.BaseAPI implements HomeworksApiInterfa
      */
     async getHomeworksByUserId(userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Homework>> {
         const response = await this.getHomeworksByUserIdRaw({ userId: userId }, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get homeworks by deadline between and subject ID and user ID
-     */
-    async homeworksByDeadlineBetweenAndSubjectIdAndUserIdRaw(requestParameters: HomeworksByDeadlineBetweenAndSubjectIdAndUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Homework>>> {
-        if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
-            throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling homeworksByDeadlineBetweenAndSubjectIdAndUserId.');
-        }
-
-        if (requestParameters.maxDate === null || requestParameters.maxDate === undefined) {
-            throw new runtime.RequiredError('maxDate','Required parameter requestParameters.maxDate was null or undefined when calling homeworksByDeadlineBetweenAndSubjectIdAndUserId.');
-        }
-
-        if (requestParameters.subjectId === null || requestParameters.subjectId === undefined) {
-            throw new runtime.RequiredError('subjectId','Required parameter requestParameters.subjectId was null or undefined when calling homeworksByDeadlineBetweenAndSubjectIdAndUserId.');
-        }
-
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling homeworksByDeadlineBetweenAndSubjectIdAndUserId.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['min date'] = requestParameters.minDate;
-        }
-
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['max date'] = requestParameters.maxDate;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/homeworks/deadline/between/subjects/{subjectId}/users/{userId}`.replace(`{${"subjectId"}}`, encodeURIComponent(String(requestParameters.subjectId))).replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(HomeworkFromJSON));
-    }
-
-    /**
-     * Get homeworks by deadline between and subject ID and user ID
-     */
-    async homeworksByDeadlineBetweenAndSubjectIdAndUserId(minDate: number, maxDate: number, subjectId: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Homework>> {
-        const response = await this.homeworksByDeadlineBetweenAndSubjectIdAndUserIdRaw({ minDate: minDate, maxDate: maxDate, subjectId: subjectId, userId: userId }, initOverrides);
         return await response.value();
     }
 

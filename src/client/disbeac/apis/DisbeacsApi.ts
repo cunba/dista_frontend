@@ -37,11 +37,11 @@ export interface DeleteDisbeacsByUserIdRequest {
     userId: string;
 }
 
-export interface GetByIdRequest {
+export interface GetDisbeacByIdRequest {
     id: string;
 }
 
-export interface GetDisbeacsByMacRequest {
+export interface GetDisbeacByMacRequest {
     mac: string;
 }
 
@@ -49,7 +49,7 @@ export interface GetDisbeacsByUserIdRequest {
     userId: string;
 }
 
-export interface SavedisbeacRequest {
+export interface SaveDisbeacRequest {
     disbeacDTO: DisbeacDTO;
 }
 
@@ -58,7 +58,7 @@ export interface UpdateDisbeacRequest {
     disbeacDTO: DisbeacDTO;
 }
 
-export interface UpdateUserIdRequest {
+export interface UpdateDisbeacUserIdRequest {
     id: string;
     userId: string;
 }
@@ -108,12 +108,12 @@ export interface DisbeacsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbeacsApiInterface
      */
-    getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>>;
+    getDisbeacByIdRaw(requestParameters: GetDisbeacByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>>;
 
     /**
      * Get disbeac by ID
      */
-    getById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac>;
+    getDisbeacById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac>;
 
     /**
      * 
@@ -123,12 +123,12 @@ export interface DisbeacsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbeacsApiInterface
      */
-    getDisbeacsByMacRaw(requestParameters: GetDisbeacsByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Disbeac>>>;
+    getDisbeacByMacRaw(requestParameters: GetDisbeacByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>>;
 
     /**
      * Get disbeac by mac
      */
-    getDisbeacsByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Disbeac>>;
+    getDisbeacByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac>;
 
     /**
      * 
@@ -153,12 +153,12 @@ export interface DisbeacsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbeacsApiInterface
      */
-    savedisbeacRaw(requestParameters: SavedisbeacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>>;
+    saveDisbeacRaw(requestParameters: SaveDisbeacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>>;
 
     /**
      * Save disbeac
      */
-    savedisbeac(disbeacDTO: DisbeacDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac>;
+    saveDisbeac(disbeacDTO: DisbeacDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac>;
 
     /**
      * 
@@ -185,12 +185,12 @@ export interface DisbeacsApiInterface {
      * @throws {RequiredError}
      * @memberof DisbeacsApiInterface
      */
-    updateUserIdRaw(requestParameters: UpdateUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>>;
+    updateDisbeacUserIdRaw(requestParameters: UpdateDisbeacUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>>;
 
     /**
      * Update user ID
      */
-    updateUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse>;
+    updateDisbeacUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse>;
 
 }
 
@@ -278,9 +278,9 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
     /**
      * Get disbeac by ID
      */
-    async getByIdRaw(requestParameters: GetByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>> {
+    async getDisbeacByIdRaw(requestParameters: GetDisbeacByIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getById.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDisbeacById.');
         }
 
         const queryParameters: any = {};
@@ -308,17 +308,17 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
     /**
      * Get disbeac by ID
      */
-    async getById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac> {
-        const response = await this.getByIdRaw({ id: id }, initOverrides);
+    async getDisbeacById(id: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac> {
+        const response = await this.getDisbeacByIdRaw({ id: id }, initOverrides);
         return await response.value();
     }
 
     /**
      * Get disbeac by mac
      */
-    async getDisbeacsByMacRaw(requestParameters: GetDisbeacsByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Disbeac>>> {
+    async getDisbeacByMacRaw(requestParameters: GetDisbeacByMacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>> {
         if (requestParameters.mac === null || requestParameters.mac === undefined) {
-            throw new runtime.RequiredError('mac','Required parameter requestParameters.mac was null or undefined when calling getDisbeacsByMac.');
+            throw new runtime.RequiredError('mac','Required parameter requestParameters.mac was null or undefined when calling getDisbeacByMac.');
         }
 
         const queryParameters: any = {};
@@ -340,14 +340,14 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DisbeacFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => DisbeacFromJSON(jsonValue));
     }
 
     /**
      * Get disbeac by mac
      */
-    async getDisbeacsByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Disbeac>> {
-        const response = await this.getDisbeacsByMacRaw({ mac: mac }, initOverrides);
+    async getDisbeacByMac(mac: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac> {
+        const response = await this.getDisbeacByMacRaw({ mac: mac }, initOverrides);
         return await response.value();
     }
 
@@ -392,9 +392,9 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
     /**
      * Save disbeac
      */
-    async savedisbeacRaw(requestParameters: SavedisbeacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>> {
+    async saveDisbeacRaw(requestParameters: SaveDisbeacRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Disbeac>> {
         if (requestParameters.disbeacDTO === null || requestParameters.disbeacDTO === undefined) {
-            throw new runtime.RequiredError('disbeacDTO','Required parameter requestParameters.disbeacDTO was null or undefined when calling savedisbeac.');
+            throw new runtime.RequiredError('disbeacDTO','Required parameter requestParameters.disbeacDTO was null or undefined when calling saveDisbeac.');
         }
 
         const queryParameters: any = {};
@@ -425,8 +425,8 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
     /**
      * Save disbeac
      */
-    async savedisbeac(disbeacDTO: DisbeacDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac> {
-        const response = await this.savedisbeacRaw({ disbeacDTO: disbeacDTO }, initOverrides);
+    async saveDisbeac(disbeacDTO: DisbeacDTO, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Disbeac> {
+        const response = await this.saveDisbeacRaw({ disbeacDTO: disbeacDTO }, initOverrides);
         return await response.value();
     }
 
@@ -478,13 +478,13 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
     /**
      * Update user ID
      */
-    async updateUserIdRaw(requestParameters: UpdateUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>> {
+    async updateDisbeacUserIdRaw(requestParameters: UpdateDisbeacUserIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<HandledResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateUserId.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateDisbeacUserId.');
         }
 
         if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling updateUserId.');
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling updateDisbeacUserId.');
         }
 
         const queryParameters: any = {};
@@ -512,8 +512,8 @@ export class DisbeacsApi extends runtime.BaseAPI implements DisbeacsApiInterface
     /**
      * Update user ID
      */
-    async updateUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse> {
-        const response = await this.updateUserIdRaw({ id: id, userId: userId }, initOverrides);
+    async updateDisbeacUserId(id: string, userId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<HandledResponse> {
+        const response = await this.updateDisbeacUserIdRaw({ id: id, userId: userId }, initOverrides);
         return await response.value();
     }
 
