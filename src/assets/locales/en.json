@@ -1,4 +1,6 @@
 {
+    "init": "Powered by Dista",
+    "appName": "Disheap",
     "camera.option.camera":"Open camera",
     "camera.option.file":"Open files",
     "camera.option.cancel":"Cancel",

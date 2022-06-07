@@ -16,6 +16,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AlarmsApi, AmbientNoisesApi, DisbandsApi, HeartRateApi, HumidityApi, LightningsApi, OxygenApi, PressureApi, TemperaturesApi } from 'client/disband';
 import { DisbeacsApi, LocationsApi } from 'client/disbeac';
 import { DisordersApi, EventsApi, HomeworksApi, JwtRequest, JwtResponse, LoginApi, SchoolYearsApi, SubjectsApi, TimetablesApi, UserDTO, UsersApi } from 'client/disheap';
+import { COLORS } from 'config/Colors';
+import { SIZES } from 'config/Sizes';
+import { commonStyles } from 'config/Styles';
 import { DisbandRepository } from 'data/repository/disband/impl/DisbandRepository';
 import { UserRepository } from 'data/repository/disheap/impl/UserRepository';
 import { LoginRepository } from 'data/repository/LoginRepository';
@@ -24,6 +27,7 @@ import DisbeacApiClient, { DisbeacApi } from 'infrastructure/data/DisbeacApiClie
 import DisheapApiClient, { DisheapApi } from 'infrastructure/data/DisheapApiClient';
 import { ICredentials } from 'infrastructure/data/ICredentials';
 import { SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
+import { Title } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, LogBox, NativeModules, StyleSheet, Text, View } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
@@ -373,13 +377,13 @@ const App = () => {
 					</NavigationContainer>
 				</AuthContext.Provider>
 				:
-				<View style={{ width: '100%', height: '100%', backgroundColor: 'white' }}>
-					<View style={{ flex: 4, alignItems: "center", justifyContent: "center" }}>
+				<View style={{ width: '100%', height: '100%' }}>
+					<View style={{ flex: 4, alignItems: "center", justifyContent: "center", backgroundColor: COLORS.background }}>
+						<Title style={{ color: COLORS.touchables, fontSize: 50, paddingTop: 50 }}>{i18n.t('appName').toUpperCase()}</Title>
 					</View>
-					<View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingBottom: 30 }}>
-						<Text>Powered by Cunba</Text>
+					<View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingBottom: 30, flexDirection: 'row', backgroundColor: COLORS.background }}>
+						<Text style={[commonStyles.text, { color: COLORS.text, fontSize: SIZES.text_button, paddingRight: 10 }]}>{i18n.t('init')}</Text>
 					</View>
-
 				</View>
 			}
 		</>

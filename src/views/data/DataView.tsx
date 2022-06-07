@@ -6,11 +6,14 @@ import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { RefreshControl } from "react-native";
+import { RefreshControl, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card } from "react-native-paper";
+import Svg from "react-native-svg";
 import { dispatch } from "RootNavigation";
+import { Bar } from "victory-native";
 import { DataViewModel } from "viewmodels/data/DataViewModel";
+import { Temperature } from "./component/Temperature";
 
 export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
     const [loading, setLoading] = useState(false)
@@ -53,8 +56,12 @@ export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
                 )}
             >
                 <Card onPress={() => { }} style={{ height: 150 }}>
-                    <Card.Content >
-                        
+                    <Card.Content style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
+                        <Temperature
+                            data={vm.lastTemperature?.data}
+                        />
+                        <View />
+                        <View />
                     </Card.Content>
                 </Card>
                 <Card onPress={() => { }} style={{ height: 150, marginTop: 15 }}>
