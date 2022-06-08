@@ -26,14 +26,6 @@ export const AmbientDataView: FunctionalView<AmbientDataViewModel> = observer(({
         setLoading(false)
     }
 
-    const getData = async () => {
-        const data: DataToPlot[] = []
-        vm.dayDataTemperature?.map(item => {
-            data.push(new DataToPlot(item))
-        })
-        return data
-    }
-
     const renderPlot = () => {
         return (
             <VictoryChart
