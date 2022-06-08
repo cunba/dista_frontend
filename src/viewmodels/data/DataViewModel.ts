@@ -1,5 +1,5 @@
 import { AmbientNoise, HeartRate, Humidity, Lightning, MeasureDTO, Oxygen, Pressure, Temperature } from "client/disband";
-import { Measure } from "data/model/disband/Measure";
+import { Measure } from "data/model/Measure";
 import { AmbientNoiseRepository } from "data/repository/disband/impl/AmbientNoiseRepository";
 import { HeartRateRepository } from "data/repository/disband/impl/HeartRateRepository";
 import { HumidityRepository } from "data/repository/disband/impl/HumidityRepository";
@@ -8,7 +8,7 @@ import { OxygenRepository } from "data/repository/disband/impl/OxygenRepository"
 import { PressureRepository } from "data/repository/disband/impl/PressureRepository";
 import { TemperatureRepository } from "data/repository/disband/impl/TemperatureRepository";
 import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
-import { action, makeAutoObservable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 
 
 export class DataViewModel {
@@ -23,13 +23,13 @@ export class DataViewModel {
     temperatureRepository = new TemperatureRepository()
 
     // Variables
-    lastAmbientNoise: Measure | undefined
-    lastHeartRate: Measure | undefined
-    lastHumidity: Measure | undefined
-    lastLightning: Measure | undefined
-    lastOxygen: Measure | undefined
-    lastPressure: Measure | undefined
-    lastTemperature: Measure | undefined
+    @observable lastAmbientNoise: Measure | undefined
+    @observable lastHeartRate: Measure | undefined
+    @observable lastHumidity: Measure | undefined
+    @observable lastLightning: Measure | undefined
+    @observable lastOxygen: Measure | undefined
+    @observable lastPressure: Measure | undefined
+    @observable lastTemperature: Measure | undefined
 
     // Dates to get mesures
     // minDate: number = new Date().getTime()
@@ -46,54 +46,27 @@ export class DataViewModel {
 
     @action getLastMesures = async () => {
         const disband = await SessionStoreFactory.getSessionStore().getDisband()
-        await this.ambientNoiseRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
-            this.setLastAmbientNoise(new Measure(item))
-        })
-        console.log('ambient noise last measure')
-        console.log(this.lastAmbientNoise)
-        console.log(' ')
-
-        await this.heartRateRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
-            this.setLastHeartRate(new Measure(item))
-        })
-        console.log('heart rate last measure')
-        console.log(this.lastHeartRate)
-        console.log(' ')
-
-        await this.humidityRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
-            this.setLastHumidity(new Measure(item))
-        })
-        console.log('humidity last measure')
-        console.log(this.lastHumidity)
-        console.log(' ')
-
-        await this.lightningRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
-            this.setLastLightning(new Measure(item))
-        })
-        console.log('lightning last measure')
-        console.log(this.lastLightning)
-        console.log(' ')
-
-        await this.oxygenRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
-            this.setLastOxygen(new Measure(item))
-        })
-        console.log('Oxygen last measure')
-        console.log(this.lastOxygen)
-        console.log(' ')
-
-        await this.pressureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
-            this.setLastPressure(new Measure(item))
-        })
-        console.log('pressure last measure')
-        console.log(this.lastPressure)
-        console.log(' ')
-        
         await this.temperatureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastTemperature(new Measure(item))
         })
-        console.log('temperature last measure')
-        console.log(this.lastTemperature)
-        console.log(' ')     
+        await this.humidityRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+            this.setLastHumidity(new Measure(item))
+        })
+        await this.pressureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+            this.setLastPressure(new Measure(item))
+        })
+        await this.ambientNoiseRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+            this.setLastAmbientNoise(new Measure(item))
+        })
+        await this.heartRateRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+            this.setLastHeartRate(new Measure(item))
+        })
+        await this.lightningRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+            this.setLastLightning(item)
+        })
+        await this.oxygenRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+            this.setLastOxygen(new Measure(item))
+        })
     }
 
     @action setLastAmbientNoise(ambientNoise: Measure | undefined) {

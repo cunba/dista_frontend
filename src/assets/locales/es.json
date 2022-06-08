@@ -106,5 +106,24 @@
     "location.permission.message" :  "La aplicación require permisos de localización",
     "location.permission.accept" : "OK",
     "location.permission.reject" : "Cancelar",
-    "location.permission.neutral" : "Preguntarme más tarde"
+    "location.permission.neutral" : "Preguntarme más tarde",
+
+    "data.ambientNoise.title": "Ruido ambiente",
+    "data.heartRate.title": "Ritmo cardíaco",
+    "data.humidity.title": "Humedad",
+    "data.lightning.title": "Luz ambiente",
+    "data.oxygen.title": "Oxígeno",
+    "data.pressure.title": "Presión",
+    "data.temperature.title": "Temperatura",
+    "data.ambient.title": "Datos ambiente",
+
+    "data.risk": "Riesgo",
+    "data.high": "Alta",
+    "data.medium": "Media",
+    "data.low": "Baja",
+    "noData": "Sin datos",
+
+    "data.dateMessage.today": "Última medida a las ",
+    "data.dateMessage": "Última medida ",
+    "data.dateMessage.noDate": "No hay datos de los últimos 7 días"
 }

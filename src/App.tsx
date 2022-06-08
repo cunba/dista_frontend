@@ -34,6 +34,7 @@ import { LocaleConfig } from 'react-native-calendars';
 import RNLocation, { Location } from "react-native-location";
 import { navigationRef } from 'RootNavigation';
 import { ShowEventViewModel } from 'viewmodels/agenda/ShowEventViewModel';
+import { AmbientDataViewModel } from 'viewmodels/data/AmbientDataViewModel';
 import { DataViewModel } from 'viewmodels/data/DataViewModel';
 import { HomeViewModel } from 'viewmodels/HomeViewModel';
 import { LoginViewModel } from 'viewmodels/LoginViewModel';
@@ -44,6 +45,7 @@ import { TimetableViewModel } from 'viewmodels/TimetableViewModel';
 import { AddEventView } from 'views/agenda/AddEventView';
 import { AgendaView } from 'views/agenda/AgendaView';
 import { ShowEventView } from 'views/agenda/ShowEventView';
+import { AmbientDataView } from 'views/data/AmbientDataView';
 import { DataView } from 'views/data/DataView';
 import { HomeView } from 'views/home/HomeView';
 import { LoginView } from 'views/login/LoginView';
@@ -121,7 +123,10 @@ const RecoveryScreen = () => <RecoveryView vm={new RecoveryViewModel()} />
 const SignUpScreen = () => <SignUpView vm={new SignUpViewModel()} />
 const HomeScreen = () => <HomeView vm={new HomeViewModel()} />
 const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
+
+// Data
 const DataScreen = () => <DataView vm={new DataViewModel()} />
+const AmbientScreen = () => <AmbientDataView vm={new AmbientDataViewModel()} />
 
 // Agenda
 const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
@@ -147,7 +152,7 @@ const NavigationDrawer = () => {
 			}}
 			initialRouteName={ROUTES.HOME}
 			drawerContent={drawerContent}
-			backBehavior={'initialRoute'}
+			backBehavior={'history'}
 		>
 			<Drawer.Screen
 				options={{
@@ -354,6 +359,11 @@ const App = () => {
 									<Stack.Screen
 										name={ROUTES.SHOW_EVENT}
 										component={ShowEventScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.AMBIENT_DATA}
+										component={AmbientScreen}
 										options={{ headerShown: false }}
 									/>
 								</>

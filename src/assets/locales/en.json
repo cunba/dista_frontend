@@ -103,5 +103,24 @@
     "location.permission.message" : "The app requires location permission",
     "location.permission.accept" : "OK",
     "location.permission.reject" : "Cancel",
-    "location.permission.neutral" : "Ask me later"
+    "location.permission.neutral" : "Ask me later",
+
+    "data.ambientNoise.title": "Ambient noise",
+    "data.heartRate.title": "Heart rate",
+    "data.humidity.title": "Humidity",
+    "data.lightning.title": "Lightning",
+    "data.oxygen.title": "Oxygen",
+    "data.pressure.title": "Pressure",
+    "data.temperature.title": "Temperature",
+    "data.ambient.title": "Ambient data",
+
+    "data.risk": "Risk",
+    "data.high": "High",
+    "data.medium": "Medium",
+    "data.low": "Low",
+    "noData": "No data",
+
+    "data.dateMessage.today": "Last measure at",
+    "data.dateMessage": "Last measure ",
+    "data.dateMessage.noDate": "No data from the last 7 days"
 }

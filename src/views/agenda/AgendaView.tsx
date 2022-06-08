@@ -2,7 +2,6 @@ import { DrawerActions } from '@react-navigation/native';
 import Toolbar, { IconProps } from 'components/Toolbar/Toolbar';
 import { COLORS } from 'config/Colors';
 import { commonStyles, stylesRicyclerList } from 'config/Styles';
-import { Event } from 'data/model/Event';
 import i18n from 'infrastructure/localization/i18n';
 import { FunctionalView } from 'infrastructure/views/FunctionalView';
 import { observer } from 'mobx-react-lite';
@@ -21,6 +20,7 @@ import XDate from 'xdate';
 import { agendaStyles } from './AgendaStyles';
 import { navigate } from '../../RootNavigation';
 import { ROUTES } from '../../config/Constants';
+import { Event } from 'client/disheap';
 
 export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => {
     const [startDay, setStartDay] = useState(new XDate(new Date()))
@@ -69,18 +69,16 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     }
 
     const renderItem = (type: any, item: Event) => {
-        const color = hexToRgb(item.eventType.color!)
-
         return (
-            <Card elevation={3} mode={"elevated"} style={[stylesRicyclerList.card, { backgroundColor: color! }]}
+            <Card elevation={3} mode={"elevated"} style={stylesRicyclerList.card}
                 onPress={() => onPressEvent(item)}
             >
                 <Card.Content style={stylesRicyclerList.rowCellContainerCalendar}>
                     <Title style={stylesRicyclerList.title}>{item.name}</Title>
                     <View >
-                        <Text >{dateFormat(item.startDate, 'HH:mm')}</Text>
+                        <Text >{dateFormat(new Date(item.startDate!), 'HH:mm')}</Text>
                         <Text style={{ textAlign: 'center' }}>-</Text>
-                        <Text >{dateFormat(item.endDate, 'HH:mm')}</Text>
+                        <Text >{dateFormat(new Date(item.endDate!), 'HH:mm')}</Text>
                     </View>
                 </Card.Content>
             </Card>

@@ -36,7 +36,7 @@ export const ShowEventView: FunctionalView<ShowEventViewModel> = observer(({ vm 
             />
             <View style={[commonStyles.container, { flex: 1, backgroundColor: COLORS.background }]}>
                 <Title style={commonStyles.title}>{vm.eventPressed!.name}</Title>
-                <Text>{vm.eventPressed!.notes}</Text>
+                <Text>{vm.eventPressed!.note}</Text>
             </View>
         </>
     )
