@@ -122,5 +122,9 @@
 
     "data.dateMessage.today": "Last measure at",
     "data.dateMessage": "Last measure ",
-    "data.dateMessage.noDate": "No data from the last 7 days"
+    "data.dateMessage.noDate": "No data from the last 7 days",
+
+    "data.daySelected": "day",
+    "data.weekSelected": "week",
+    "data.monthSelected": "month"
 }

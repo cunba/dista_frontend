@@ -1,5 +1,5 @@
 import Moment from 'moment';
-import 'moment/locale/es'
+import 'moment/locale/es';
 import { LocaleConfig } from 'react-native-calendars';
 
 
@@ -137,5 +137,54 @@ export const getMonthText = (date: Date) => {
             return LocaleConfig.locales[LocaleConfig.defaultLocale].monthNames![10]
         case 11:
             return LocaleConfig.locales[LocaleConfig.defaultLocale].monthNames![11]
+    }
+}
+
+export const getDateToSearch = (date: Date, option: string) => {
+    const milisecondsDay = 86399000
+    const today = new Date(date.setHours(0, 0, 0, 0))
+    let minValue = 0
+    let maxValue = 0
+
+    switch (option) {
+        case 'day':
+            minValue = today.getTime()
+            maxValue = today.setHours(23, 59, 59, 59)
+
+        case 'week':
+            const dayWeek = today.getDate()
+            minValue = today.getTime() - milisecondsDay * dayWeek
+            maxValue = minValue + milisecondsDay * 6
+            return new DateInterval(minValue, maxValue)
+
+        case 'month':
+            const day = today.getDay()
+            minValue = today.getTime() - milisecondsDay * day
+
+            switch (today.getMonth()) {
+                case 0: case 2: case 4: case 6: case 7: case 9: case 11:
+                    maxValue = minValue + milisecondsDay * 31
+                    break
+
+                case 2:
+                    maxValue = minValue + milisecondsDay * 28
+                    break
+
+                case 1: case 3: case 5: case 8: case 10:
+                    maxValue = minValue + milisecondsDay * 30
+                    break
+            }
+    }
+
+    return new DateInterval(minValue, maxValue)
+}
+
+export class DateInterval {
+    minDate: number
+    maxDate: number
+
+    constructor(minDate: number, maxDate: number) {
+        this.minDate = minDate
+        this.maxDate = maxDate
     }
 }

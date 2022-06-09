@@ -13,9 +13,9 @@ import { Card, Divider, Title } from "react-native-paper";
 import { dispatch, navigate } from "RootNavigation";
 import { dateFormat, timeFormatter } from "utils/datetimeFormatterHelper";
 import { DataViewModel } from "viewmodels/data/DataViewModel";
-import { Humidity } from "./component/Humidity";
-import { Pressure } from "./component/Pressure";
-import { Temperature } from "./component/Temperature";
+import { Humidity } from "./component/dataView/Humidity";
+import { Pressure } from "./component/dataView/Pressure";
+import { Temperature } from "./component/dataView/Temperature";
 import { dataViewStyle } from "./DataViewStyle";
 
 export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
