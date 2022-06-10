@@ -120,7 +120,7 @@
     "data.low": "Low",
     "noData": "No data",
 
-    "data.dateMessage.today": "Last measure at",
+    "data.dateMessage.today": "Last measure at ",
     "data.dateMessage": "Last measure ",
     "data.dateMessage.noDate": "No data from the last 7 days",
 

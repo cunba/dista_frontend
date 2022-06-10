@@ -46,25 +46,25 @@ export class DataViewModel {
 
     @action getLastMesures = async () => {
         const disband = await SessionStoreFactory.getSessionStore().getDisband()
-        await this.temperatureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.temperatureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastTemperature(new Measure(item))
         })
-        await this.humidityRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.humidityRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastHumidity(new Measure(item))
         })
-        await this.pressureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.pressureRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastPressure(new Measure(item))
         })
-        await this.ambientNoiseRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.ambientNoiseRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastAmbientNoise(new Measure(item))
         })
-        await this.heartRateRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.heartRateRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastHeartRate(new Measure(item))
         })
-        await this.lightningRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.lightningRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastLightning(item)
         })
-        await this.oxygenRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
+        this.oxygenRepository.getLast1ByDateBetweenAndDisbandId(this.minDate, this.maxDate, disband!.id!).then(item => {
             this.setLastOxygen(new Measure(item))
         })
     }
