@@ -14,8 +14,8 @@ import { back } from "RootNavigation";
 import { dateFormat, timeFormatter } from "utils/datetimeFormatterHelper";
 import { AmbientDataPlotViewModel } from "viewmodels/data/AmbientDataPlotViewModel";
 import { ambientDataPlotViewStyle } from "./AmbientDataPlotViewStyle";
-import { Selection } from "./component/ambientData/Selection";
-import { LinePlot } from "./component/LinePlot";
+import { Selection } from "../component/ambientData/Selection";
+import { LinePlot } from "../component/LinePlot";
 
 export const AmbientDataPlotView: FunctionalView<AmbientDataPlotViewModel> = observer(({ vm }) => {
     const [loading, setLoading] = useState(false)

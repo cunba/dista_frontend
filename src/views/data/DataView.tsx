@@ -14,6 +14,7 @@ import { dispatch, navigate } from "RootNavigation";
 import { DataViewModel } from "viewmodels/data/DataViewModel";
 import { AmbientData } from "./component/dataView/AmbientData";
 import { HeartRate } from "./component/dataView/HeeartRate";
+import { Oxygen } from "./component/dataView/Oxygen";
 
 export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
     const [loading, setLoading] = useState(false)
@@ -73,6 +74,15 @@ export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
                         <HeartRate
                             dataHeartRate={vm.lastHeartRate?.data}
                             dateHeartRate={vm.lastHeartRate?.date}
+                            loading={loading}
+                        />
+                    </Card.Content>
+                </Card>
+                <Card onPress={() => { navigate(ROUTES.OXYGEN, null) }} style={{ height: 130, marginTop: 15 }}>
+                    <Card.Content>
+                        <Oxygen
+                            dataOxygen={vm.lastOxygen?.data}
+                            dateOxygen={vm.lastOxygen?.date}
                             loading={loading}
                         />
                     </Card.Content>

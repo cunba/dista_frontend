@@ -17,7 +17,8 @@ export enum ROUTES {
     COMPLEMENTARY_THINGS = "ComplementaryThings",
     DATA = "Data",
     AMBIENT_DATA = "AmbientDataPlot",
-    HEART_RATE = "HeartRatePlot"
+    HEART_RATE = "HeartRatePlot",
+    OXYGEN = "OxygenPlot"
 
 }
 

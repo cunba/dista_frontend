@@ -46,9 +46,9 @@ import { TimetableViewModel } from 'viewmodels/TimetableViewModel';
 import { AddEventView } from 'views/agenda/AddEventView';
 import { AgendaView } from 'views/agenda/AgendaView';
 import { ShowEventView } from 'views/agenda/ShowEventView';
-import { AmbientDataPlotView } from 'views/data/AmbientDataPlotView';
+import { AmbientDataPlotView } from 'views/data/plot/AmbientDataPlotView';
 import { DataView } from 'views/data/DataView';
-import { HeartRatePlotView } from 'views/data/HeartRatePlotView';
+import { HeartRatePlotView } from 'views/data/plot/HeartRatePlotView';
 import { HomeView } from 'views/home/HomeView';
 import { LoginView } from 'views/login/LoginView';
 import { RecoveryView } from 'views/recovery/RecoveryView';
@@ -61,6 +61,8 @@ import { navigate } from './RootNavigation';
 import { AddEventViewModel } from './viewmodels/agenda/AddEventViewModel';
 import { AgendaViewModel } from './viewmodels/agenda/AgendaViewModel';
 import DrawerContent from '/components/DrawerContent/DrawerContent';
+import { OxygenPlotView } from 'views/data/plot/OxygenPlotView';
+import { OxygenPlotViewModel } from 'viewmodels/data/OxygenPlotViewModel';
 
 // Register Disheap api clients
 DisheapApiClient.register(DisheapApi.DisorderApi, new DisordersApi)
@@ -130,6 +132,7 @@ const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
 const DataScreen = () => <DataView vm={new DataViewModel()} />
 const AmbientDataPlotScreen = () => <AmbientDataPlotView vm={new AmbientDataPlotViewModel()} />
 const HeartRatePlotScreen = () => <HeartRatePlotView vm={new HeartRatePlotViewModel()} />
+const OxygenPlotScreen = () => <OxygenPlotView vm={new OxygenPlotViewModel()} />
 
 // Agenda
 const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
@@ -372,6 +375,11 @@ const App = () => {
 									<Stack.Screen
 										name={ROUTES.HEART_RATE}
 										component={HeartRatePlotScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.OXYGEN}
+										component={OxygenPlotScreen}
 										options={{ headerShown: false }}
 									/>
 								</>

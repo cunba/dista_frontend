@@ -10,12 +10,12 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Card, Title } from "react-native-paper";
 import { back } from "RootNavigation";
 import { dateFormat, timeFormatter } from "utils/datetimeFormatterHelper";
-import { HeartRatePlotViewModel } from "viewmodels/data/HeartRatePlotViewModel";
+import { OxygenPlotViewModel } from "viewmodels/data/OxygenPlotViewModel";
+import { Selection } from "../component/ambientData/Selection";
+import { LinePlot } from "../component/LinePlot";
 import { ambientDataPlotViewStyle } from "./AmbientDataPlotViewStyle";
-import { Selection } from "./component/ambientData/Selection";
-import { LinePlot } from "./component/LinePlot";
 
-export const HeartRatePlotView: FunctionalView<HeartRatePlotViewModel> = observer(({ vm }) => {
+export const OxygenPlotView: FunctionalView<OxygenPlotViewModel> = observer(({ vm }) => {
     const [loading, setLoading] = useState(false)
     const [scroll, setScroll] = useState(true)
     const [dataSelected, setDataSelected] = useState('--')
@@ -30,7 +30,7 @@ export const HeartRatePlotView: FunctionalView<HeartRatePlotViewModel> = observe
 
     const onRefresh = async () => {
         setLoading(true)
-        vm.setFinishGetHeartRate(false)
+        vm.setFinishGetOxygen(false)
         await vm.constructorFunctions()
         setLoading(false)
     }
@@ -96,18 +96,18 @@ export const HeartRatePlotView: FunctionalView<HeartRatePlotViewModel> = observe
                         />
                     </Card.Content>
                     <Card.Content style={ambientDataPlotViewStyle.cardContent}>
-                        <Title style={ambientDataPlotViewStyle.title}>{i18n.t('data.heartRate.title').toUpperCase()}</Title>
+                        <Title style={ambientDataPlotViewStyle.title}>{i18n.t('data.oxygen.title').toUpperCase()}</Title>
                         <Title style={ambientDataPlotViewStyle.dataSelected}>{dataSelected} BPM</Title>
-                        {vm.finishGetHeartRate && daySelected && vm.dayData ?
+                        {vm.finishGetOxygen && daySelected && vm.dayData ?
                             <>
                                 <Text style={ambientDataPlotViewStyle.text}>{dateFormat(new Date(vm.dateInterval!.maxDay!), 'DD/MM/YYYY')} {dateSelected}</Text>
                                 <LinePlot
                                     data={vm.dayData!.measures!}
-                                    lineColor={COLORS.LightCoral}
+                                    lineColor={COLORS.redTermometer}
                                     maxDate={vm.dateInterval!.maxDay!}
                                     minDate={vm.dateInterval!.minDay!}
-                                    minData={(vm.dayData!.minMeasure! - 48)}
-                                    maxData={(vm.dayData!.maxMeasure! + 48)}
+                                    minData={0}
+                                    maxData={100}
                                     onTouchEnd={() => { setScroll(true); setDataSelected('--'); setDateSelected('') }}
                                     onTouchStart={() => setScroll(false)}
                                     setDataSelected={(data) => setDataSelected(data)}
@@ -115,16 +115,16 @@ export const HeartRatePlotView: FunctionalView<HeartRatePlotViewModel> = observe
                                 />
                             </>
                             :
-                            vm.finishGetHeartRate && weekSelected && vm.weekData ?
+                            vm.finishGetOxygen && weekSelected && vm.weekData ?
                                 <>
                                     <Text style={ambientDataPlotViewStyle.text}>{dateSelected}</Text>
                                     <LinePlot
                                         data={vm.weekData!.measures!}
-                                        lineColor={COLORS.LightCoral}
+                                        lineColor={COLORS.redTermometer}
                                         maxDate={vm.dateInterval!.maxWeek!}
                                         minDate={vm.dateInterval!.minWeek!}
                                         minData={0}
-                                        maxData={120}
+                                        maxData={100}
                                         onTouchEnd={() => { setScroll(true); setDataSelected('--'); setDateSelected('') }}
                                         onTouchStart={() => setScroll(false)}
                                         setDataSelected={(data) => setDataSelected(data)}
@@ -132,16 +132,16 @@ export const HeartRatePlotView: FunctionalView<HeartRatePlotViewModel> = observe
                                     />
                                 </>
                                 :
-                                vm.finishGetHeartRate && monthSelected && vm.monthData ?
+                                vm.finishGetOxygen && monthSelected && vm.monthData ?
                                     <>
                                         <Text style={ambientDataPlotViewStyle.text}>{dateSelected}</Text>
                                         <LinePlot
                                             data={vm.monthData!.measures!}
-                                            lineColor={COLORS.LightCoral}
+                                            lineColor={COLORS.redTermometer}
                                             maxDate={vm.dateInterval!.maxMonth!}
                                             minDate={vm.dateInterval!.minMonth!}
                                             minData={0}
-                                            maxData={120}
+                                            maxData={100}
                                             onTouchEnd={() => { setScroll(true); setDataSelected('--'); setDateSelected('') }}
                                             onTouchStart={() => setScroll(false)}
                                             setDataSelected={(data) => setDataSelected(data)}
@@ -157,7 +157,7 @@ export const HeartRatePlotView: FunctionalView<HeartRatePlotViewModel> = observe
                                             maxDate={daySelected ? vm.dateInterval!.maxDay! : weekSelected ? vm.dateInterval!.maxWeek! : vm.dateInterval.maxMonth!}
                                             minDate={daySelected ? vm.dateInterval!.minDay! : weekSelected ? vm.dateInterval!.minWeek! : vm.dateInterval.minMonth!}
                                             minData={0}
-                                            maxData={120}
+                                            maxData={100}
                                             onTouchEnd={() => { }}
                                             onTouchStart={() => setScroll(false)}
                                             setDataSelected={(data) => { }}
