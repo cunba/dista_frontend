@@ -7,16 +7,13 @@ import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { RefreshControl, Text, View } from "react-native";
+import { RefreshControl } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Card, Divider, Title } from "react-native-paper";
+import { Card } from "react-native-paper";
 import { dispatch, navigate } from "RootNavigation";
-import { dateFormat, timeFormatter } from "utils/datetimeFormatterHelper";
 import { DataViewModel } from "viewmodels/data/DataViewModel";
-import { Humidity } from "./component/dataView/Humidity";
-import { Pressure } from "./component/dataView/Pressure";
-import { Temperature } from "./component/dataView/Temperature";
-import { dataViewStyle } from "./DataViewStyle";
+import { AmbientData } from "./component/dataView/AmbientData";
+import { HeartRate } from "./component/dataView/HeeartRate";
 
 export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
     const [loading, setLoading] = useState(false)
@@ -29,21 +26,6 @@ export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
         setLoading(true)
         await vm.constructorFunctions()
         setLoading(false)
-    }
-
-    const getTimeComment = () => {
-        const today = new Date()
-        const measureDate = vm.lastOxygen ? new Date(vm.lastPressure!.date!) : undefined
-
-        if (measureDate) {
-            if (today.getDate() === measureDate?.getDate()) {
-                return i18n.t('data.dateMessage.today') + timeFormatter(measureDate.getHours(), measureDate.getMinutes())
-            } else {
-                return i18n.t('data.dateMessage') + dateFormat(measureDate, 'DD/MM/yyyy HH:mm')
-            }
-        } else {
-            return loading ? '' : i18n.t('data.dateMessage.noDate')
-        }
     }
 
     const iconLeftProps: IconProps = {
@@ -75,45 +57,24 @@ export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
             >
                 <Card onPress={() => { navigate(ROUTES.AMBIENT_DATA, null) }} style={{ height: 200 }}>
                     <Card.Content>
-                        <View style={dataViewStyle.ambientTitleContainer}>
-                            <Title>{i18n.t('data.ambient.title').toUpperCase()}</Title>
-                            <Text style={dataViewStyle.ambientTextDate}>{getTimeComment()}</Text>
-                        </View>
-                        <Divider />
-                        <View style={dataViewStyle.ambientDataContainer}>
-                            <Temperature
-                                data={vm.lastTemperature?.data}
-                                date={vm.lastTemperature?.date}
-                            />
-                            <Humidity
-                                data={vm.lastHumidity?.data}
-                                date={vm.lastHumidity?.date}
-                            />
-                            <Pressure
-                                data={vm.lastPressure?.data}
-                                date={vm.lastPressure?.date}
-                            />
-                        </View>
+                        <AmbientData
+                            dataTemperature={vm.lastTemperature?.data}
+                            dateTemperature={vm.lastTemperature?.date}
+                            dataHumidity={vm.lastHumidity?.data}
+                            dateHumidity={vm.lastHumidity?.date}
+                            dataPressure={vm.lastPressure?.data}
+                            datePressure={vm.lastPressure?.date}
+                            loading={loading}
+                        />
                     </Card.Content>
                 </Card>
-                <Card onPress={() => { }} style={{ height: 150, marginTop: 15 }}>
+                <Card onPress={() => { navigate(ROUTES.HEART_RATE, null) }} style={{ height: 130, marginTop: 15 }}>
                     <Card.Content>
-
-                    </Card.Content>
-                </Card>
-                <Card onPress={() => { }} style={{ height: 150, marginTop: 15 }}>
-                    <Card.Content>
-
-                    </Card.Content>
-                </Card>
-                <Card onPress={() => { }} style={{ height: 150, marginTop: 15 }}>
-                    <Card.Content>
-
-                    </Card.Content>
-                </Card>
-                <Card onPress={() => { }} style={{ height: 150, marginTop: 15 }}>
-                    <Card.Content>
-
+                        <HeartRate
+                            dataHeartRate={vm.lastHeartRate?.data}
+                            dateHeartRate={vm.lastHeartRate?.date}
+                            loading={loading}
+                        />
                     </Card.Content>
                 </Card>
 

@@ -15,7 +15,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AlarmsApi, AmbientNoisesApi, DisbandsApi, HeartRateApi, HumidityApi, LightningsApi, OxygenApi, PressureApi, TemperaturesApi } from 'client/disband';
 import { DisbeacsApi, LocationsApi } from 'client/disbeac';
-import { DisordersApi, EventsApi, HomeworksApi, JwtRequest, JwtResponse, LoginApi, SchoolYearsApi, SubjectsApi, TimetablesApi, UserDTO, UsersApi } from 'client/disheap';
+import { DisordersApi, EventsApi, HomeworksApi, JwtResponse, LoginApi, SchoolYearsApi, SubjectsApi, TimetablesApi, UserDTO, UsersApi } from 'client/disheap';
 import { COLORS } from 'config/Colors';
 import { SIZES } from 'config/Sizes';
 import { commonStyles } from 'config/Styles';
@@ -29,13 +29,14 @@ import { ICredentials } from 'infrastructure/data/ICredentials';
 import { SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
 import { Title } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Dimensions, LogBox, NativeModules, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, NativeModules, StyleSheet, Text, View } from 'react-native';
 import { LocaleConfig } from 'react-native-calendars';
 import RNLocation, { Location } from "react-native-location";
 import { navigationRef } from 'RootNavigation';
 import { ShowEventViewModel } from 'viewmodels/agenda/ShowEventViewModel';
-import { AmbientDataViewModel } from 'viewmodels/data/AmbientDataViewModel';
+import { AmbientDataPlotViewModel } from 'viewmodels/data/AmbientDataPlotViewModel';
 import { DataViewModel } from 'viewmodels/data/DataViewModel';
+import { HeartRatePlotViewModel } from 'viewmodels/data/HeartRatePlotViewModel';
 import { HomeViewModel } from 'viewmodels/HomeViewModel';
 import { LoginViewModel } from 'viewmodels/LoginViewModel';
 import { RecoveryViewModel } from 'viewmodels/RecoveryViewModel';
@@ -45,8 +46,9 @@ import { TimetableViewModel } from 'viewmodels/TimetableViewModel';
 import { AddEventView } from 'views/agenda/AddEventView';
 import { AgendaView } from 'views/agenda/AgendaView';
 import { ShowEventView } from 'views/agenda/ShowEventView';
-import { AmbientDataView } from 'views/data/AmbientDataView';
+import { AmbientDataPlotView } from 'views/data/AmbientDataPlotView';
 import { DataView } from 'views/data/DataView';
+import { HeartRatePlotView } from 'views/data/HeartRatePlotView';
 import { HomeView } from 'views/home/HomeView';
 import { LoginView } from 'views/login/LoginView';
 import { RecoveryView } from 'views/recovery/RecoveryView';
@@ -126,7 +128,8 @@ const TimetableScreen = () => <TimetableView vm={new TimetableViewModel()} />
 
 // Data
 const DataScreen = () => <DataView vm={new DataViewModel()} />
-const AmbientScreen = () => <AmbientDataView vm={new AmbientDataViewModel()} />
+const AmbientDataPlotScreen = () => <AmbientDataPlotView vm={new AmbientDataPlotViewModel()} />
+const HeartRatePlotScreen = () => <HeartRatePlotView vm={new HeartRatePlotViewModel()} />
 
 // Agenda
 const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
@@ -363,7 +366,12 @@ const App = () => {
 									/>
 									<Stack.Screen
 										name={ROUTES.AMBIENT_DATA}
-										component={AmbientScreen}
+										component={AmbientDataPlotScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.HEART_RATE}
+										component={HeartRatePlotScreen}
 										options={{ headerShown: false }}
 									/>
 								</>

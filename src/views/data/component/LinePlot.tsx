@@ -1,3 +1,4 @@
+import { AmbientNoise, HeartRate, Humidity, Oxygen, Pressure, Temperature } from "client/disband/models";
 import { DataToPlot } from "data/model/DataToPlot";
 import React from "react";
 import { VictoryChart, VictoryLine, VictoryTheme, VictoryTooltip, VictoryVoronoiContainer } from "victory-native";
@@ -8,7 +9,7 @@ export interface LinePlotProps {
     onTouchEnd: () => void
     setDataSelected: (data: any) => void
     setDateSelected:(date: any) => void
-    data: DataToPlot[]
+    data: AmbientNoise[] | HeartRate[] | Humidity[] | Oxygen[] | Pressure[] | Temperature[]
     minData: number
     maxData: number
     minDate: number
@@ -19,7 +20,6 @@ export const LinePlot = (props: LinePlotProps) => {
     let data = props.data
 
     const filterData = () => {
-        console.log(data)
         const maxPoints = 288
         if (data.length > maxPoints) {
             const k = Math.ceil(data.length / maxPoints);
@@ -49,8 +49,8 @@ export const LinePlot = (props: LinePlotProps) => {
                     labelComponent={<VictoryTooltip flyoutHeight={1} flyoutWidth={1} pointerLength={1} pointerWidth={1} />}
                 />
             }
-            minDomain={{ x: props.minDate, y: Math.trunc(props.minData - 1) }}
-            maxDomain={{ x: props.maxDate, y: Math.trunc(props.maxData + 1) }}
+            minDomain={{ x: props.minDate, y: Math.trunc(props.minData - 2) }}
+            maxDomain={{ x: props.maxDate, y: Math.trunc(props.maxData + 2) }}
             height={300}
         >
             <VictoryLine

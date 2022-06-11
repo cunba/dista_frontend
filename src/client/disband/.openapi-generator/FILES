@@ -22,6 +22,12 @@ models/Humidity.ts
 models/Lightning.ts
 models/LightningDTO.ts
 models/MeasureDTO.ts
+models/MeasureResponseAmbientNoise.ts
+models/MeasureResponseHeartRate.ts
+models/MeasureResponseHumidity.ts
+models/MeasureResponseOxygen.ts
+models/MeasureResponsePressure.ts
+models/MeasureResponseTemperature.ts
 models/Oxygen.ts
 models/Pressure.ts
 models/Temperature.ts

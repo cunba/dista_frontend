@@ -24,6 +24,9 @@ import {
     MeasureDTO,
     MeasureDTOFromJSON,
     MeasureDTOToJSON,
+    MeasureResponseHumidity,
+    MeasureResponseHumidityFromJSON,
+    MeasureResponseHumidityToJSON,
 } from '../models';
 
 export interface DeleteHumiditiesByDisbandIdRequest {
@@ -121,12 +124,12 @@ export interface HumidityApiInterface {
      * @throws {RequiredError}
      * @memberof HumidityApiInterface
      */
-    getHumiditiesByDateBetweenAndDisbandIdRaw(requestParameters: GetHumiditiesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Humidity>>>;
+    getHumiditiesByDateBetweenAndDisbandIdRaw(requestParameters: GetHumiditiesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseHumidity>>;
 
     /**
      * Get humidities by date between and disband ID
      */
-    getHumiditiesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Humidity>>;
+    getHumiditiesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseHumidity>;
 
     /**
      * 
@@ -322,7 +325,7 @@ export class HumidityApi extends runtime.BaseAPI implements HumidityApiInterface
     /**
      * Get humidities by date between and disband ID
      */
-    async getHumiditiesByDateBetweenAndDisbandIdRaw(requestParameters: GetHumiditiesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Humidity>>> {
+    async getHumiditiesByDateBetweenAndDisbandIdRaw(requestParameters: GetHumiditiesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseHumidity>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
             throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getHumiditiesByDateBetweenAndDisbandId.');
         }
@@ -362,13 +365,13 @@ export class HumidityApi extends runtime.BaseAPI implements HumidityApiInterface
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(HumidityFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeasureResponseHumidityFromJSON(jsonValue));
     }
 
     /**
      * Get humidities by date between and disband ID
      */
-    async getHumiditiesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Humidity>> {
+    async getHumiditiesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseHumidity> {
         const response = await this.getHumiditiesByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }

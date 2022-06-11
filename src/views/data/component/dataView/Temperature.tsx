@@ -15,10 +15,10 @@ export const Temperature = (props: Measure) => {
             if (props.data >= 40) {
                 return i18n.t('data.risk')
             }
-            if (props.data < 40 && props.data > 28) {
+            if (props.data < 40 && props.data > 33) {
                 return i18n.t('data.high')
             }
-            if (props.data <= 28 && props.data > 12) {
+            if (props.data <= 33 && props.data > 12) {
                 return i18n.t('data.medium')
             }
             if (props.data <= 12) {
@@ -41,9 +41,9 @@ export const Temperature = (props: Measure) => {
             <View style={style.textContainer}>
                 <Text>{i18n.t('data.temperature.title').toUpperCase()}</Text>
                 {props.data ?
-                    <Text style={{ fontFamily: 'Teko-Light', fontSize: 45 }}>{props?.data} ºC</Text>
+                    <Text style={style.text}>{props?.data} ºC</Text>
                     :
-                    <Text style={{ fontFamily: 'Teko-Light', fontSize: 45 }}>- ºC</Text>
+                    <Text style={style.text}>- ºC</Text>
                 }
                 <Text>{getComment()}</Text>
             </View>
@@ -73,5 +73,9 @@ const style = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 120
+    },
+    text: {
+        fontFamily: 'Teko-Light',
+        fontSize: 45
     }
 })

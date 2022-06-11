@@ -21,6 +21,9 @@ import {
     MeasureDTO,
     MeasureDTOFromJSON,
     MeasureDTOToJSON,
+    MeasureResponseTemperature,
+    MeasureResponseTemperatureFromJSON,
+    MeasureResponseTemperatureToJSON,
     Temperature,
     TemperatureFromJSON,
     TemperatureToJSON,
@@ -153,12 +156,12 @@ export interface TemperaturesApiInterface {
      * @throws {RequiredError}
      * @memberof TemperaturesApiInterface
      */
-    getTemperaturesByDateBetweenAndDisbandIdRaw(requestParameters: GetTemperaturesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Temperature>>>;
+    getTemperaturesByDateBetweenAndDisbandIdRaw(requestParameters: GetTemperaturesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseTemperature>>;
 
     /**
      * Get temperatures by date between and disband ID
      */
-    getTemperaturesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Temperature>>;
+    getTemperaturesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseTemperature>;
 
     /**
      * 
@@ -414,7 +417,7 @@ export class TemperaturesApi extends runtime.BaseAPI implements TemperaturesApiI
     /**
      * Get temperatures by date between and disband ID
      */
-    async getTemperaturesByDateBetweenAndDisbandIdRaw(requestParameters: GetTemperaturesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Temperature>>> {
+    async getTemperaturesByDateBetweenAndDisbandIdRaw(requestParameters: GetTemperaturesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseTemperature>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
             throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getTemperaturesByDateBetweenAndDisbandId.');
         }
@@ -454,13 +457,13 @@ export class TemperaturesApi extends runtime.BaseAPI implements TemperaturesApiI
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TemperatureFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeasureResponseTemperatureFromJSON(jsonValue));
     }
 
     /**
      * Get temperatures by date between and disband ID
      */
-    async getTemperaturesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Temperature>> {
+    async getTemperaturesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseTemperature> {
         const response = await this.getTemperaturesByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }

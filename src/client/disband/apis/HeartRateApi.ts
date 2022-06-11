@@ -24,6 +24,9 @@ import {
     MeasureDTO,
     MeasureDTOFromJSON,
     MeasureDTOToJSON,
+    MeasureResponseHeartRate,
+    MeasureResponseHeartRateFromJSON,
+    MeasureResponseHeartRateToJSON,
 } from '../models';
 
 export interface DeleteHeartRatesByDisbandIdRequest {
@@ -136,12 +139,12 @@ export interface HeartRateApiInterface {
      * @throws {RequiredError}
      * @memberof HeartRateApiInterface
      */
-    getHeartRatesByDateBetweenAndDisbandIdRaw(requestParameters: GetHeartRatesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<HeartRate>>>;
+    getHeartRatesByDateBetweenAndDisbandIdRaw(requestParameters: GetHeartRatesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseHeartRate>>;
 
     /**
      * Get heart rates by date between and disband ID
      */
-    getHeartRatesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<HeartRate>>;
+    getHeartRatesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseHeartRate>;
 
     /**
      * 
@@ -360,7 +363,7 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
     /**
      * Get heart rates by date between and disband ID
      */
-    async getHeartRatesByDateBetweenAndDisbandIdRaw(requestParameters: GetHeartRatesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<HeartRate>>> {
+    async getHeartRatesByDateBetweenAndDisbandIdRaw(requestParameters: GetHeartRatesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseHeartRate>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
             throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getHeartRatesByDateBetweenAndDisbandId.');
         }
@@ -400,13 +403,13 @@ export class HeartRateApi extends runtime.BaseAPI implements HeartRateApiInterfa
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(HeartRateFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeasureResponseHeartRateFromJSON(jsonValue));
     }
 
     /**
      * Get heart rates by date between and disband ID
      */
-    async getHeartRatesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<HeartRate>> {
+    async getHeartRatesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseHeartRate> {
         const response = await this.getHeartRatesByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }

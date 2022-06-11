@@ -44,12 +44,6 @@ export interface HeartRate {
      * @memberof HeartRate
      */
     date?: number;
-    /**
-     * 
-     * @type {Disband}
-     * @memberof HeartRate
-     */
-    disband?: Disband;
 }
 
 export function HeartRateFromJSON(json: any): HeartRate {
@@ -64,8 +58,7 @@ export function HeartRateFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'data': !exists(json, 'data') ? undefined : json['data'],
-        'date': !exists(json, 'date') ? undefined : json['date'],
-        'disband': !exists(json, 'disband') ? undefined : DisbandFromJSON(json['disband']),
+        'date': !exists(json, 'date') ? undefined : json['date']
     };
 }
 
@@ -80,8 +73,7 @@ export function HeartRateToJSON(value?: HeartRate | null): any {
         
         'id': value.id,
         'data': value.data,
-        'date': value.date,
-        'disband': DisbandToJSON(value.disband),
+        'date': value.date
     };
 }
 

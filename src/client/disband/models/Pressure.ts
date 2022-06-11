@@ -44,12 +44,6 @@ export interface Pressure {
      * @memberof Pressure
      */
     date?: number;
-    /**
-     * 
-     * @type {Disband}
-     * @memberof Pressure
-     */
-    disband?: Disband;
 }
 
 export function PressureFromJSON(json: any): Pressure {
@@ -64,8 +58,7 @@ export function PressureFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'data': !exists(json, 'data') ? undefined : json['data'],
-        'date': !exists(json, 'date') ? undefined : json['date'],
-        'disband': !exists(json, 'disband') ? undefined : DisbandFromJSON(json['disband']),
+        'date': !exists(json, 'date') ? undefined : json['date']
     };
 }
 
@@ -80,8 +73,7 @@ export function PressureToJSON(value?: Pressure | null): any {
         
         'id': value.id,
         'data': value.data,
-        'date': value.date,
-        'disband': DisbandToJSON(value.disband),
+        'date': value.date
     };
 }
 

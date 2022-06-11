@@ -44,12 +44,6 @@ export interface Humidity {
      * @memberof Humidity
      */
     date?: number;
-    /**
-     * 
-     * @type {Disband}
-     * @memberof Humidity
-     */
-    disband?: Disband;
 }
 
 export function HumidityFromJSON(json: any): Humidity {
@@ -64,8 +58,7 @@ export function HumidityFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'data': !exists(json, 'data') ? undefined : json['data'],
-        'date': !exists(json, 'date') ? undefined : json['date'],
-        'disband': !exists(json, 'disband') ? undefined : DisbandFromJSON(json['disband']),
+        'date': !exists(json, 'date') ? undefined : json['date']
     };
 }
 
@@ -80,8 +73,7 @@ export function HumidityToJSON(value?: Humidity | null): any {
         
         'id': value.id,
         'data': value.data,
-        'date': value.date,
-        'disband': DisbandToJSON(value.disband),
+        'date': value.date
     };
 }
 

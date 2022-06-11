@@ -1,8 +1,9 @@
+import { SchoolYear } from "client/disheap";
+import { Disorder } from "client/disheap/models/Disorder";
 import Toolbar, { IconProps } from "components/Toolbar/Toolbar";
 import { COLORS } from "config/Colors";
 import { ROUTES } from "config/Constants";
 import { commonStyles } from "config/Styles";
-import { Disorder } from "data/model/Disorder";
 import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import React, { useEffect, useState } from "react";
@@ -15,8 +16,6 @@ import { SignUpViewModel } from "viewmodels/SignUpViewModel";
 import { signUpStyles } from "views/signUp/SignUpStyles";
 import { observer } from "../../../node_modules/mobx-react-lite";
 import { AuthContext } from "../../App";
-import { SchoolYearFlat } from '../../data/model/SchoolYear';
-import { Study } from '../../data/model/Study';
 import { back, navigate } from '../../RootNavigation';
 
 export const SignUpView: FunctionalView<SignUpViewModel> = observer(({ vm }) => {
@@ -53,8 +52,8 @@ export const SignUpView: FunctionalView<SignUpViewModel> = observer(({ vm }) => 
             for (let [key, value] of vm.allSchoolYears!) {
                 const parent: ItemType = { label: key, value: key }
                 studies.push(parent)
-                value.map((item: SchoolYearFlat) => {
-                    const label = item.school_year + ' ' + key
+                value.map((item: SchoolYear) => {
+                    const label = item.name + ' ' + key
                     const study: ItemType = { label: label.toString(), value: item.id, parent: key }
                     studies.push(study)
                 })
@@ -120,7 +119,7 @@ export const SignUpView: FunctionalView<SignUpViewModel> = observer(({ vm }) => 
         if (renderDisorders === 1) {
             setLoadingDisorders(true)
             vm.allDisorders!.map((item: Disorder) => {
-                const disorder: ItemType = { label: item.disorder, value: item.id }
+                const disorder: ItemType = { label: item.name, value: item.id }
                 disorders.push(disorder)
             })
             setLoadingDisorders(false)

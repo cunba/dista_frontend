@@ -16,7 +16,9 @@ export enum ROUTES {
     STUDY_TIPS = "StudyTips",
     COMPLEMENTARY_THINGS = "ComplementaryThings",
     DATA = "Data",
-    AMBIENT_DATA = "Ambient"
+    AMBIENT_DATA = "AmbientDataPlot",
+    HEART_RATE = "HeartRatePlot"
+
 }
 
 export enum API {

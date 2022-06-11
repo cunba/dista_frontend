@@ -44,12 +44,6 @@ export interface AmbientNoise {
      * @memberof AmbientNoise
      */
     date?: number;
-    /**
-     * 
-     * @type {Disband}
-     * @memberof AmbientNoise
-     */
-    disband?: Disband;
 }
 
 export function AmbientNoiseFromJSON(json: any): AmbientNoise {
@@ -64,8 +58,7 @@ export function AmbientNoiseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'data': !exists(json, 'data') ? undefined : json['data'],
-        'date': !exists(json, 'date') ? undefined : json['date'],
-        'disband': !exists(json, 'disband') ? undefined : DisbandFromJSON(json['disband']),
+        'date': !exists(json, 'date') ? undefined : json['date']
     };
 }
 
@@ -80,8 +73,7 @@ export function AmbientNoiseToJSON(value?: AmbientNoise | null): any {
         
         'id': value.id,
         'data': value.data,
-        'date': value.date,
-        'disband': DisbandToJSON(value.disband),
+        'date': value.date
     };
 }
 

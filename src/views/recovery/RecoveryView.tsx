@@ -1,6 +1,6 @@
 import { COLORS } from "config/Colors";
 import { commonStyles } from "config/Styles";
-import { ICredentials } from "infrastructure/data/SessionStoreFactory";
+import { ICredentials } from "infrastructure/data/ICredentials";
 import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import { observer } from "mobx-react-lite";

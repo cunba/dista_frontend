@@ -1,6 +1,7 @@
+import { stylesRicyclerList } from "config/Styles"
 import i18n from "infrastructure/localization/i18n"
 import React, { useState } from "react"
-import { RefreshControl, Text, View } from "react-native"
+import { Dimensions, RefreshControl, Text, View } from "react-native"
 import { ScrollView, Swipeable } from "react-native-gesture-handler"
 import { RecyclerListView } from "recyclerlistview"
 import { dateFormat } from "utils/datetimeFormatterHelper"

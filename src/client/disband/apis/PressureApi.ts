@@ -21,6 +21,9 @@ import {
     MeasureDTO,
     MeasureDTOFromJSON,
     MeasureDTOToJSON,
+    MeasureResponsePressure,
+    MeasureResponsePressureFromJSON,
+    MeasureResponsePressureToJSON,
     Pressure,
     PressureFromJSON,
     PressureToJSON,
@@ -153,12 +156,12 @@ export interface PressureApiInterface {
      * @throws {RequiredError}
      * @memberof PressureApiInterface
      */
-    getPressuresByDateBetweenAndDisbandIdRaw(requestParameters: GetPressuresByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Pressure>>>;
+    getPressuresByDateBetweenAndDisbandIdRaw(requestParameters: GetPressuresByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponsePressure>>;
 
     /**
      * Get pressures by date between and disband ID
      */
-    getPressuresByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Pressure>>;
+    getPressuresByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponsePressure>;
 
     /**
      * 
@@ -414,7 +417,7 @@ export class PressureApi extends runtime.BaseAPI implements PressureApiInterface
     /**
      * Get pressures by date between and disband ID
      */
-    async getPressuresByDateBetweenAndDisbandIdRaw(requestParameters: GetPressuresByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Pressure>>> {
+    async getPressuresByDateBetweenAndDisbandIdRaw(requestParameters: GetPressuresByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponsePressure>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
             throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getPressuresByDateBetweenAndDisbandId.');
         }
@@ -454,13 +457,13 @@ export class PressureApi extends runtime.BaseAPI implements PressureApiInterface
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(PressureFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeasureResponsePressureFromJSON(jsonValue));
     }
 
     /**
      * Get pressures by date between and disband ID
      */
-    async getPressuresByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Pressure>> {
+    async getPressuresByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponsePressure> {
         const response = await this.getPressuresByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }

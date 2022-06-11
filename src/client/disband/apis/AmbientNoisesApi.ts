@@ -24,6 +24,9 @@ import {
     MeasureDTO,
     MeasureDTOFromJSON,
     MeasureDTOToJSON,
+    MeasureResponseAmbientNoise,
+    MeasureResponseAmbientNoiseFromJSON,
+    MeasureResponseAmbientNoiseToJSON,
 } from '../models';
 
 export interface DeleteAmbientNoisesByDisbandIdRequest {
@@ -136,12 +139,12 @@ export interface AmbientNoisesApiInterface {
      * @throws {RequiredError}
      * @memberof AmbientNoisesApiInterface
      */
-    getAmbientNoisesByDateBetweenAndDisbandIdRaw(requestParameters: GetAmbientNoisesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AmbientNoise>>>;
+    getAmbientNoisesByDateBetweenAndDisbandIdRaw(requestParameters: GetAmbientNoisesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseAmbientNoise>>;
 
     /**
      * Get ambient noises by date between and disband ID
      */
-    getAmbientNoisesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AmbientNoise>>;
+    getAmbientNoisesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseAmbientNoise>;
 
     /**
      * 
@@ -360,7 +363,7 @@ export class AmbientNoisesApi extends runtime.BaseAPI implements AmbientNoisesAp
     /**
      * Get ambient noises by date between and disband ID
      */
-    async getAmbientNoisesByDateBetweenAndDisbandIdRaw(requestParameters: GetAmbientNoisesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<AmbientNoise>>> {
+    async getAmbientNoisesByDateBetweenAndDisbandIdRaw(requestParameters: GetAmbientNoisesByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseAmbientNoise>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
             throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getAmbientNoisesByDateBetweenAndDisbandId.');
         }
@@ -400,13 +403,13 @@ export class AmbientNoisesApi extends runtime.BaseAPI implements AmbientNoisesAp
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AmbientNoiseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeasureResponseAmbientNoiseFromJSON(jsonValue));
     }
 
     /**
      * Get ambient noises by date between and disband ID
      */
-    async getAmbientNoisesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<AmbientNoise>> {
+    async getAmbientNoisesByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseAmbientNoise> {
         const response = await this.getAmbientNoisesByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }

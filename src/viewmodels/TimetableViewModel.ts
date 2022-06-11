@@ -3,11 +3,10 @@ import { Subject } from "client/disheap/models/Subject";
 import { Timetable } from "client/disheap/models/Timetable";
 import { SubjectRepository } from "data/repository/disheap/impl/SubjectRepository";
 import { TimetableRepository } from "data/repository/disheap/impl/TimetableRepository";
-import { ICredentials } from "infrastructure/data/ICredentials";
 import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { genTimeBlock } from 'react-native-timetable';
-import { getWeekDayString } from '../utils/datetimeFormatterHelper';
+import { getWeekDayString } from "utils/utils";
 
 export class TimetableViewModel {
     @observable allSubjects: Array<Subject> = observable([])
@@ -25,7 +24,7 @@ export class TimetableViewModel {
 
     @action getTimetable = async () => {
         const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
-        const res = await new TimetableRepository().getByUserId(userId)
+        const res = await new TimetableRepository().getByUserId(userId!)
 
         res!.map(async (item: Timetable) => {
             // const subject = await new Subject().getById(item.subject_id)
@@ -42,7 +41,7 @@ export class TimetableViewModel {
     }
 
     @action getAllSubjectsBySchoolYear = async () => {
-        const schoolYearId = (await SessionStoreFactory.getSessionStore().getUser() as ICredentials).schoolYear.id
+        const schoolYearId = (await SessionStoreFactory.getSessionStore().getUser())?.schoolYear?.id
         const res = await new SubjectRepository().getBySchoolYearId(schoolYearId!)
         let exists = false
 

@@ -21,6 +21,9 @@ import {
     MeasureDTO,
     MeasureDTOFromJSON,
     MeasureDTOToJSON,
+    MeasureResponseOxygen,
+    MeasureResponseOxygenFromJSON,
+    MeasureResponseOxygenToJSON,
     Oxygen,
     OxygenFromJSON,
     OxygenToJSON,
@@ -153,12 +156,12 @@ export interface OxygenApiInterface {
      * @throws {RequiredError}
      * @memberof OxygenApiInterface
      */
-    getOxygensByDateBetweenAndDisbandIdRaw(requestParameters: GetOxygensByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Oxygen>>>;
+    getOxygensByDateBetweenAndDisbandIdRaw(requestParameters: GetOxygensByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseOxygen>>;
 
     /**
      * Get oxygens by date between and disband ID
      */
-    getOxygensByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Oxygen>>;
+    getOxygensByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseOxygen>;
 
     /**
      * 
@@ -414,7 +417,7 @@ export class OxygenApi extends runtime.BaseAPI implements OxygenApiInterface {
     /**
      * Get oxygens by date between and disband ID
      */
-    async getOxygensByDateBetweenAndDisbandIdRaw(requestParameters: GetOxygensByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Oxygen>>> {
+    async getOxygensByDateBetweenAndDisbandIdRaw(requestParameters: GetOxygensByDateBetweenAndDisbandIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<MeasureResponseOxygen>> {
         if (requestParameters.minDate === null || requestParameters.minDate === undefined) {
             throw new runtime.RequiredError('minDate','Required parameter requestParameters.minDate was null or undefined when calling getOxygensByDateBetweenAndDisbandId.');
         }
@@ -454,13 +457,13 @@ export class OxygenApi extends runtime.BaseAPI implements OxygenApiInterface {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OxygenFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeasureResponseOxygenFromJSON(jsonValue));
     }
 
     /**
      * Get oxygens by date between and disband ID
      */
-    async getOxygensByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Oxygen>> {
+    async getOxygensByDateBetweenAndDisbandId(minDate: number, maxDate: number, disbandId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<MeasureResponseOxygen> {
         const response = await this.getOxygensByDateBetweenAndDisbandIdRaw({ minDate: minDate, maxDate: maxDate, disbandId: disbandId }, initOverrides);
         return await response.value();
     }

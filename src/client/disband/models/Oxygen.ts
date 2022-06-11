@@ -44,12 +44,6 @@ export interface Oxygen {
      * @memberof Oxygen
      */
     date?: number;
-    /**
-     * 
-     * @type {Disband}
-     * @memberof Oxygen
-     */
-    disband?: Disband;
 }
 
 export function OxygenFromJSON(json: any): Oxygen {
@@ -64,8 +58,7 @@ export function OxygenFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ox
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'data': !exists(json, 'data') ? undefined : json['data'],
-        'date': !exists(json, 'date') ? undefined : json['date'],
-        'disband': !exists(json, 'disband') ? undefined : DisbandFromJSON(json['disband']),
+        'date': !exists(json, 'date') ? undefined : json['date']
     };
 }
 
@@ -80,8 +73,7 @@ export function OxygenToJSON(value?: Oxygen | null): any {
         
         'id': value.id,
         'data': value.data,
-        'date': value.date,
-        'disband': DisbandToJSON(value.disband),
+        'date': value.date
     };
 }
 
