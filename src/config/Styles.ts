@@ -119,7 +119,8 @@ export const commonStyles = StyleSheet.create({
         textAlign: 'center',
         fontSize: SIZES.title,
         color: COLORS.text,
-        paddingBottom: 20
+        width: '100%',
+        marginTop: -10
     },
     titleToolbar: {
         textAlign: 'center',

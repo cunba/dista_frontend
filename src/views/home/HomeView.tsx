@@ -1,18 +1,17 @@
 import { DrawerActions } from "@react-navigation/native"
-import Toolbar, { IconProps, ToolbarProps } from "components/Toolbar/Toolbar"
+import Toolbar, { IconProps } from "components/Toolbar/Toolbar"
 import { COLORS } from "config/Colors"
 import i18n from "infrastructure/localization/i18n"
 import { observer } from 'mobx-react'
-import React, { useEffect } from "react"
+import React from "react"
 import { StatusBar, Text, View } from "react-native"
 import { Card, Divider } from "react-native-paper"
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Fontisto from 'react-native-vector-icons/Fontisto'
 import Foundation from 'react-native-vector-icons/Foundation'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Fontisto from 'react-native-vector-icons/Fontisto'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { dispatch } from "RootNavigation"
 import { ROUTES } from '../../config/Constants'
 import { commonStyles } from '../../config/Styles'
@@ -79,9 +78,8 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
             />
             <Card mode={"outlined"} style={homeStyles.eventsContainer}>
                 <Card.Title title={i18n.t('home.event.title')} style={commonStyles.title} />
-                <Divider style={{ width: '85%' }} />
+                <Divider />
                 <Card.Content>
-                    <Text>Deberes de inglés</Text>
                 </Card.Content>
             </Card>
             <View style={homeStyles.container}>
