@@ -10,6 +10,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Foundation from 'react-native-vector-icons/Foundation'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Fontisto from 'react-native-vector-icons/Fontisto'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { dispatch } from "RootNavigation"
 import { ROUTES } from '../../config/Constants'
 import { commonStyles } from '../../config/Styles'
@@ -136,6 +139,35 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
                         size={55}
                         color={COLORS.text}
                         style={{ alignSelf: 'center' }}
+                    />
+                </Card>
+            </View>
+            <View style={homeStyles.container}>
+                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
+                    <Text style={homeStyles.title}>{i18n.t('psycology.title')}</Text>
+                    <Fontisto
+                        name="person"
+                        size={55}
+                        color={COLORS.text}
+                        style={{ alignSelf: 'center', paddingTop: 10 }}
+                    />
+                </Card>
+                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
+                    <Text style={homeStyles.title}>{i18n.t('academy.title')}</Text>
+                    <FontAwesome5
+                        name="chalkboard-teacher"
+                        size={55}
+                        color={COLORS.text}
+                        style={{ alignSelf: 'center', paddingTop: 10 }}
+                    />
+                </Card>
+                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
+                    <Text style={homeStyles.title}>{i18n.t('settings.title')}</Text>
+                    <AntDesign
+                        name="setting"
+                        size={55}
+                        color={COLORS.text}
+                        style={{ alignSelf: 'center', paddingTop: 10 }}
                     />
                 </Card>
             </View>

@@ -24,7 +24,7 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
                 console.log(e)
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
+                SessionStoreFactory.getSessionStore().setToken(token!.token)
                 UserRepository.tries++
                 this.getByEmail(email)
             } else {
@@ -44,7 +44,7 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
             if (e && UserRepository.tries < 1) {
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
+                SessionStoreFactory.getSessionStore().setToken(token!.token)
                 UserRepository.tries++
                 this.getById(id)
             } else {
@@ -81,7 +81,7 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
             if (e && UserRepository.tries < 1) {
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
+                SessionStoreFactory.getSessionStore().setToken(token!.token)
                 UserRepository.tries++
                 this.update(id, userDTO)
             } else {
@@ -101,7 +101,7 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
             if (e && UserRepository.tries < 1) {
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
+                SessionStoreFactory.getSessionStore().setToken(token!.token)
                 UserRepository.tries++
                 this.updatePassword(id, passwordDTO)
             } else {
@@ -121,7 +121,7 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
             if (e && UserRepository.tries < 1) {
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
+                SessionStoreFactory.getSessionStore().setToken(token!.token)
                 UserRepository.tries++
                 this.updateEmail(id, email)
             } else {
@@ -141,7 +141,7 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
             if (e && UserRepository.tries < 1) {
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
+                SessionStoreFactory.getSessionStore().setToken(token!.token)
                 UserRepository.tries++
                 this.delete(id)
             } else {

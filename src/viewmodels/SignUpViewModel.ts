@@ -42,18 +42,23 @@ export class SignUpViewModel {
     }
 
     @action async getAllSchoolYears() {
-        const res = await this.schoolYearReposiroty.getAll()
-        console.log(res)
+        let schoolYears: SchoolYear[] = []
+        await this.schoolYearReposiroty.getAll().then(items => {
+            schoolYears = items ?? []
+        })
 
-        Promise.all(res!.map(async (item: SchoolYear) => {
-            if (this.allSchoolYears!.has(item.study!)) {
-                this.allSchoolYears!.get(item.study!)!.push(item)
+        let allSchoolYears: Map<string, SchoolYear[]> = new Map()
+
+        await Promise.all(schoolYears.sort(this.orderByStudyDesc).map((item: SchoolYear) => {
+            if (allSchoolYears!.has(item.study!)) {
+                allSchoolYears!.get(item.study!)!.push(item)
             } else {
-                this.allSchoolYears!.set(item.study!, [item])
+                allSchoolYears!.set(item.study!, [item])
             }
-            this.allSchoolYears!.get(item.study!)!.sort(this.orderDesc)
+            allSchoolYears!.get(item.study!)!.sort(this.orderDesc)
         }))
-        console.log(this.allSchoolYears)
+
+        this.setAllSchoolYears(await allSchoolYears)
     }
 
     orderDesc = (a: SchoolYear, b: SchoolYear) => {
@@ -64,6 +69,20 @@ export class SignUpViewModel {
         } else {
             return 0
         }
+    }
+    
+    orderByStudyDesc = (a: SchoolYear, b: SchoolYear) => {
+        if (a.study!.substring(0, 1) > b.study!.substring(0, 1)) {
+            return -1
+        } else if (a.study!.substring(0, 1) < b.study!.substring(0, 1)) {
+            return 1
+        } else {
+            return 0
+        }
+    }
+
+    @action setAllSchoolYears(all: Map<string, SchoolYear[]>) {
+        this.allSchoolYears = all
     }
 
     @action setAllDisorders(disorders: Disorder[]) {

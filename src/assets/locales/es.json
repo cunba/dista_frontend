@@ -50,6 +50,9 @@
     "sign_up.error.password_length": "Las contraseñas deben tener más de 6 caracteres",
     "sign_up.error.birthday": "La fecha es incorrecta (formato dd/mm/yyyy)",
     "sign_up.success": "Compruebe el email para completar el registro",
+    "sign_up.day.label": "Día",
+    "sign_up.month.label": "Mes",
+    "sign_up.year.label": "Año",
 
     "logout": "Cerrar sesión",
     "email": "email@gmail.com",
@@ -127,7 +130,11 @@
     "data.dateMessage": "Última medida ",
     "data.dateMessage.noDate": "No hay datos de los últimos 7 días",
 
-    "data.daySelected": "día",
-    "data.weekSelected": "semana",
-    "data.monthSelected": "mes"
+    "data.daySelected": "Día",
+    "data.weekSelected": "Semana",
+    "data.monthSelected": "Mes",
+
+    "psycology.title": "Psicólogos",
+    "academy.title": "Academias",
+    "settings.title": "Ajustes"
 }

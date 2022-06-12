@@ -118,7 +118,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                     renderLeftActions={(progress, dragX) => renderSwipeLeftDay(progress, dragX)}
 
                     onSwipeableRightOpen={() => {
-                        selected.getDay() === 0 || dateFormat(selected) === dateFormat(new Date()) ?
+                        selected.getDay() === 0 ?
                             refDate?.close()
                             :
                             onSwipeRightOpen()
@@ -250,7 +250,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                 firstDay={1}
                 animateScroll={false}
                 markedDates={vm.markedDatesToAgenda}
-                markingType={'multi-dot'}
+                markingType={'dot'}
                 theme={{
                     selectedDayBackgroundColor: 'transparent',
                     selectedDayTextColor: COLORS.text

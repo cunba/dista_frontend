@@ -50,6 +50,9 @@
     "sign_up.error.password_length": "The passwords must have more than 6 characters",
     "sign_up.error.birthday": "The birthday is wrong (format dd/mm/yyyy)",
     "sign_up.success": "Check your email to complete the sign up",
+    "sign_up.day.label": "Day",
+    "sign_up.month.label": "Month",
+    "sign_up.year.label": "Year",
     
     "logout" : "Logout",
     "email" : "email@gmail.com",
@@ -126,5 +129,9 @@
 
     "data.daySelected": "day",
     "data.weekSelected": "week",
-    "data.monthSelected": "month"
+    "data.monthSelected": "month",
+
+    "psycology.title": "Psycologists",
+    "academy.title": "Academies",
+    "settings.title": "Settings"
 }
