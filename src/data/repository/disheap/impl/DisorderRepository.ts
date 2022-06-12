@@ -1,7 +1,5 @@
-import { LoginRepository } from "data/repository/LoginRepository";
 import DisheapApiClient, { DisheapApi } from "infrastructure/data/DisheapApiClient";
 import { DisheapBaseRepository } from "infrastructure/data/repository/DisheapBaseRepository";
-import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
 import IDisorderApi from "../IDisorderApi";
 
 export class DisorderRepository extends DisheapBaseRepository<IDisorderApi> {
@@ -20,9 +18,6 @@ export class DisorderRepository extends DisheapBaseRepository<IDisorderApi> {
             return result
         } catch (e) {
             if (e && DisorderRepository.tries < 1) {
-                const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
-                const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
                 DisorderRepository.tries++
                 this.getAll()
             } else {
@@ -40,9 +35,6 @@ export class DisorderRepository extends DisheapBaseRepository<IDisorderApi> {
             return result
         } catch (e) {
             if (e && DisorderRepository.tries < 1) {
-                const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
-                const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
-                SessionStoreFactory.getSessionStore().setToken(token.token)
                 DisorderRepository.tries++
                 this.getById(id)
             } else {

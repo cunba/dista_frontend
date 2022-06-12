@@ -40,6 +40,7 @@ export const SignUpView: FunctionalView<SignUpViewModel> = observer(({ vm }) => 
     const { signUp } = React.useContext(AuthContext)
 
     useEffect(() => {
+        vm.constructorFunctions()
         setRender(render + 1)
         setRenderDisorders(renderDisorders + 1)
     }, [])

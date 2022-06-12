@@ -14,6 +14,7 @@ import { dispatch, navigate } from "RootNavigation";
 import { DataViewModel } from "viewmodels/data/DataViewModel";
 import { AmbientData } from "./component/dataView/AmbientData";
 import { HeartRate } from "./component/dataView/HeeartRate";
+import { Lightning } from "./component/dataView/Lightning";
 import { Oxygen } from "./component/dataView/Oxygen";
 
 export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
@@ -87,7 +88,14 @@ export const DataView: FunctionalView<DataViewModel> = observer(({ vm }) => {
                         />
                     </Card.Content>
                 </Card>
-
+                <Card onPress={() => { navigate(ROUTES.LIGHTNING, null) }} style={{ height: 150, marginTop: 15 }}>
+                    <Card.Content>
+                        <Lightning
+                            data={vm.lastLightning}
+                            loading={loading}
+                        />
+                    </Card.Content>
+                </Card>
             </ScrollView>
         </>
     )

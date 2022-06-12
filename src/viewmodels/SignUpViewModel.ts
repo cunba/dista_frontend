@@ -7,6 +7,10 @@ import { action, makeAutoObservable, observable } from "mobx";
 import { dateFormat } from "utils/datetimeFormatterHelper";
 
 export class SignUpViewModel {
+
+    disorderRepository = new DisorderRepository()
+    schoolYearReposiroty = new SchoolYearRepository()
+
     @observable email?: string
     @observable password?: string
     @observable name?: string
@@ -25,19 +29,21 @@ export class SignUpViewModel {
         this.constructorFunctions()
     }
 
-    @action async constructorFunctions() {
-        await this.getAllSchoolYears()
-        await this.getAllDisorders()
+    @action constructorFunctions() {
+        this.getAllSchoolYears()
+        this.getAllDisorders()
     }
 
     @action async getAllDisorders() {
-        await new DisorderRepository().getAll().then(disorders => {
+        await this.disorderRepository.getAll().then(disorders => {
+            console.log(disorders)
             this.setAllDisorders(disorders ?? [])
         })
     }
 
     @action async getAllSchoolYears() {
-        const res = await new SchoolYearRepository().getAll()
+        const res = await this.schoolYearReposiroty.getAll()
+        console.log(res)
 
         Promise.all(res!.map(async (item: SchoolYear) => {
             if (this.allSchoolYears!.has(item.study!)) {
@@ -47,6 +53,7 @@ export class SignUpViewModel {
             }
             this.allSchoolYears!.get(item.study!)!.sort(this.orderDesc)
         }))
+        console.log(this.allSchoolYears)
     }
 
     orderDesc = (a: SchoolYear, b: SchoolYear) => {

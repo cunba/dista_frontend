@@ -63,6 +63,8 @@ import { AgendaViewModel } from './viewmodels/agenda/AgendaViewModel';
 import DrawerContent from '/components/DrawerContent/DrawerContent';
 import { OxygenPlotView } from 'views/data/plot/OxygenPlotView';
 import { OxygenPlotViewModel } from 'viewmodels/data/OxygenPlotViewModel';
+import { LightningPlotView } from 'views/data/plot/LightningPlotView';
+import { LightningPlotViewModel } from 'viewmodels/data/LightningPlotViewModel';
 
 // Register Disheap api clients
 DisheapApiClient.register(DisheapApi.DisorderApi, new DisordersApi)
@@ -133,6 +135,7 @@ const DataScreen = () => <DataView vm={new DataViewModel()} />
 const AmbientDataPlotScreen = () => <AmbientDataPlotView vm={new AmbientDataPlotViewModel()} />
 const HeartRatePlotScreen = () => <HeartRatePlotView vm={new HeartRatePlotViewModel()} />
 const OxygenPlotScreen = () => <OxygenPlotView vm={new OxygenPlotViewModel()} />
+const LightningPlotScreen = () => <LightningPlotView vm={new LightningPlotViewModel()} />
 
 // Agenda
 const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
@@ -266,6 +269,7 @@ const App = () => {
 				SessionStoreFactory.getSessionStore().setToken(response.token!);
 				SessionStoreFactory.getSessionStore().setCredentials({ email: email, password: password } as ICredentials)
 				const user = await new UserRepository().getByEmail(email)
+				console.log(user)
 				SessionStoreFactory.getSessionStore().setUser(user)
 				const disband = await new DisbandRepository().getByUserId(user!.id!)
 				SessionStoreFactory.getSessionStore().setDisband(disband![0])
@@ -380,6 +384,11 @@ const App = () => {
 									<Stack.Screen
 										name={ROUTES.OXYGEN}
 										component={OxygenPlotScreen}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name={ROUTES.LIGHTNING}
+										component={LightningPlotScreen}
 										options={{ headerShown: false }}
 									/>
 								</>

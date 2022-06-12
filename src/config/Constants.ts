@@ -18,15 +18,9 @@ export enum ROUTES {
     DATA = "Data",
     AMBIENT_DATA = "AmbientDataPlot",
     HEART_RATE = "HeartRatePlot",
-    OXYGEN = "OxygenPlot"
+    OXYGEN = "OxygenPlot",
+    LIGHTNING = "LightningPlot"
 
-}
-
-export enum API {
-    BASE_URL = 'https://uoyzjppprhafosltufac.supabase.co/rest/v1',
-    BASE_URL_USER = 'https://uoyzjppprhafosltufac.supabase.co/auth/v1',
-    APIKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTY3MDY0NCwiZXhwIjoxOTU3MjQ2NjQ0fQ.I2dt2qM5vBw3F0zpciAZ0Ru8ibisaDqj3x6g2EvvAeE',
-    AUTHORIZATION = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTY3MDY0NCwiZXhwIjoxOTU3MjQ2NjQ0fQ.I2dt2qM5vBw3F0zpciAZ0Ru8ibisaDqj3x6g2EvvAeE'
 }
 
 export const isAndroid = Platform.OS === 'android'
