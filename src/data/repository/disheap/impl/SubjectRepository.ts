@@ -14,7 +14,7 @@ export class SubjectRepository extends DisheapBaseRepository<ISubjectApi> {
 
     async getBySchoolYearId(schoolYearId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<ISubjectApi>(DisheapApi.SubjectApi)
+            const client = await this.apiClient
             const result = await client.getSubjectsBySchoolYearId(schoolYearId)
             SubjectRepository.tries = 0
             return result
@@ -34,7 +34,7 @@ export class SubjectRepository extends DisheapBaseRepository<ISubjectApi> {
 
     async getById(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<ISubjectApi>(DisheapApi.SubjectApi)
+            const client = await this.apiClient
             const result = await client.getSubjectById(id)
             SubjectRepository.tries = 0
             return result

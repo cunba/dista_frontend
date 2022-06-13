@@ -12,7 +12,7 @@ export class DisorderRepository extends DisheapBaseRepository<IDisorderApi> {
 
     async getAll() {
         try {
-            const client = await DisheapApiClient.clientFor<IDisorderApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getAllDisorders()
             DisorderRepository.tries = 0
             return result
@@ -29,7 +29,7 @@ export class DisorderRepository extends DisheapBaseRepository<IDisorderApi> {
 
     async getById(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IDisorderApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getDisorderById(id)
             DisorderRepository.tries = 0
             return result

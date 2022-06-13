@@ -99,7 +99,6 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
         let subject = ''
         onCloseModal()
 
-        console.log(daySelected)
         const start = genTimeBlock(getWeekDayString(daySelected), startTime.getHours(), startTime.getMinutes())
         const end = genTimeBlock(getWeekDayString(daySelected), endTime.getHours(), endTime.getMinutes())
         const data = new DataTimetable(subject, start, end)

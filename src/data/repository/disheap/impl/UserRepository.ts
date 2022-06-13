@@ -21,7 +21,6 @@ export class UserRepository extends DisheapBaseRepository<IUserApi> {
             return result
         } catch (e) {
             if (e && UserRepository.tries < 1) {
-                console.log(e)
                 const credentials = await SessionStoreFactory.getSessionStore().getCredentials()
                 const token = await new LoginRepository().login(credentials!.email!, credentials!.password!)
                 SessionStoreFactory.getSessionStore().setToken(token!.token)

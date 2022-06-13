@@ -12,7 +12,7 @@ export class SchoolYearRepository extends DisheapBaseRepository<ISchoolYearApi> 
 
     async getAll() {
         try {
-            const client = await DisheapApiClient.clientFor<ISchoolYearApi>(DisheapApi.SchoolYearApi)
+            const client = await this.apiClient
             const result = await client.getAllSchoolYears()
             SchoolYearRepository.tries = 0
             return result
@@ -29,7 +29,7 @@ export class SchoolYearRepository extends DisheapBaseRepository<ISchoolYearApi> 
 
     async getById(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<ISchoolYearApi>(DisheapApi.SchoolYearApi)
+            const client = await this.apiClient
             const result = await client.getSchoolYearById(id)
             SchoolYearRepository.tries = 0
             return result

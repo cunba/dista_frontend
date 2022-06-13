@@ -18,7 +18,6 @@ export class TimetableViewModel {
 
     constructor() {
         makeAutoObservable(this)
-        this.constructorFunctions()
     }
 
     @action constructorFunctions = async () => {
@@ -29,6 +28,7 @@ export class TimetableViewModel {
 
     @action getTimetable = async (user: UserModel) => {
         const res = await this.timetableRepository.getByUserId(user.id!)
+        console.log(res)
 
         res!.map(async (item: Timetable) => {
             const data = new DataTimetable(
@@ -57,7 +57,6 @@ export class TimetableViewModel {
     }
 
     @action saveNewData = async () => {
-        console.log('entra')
         Promise.all(this.newData.map(async (item: TimetableDTO) => {
             await this.timetableRepository.save(item)
             const subject = await this.subjectRepository.getById(item.subjectId!)

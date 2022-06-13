@@ -36,7 +36,6 @@ export class SignUpViewModel {
 
     @action async getAllDisorders() {
         await this.disorderRepository.getAll().then(disorders => {
-            console.log(disorders)
             this.setAllDisorders(disorders ?? [])
         })
     }

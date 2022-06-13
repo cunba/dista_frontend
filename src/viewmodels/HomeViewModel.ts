@@ -17,7 +17,6 @@ export class HomeViewModel {
         const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id!
         const dateInterval = getDateToSearch(new Date())
         await this.eventRepository.getByStartDateBetweenAndUserId(dateInterval.minDay, dateInterval.maxDay, userId).then(items => {
-            console.log(items)
             this.setTodayEvents(items ?? [])
         })
     }

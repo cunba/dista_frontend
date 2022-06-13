@@ -14,7 +14,7 @@ export class TimetableRepository extends DisheapBaseRepository<ITimetableApi> {
 
     async getByUserId(userId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<ITimetableApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getTimetablesByUserId(userId)
             return result
         } catch (e) {
@@ -53,7 +53,7 @@ export class TimetableRepository extends DisheapBaseRepository<ITimetableApi> {
 
     async save(timetableDTO: TimetableDTO) {
         try {
-            const client = await DisheapApiClient.clientFor<ITimetableApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.saveTimetable(timetableDTO)
             TimetableRepository.tries = 0
             return result

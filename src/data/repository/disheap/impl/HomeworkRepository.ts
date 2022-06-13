@@ -15,7 +15,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async getByByDeadlineBetweenAndUserId(minDate: number, maxDate: number, userId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getHomeworksByByDeadlineBetweenAndUserId(minDate, maxDate, userId)
             HomeworkRepository.tries = 0
             return result
@@ -35,7 +35,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async getByDeadlineBetweenAndSubjectIdAndUserId(minDate: number, maxDate: number, subjectId: string, userId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getHomeworksByDeadlineBetweenAndSubjectIdAndUserId(minDate, maxDate, subjectId, userId)
             HomeworkRepository.tries = 0
             return result
@@ -55,7 +55,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async getById(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getHomeworkById(id)
             HomeworkRepository.tries = 0
             return result
@@ -75,7 +75,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async save(homeworkDTO: HomeworkDTO) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.saveHomework(homeworkDTO)
             HomeworkRepository.tries = 0
             return result
@@ -95,7 +95,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async update(id: string, homeworkDTO: HomeworkDTO) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.updateHomework(id, homeworkDTO)
             HomeworkRepository.tries = 0
             return result
@@ -115,7 +115,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async delete(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.deleteHomework(id)
             HomeworkRepository.tries = 0
             return result
@@ -135,7 +135,7 @@ export class HomeworkRepository extends DisheapBaseRepository<IHomeworkApi> {
 
     async deleteByUserId(userId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IHomeworkApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.deleteHomeworksByUserId(userId)
             HomeworkRepository.tries = 0
             return result
