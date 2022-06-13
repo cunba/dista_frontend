@@ -9,7 +9,7 @@ import GlobalButton from 'components/GlobalButton/GlobalButton';
 import { COLORS } from '../../config/Colors';
 import i18n from 'infrastructure/localization/i18n';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar, Drawer, Title } from 'react-native-paper';
 import { SessionStoreFactory } from '../../infrastructure/data/SessionStoreFactory';
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        marginTop: 20,
+        marginVertical: 10,
         fontWeight: 'bold',
         color: 'black'
     },
@@ -92,9 +92,9 @@ export default function DrawerContent(props: any) {
     SessionStoreFactory.getSessionStore()
         .getUser()
         .then((response) => {
-            setName(response!.name)
-            setSurname(response!.surname)
-            setEmail(response!!.email);
+            setName(response!.name!)
+            setSurname(response!.surname!)
+            setEmail(response!.email!);
         });
 
     //TODO: Change the hardcoded for the new user details in the cloud
@@ -122,7 +122,7 @@ export default function DrawerContent(props: any) {
                         size={100}
                     />
                     <Title style={styles.title}>{name} {surname}</Title>
-                    <Title style={{ color: 'black' }}>{email}</Title>
+                    <Text style={{ color: 'black' }}>{email}</Text>
                 </View>
                 <View
                     style={{

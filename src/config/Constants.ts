@@ -14,14 +14,15 @@ export enum ROUTES {
     TIMETABLE = "Timetable",
     HOMEWORK = "Homework",
     STUDY_TIPS = "StudyTips",
-    COMPLEMENTARY_THINGS = "ComplementaryThings"
-}
-
-export enum API {
-    BASE_URL = 'https://uoyzjppprhafosltufac.supabase.co/rest/v1',
-    BASE_URL_USER = 'https://uoyzjppprhafosltufac.supabase.co/auth/v1',
-    APIKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTY3MDY0NCwiZXhwIjoxOTU3MjQ2NjQ0fQ.I2dt2qM5vBw3F0zpciAZ0Ru8ibisaDqj3x6g2EvvAeE',
-    AUTHORIZATION = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MTY3MDY0NCwiZXhwIjoxOTU3MjQ2NjQ0fQ.I2dt2qM5vBw3F0zpciAZ0Ru8ibisaDqj3x6g2EvvAeE'
+    COMPLEMENTARY_THINGS = "ComplementaryThings",
+    DATA = "Data",
+    AMBIENT_DATA = "AmbientDataPlot",
+    HEART_RATE = "HeartRatePlot",
+    OXYGEN = "OxygenPlot",
+    LIGHTNING = "LightningPlot",
+    PSYCOLOGY = "Psycology",
+    ACADEMY = "Academy",
+    SETTINGS = "Settings"
 }
 
 export const isAndroid = Platform.OS === 'android'

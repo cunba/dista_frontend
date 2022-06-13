@@ -1,15 +1,13 @@
-import { UserApi } from 'client/UserApi';
 import { COLORS } from 'config/Colors';
-import { Event } from 'data/model/Event';
+import { EventRepository } from 'data/repository/disheap/impl/EventRepository';
+import { SessionStoreFactory } from 'infrastructure/data/SessionStoreFactory';
 import { action, makeAutoObservable, observable } from 'mobx';
 import { dateFormat } from 'utils/datetimeFormatterHelper';
-import { EventApi } from '../../client/EventApi';
-import { EventTypeApi } from '../../client/EventTypeApi';
-import { EventType } from '../../data/model/EventType';
+import { Event } from 'client/disheap/models/Event'
 
 export class AgendaViewModel {
+    eventRepository = new EventRepository()
     @observable agendaArray: Map<string, DataEvent> = new Map()
-    @observable eventTypes: Map<string, EventType> = new Map()
     @observable renderMarkedDates: any = []
     @observable markedDatesToAgenda: any = {}
     @observable dateSelected: string = dateFormat(new Date())
@@ -25,20 +23,9 @@ export class AgendaViewModel {
     }
 
     @action async constructorFunctions() {
-        await this.getAllEventsType()
-        const events = await this.getAllEvents()
+        const events: Event[] = await this.getAllEvents()
         this.eventsToAgenda(events)
         this.markedDatesToJson()
-    }
-
-    @action getAllEventsType = async () => {
-        const res = await new EventTypeApi().getAll()
-
-        if (res !== false && res.length > 0) {
-            res.map((item: any) => {
-                this.eventTypes.set(item.id, new EventType(item.id, item.type, item.color))
-            })
-        }
     }
 
     @action setDateFrom = () => {
@@ -54,28 +41,22 @@ export class AgendaViewModel {
     }
 
     @action getAllEvents = async () => {
-        const userId = (await new UserApi().getUser()).id
-        const res = await new EventApi().getByStartDateAndEndDateAndUser(this.dateFrom, this.dateTo, userId!)
-        const events: Event[] = []
-
-        if (res !== false) {
-            res.map(async (item: any) => {
-                const eventType = this.eventTypes.get(item.event_type_id)
-                events.push(new Event(item.id, item.name, item.notes, new Date(item.start_date), new Date(item.end_date), eventType!, item.user_id))
-            })
-        }
-
-        if (events.length > 0) {
-            events.sort(this.orderAsc)
-        }
+        const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
+        console.log(this.dateFrom.getTime())
+        console.log(this.dateTo.getTime())
+        console.log(userId)
+        let events: Event[] = []
+        await this.eventRepository.getByStartDateBetweenAndUserId(this.dateFrom.getTime(), this.dateTo.getTime(), userId!).then(list => {
+            events = list ?? []
+        })
 
         return events
     }
 
     orderAsc = (a: Event, b: Event) => {
-        if (a.startDate.getTime() < b.startDate.getTime()) {
+        if (a.startDate! < b.startDate!) {
             return -1
-        } else if (a.startDate.getTime() > b.startDate.getTime()) {
+        } else if (a.startDate! > b.startDate!) {
             return 1
         } else {
             return 0
@@ -85,28 +66,27 @@ export class AgendaViewModel {
     @action eventsToAgenda = (events: Event[]) => {
         if (events.length > 0 && events !== null && events !== undefined) {
             events.map((item: Event) => {
-                if (this.agendaArray.has(dateFormat(item.startDate))) {
-                    this.agendaArray.get(dateFormat(item.startDate))!.events.push(item)
-                    this.agendaArray.get(dateFormat(item.startDate))!.events.sort(this.orderAsc)
+                if (this.agendaArray.has(dateFormat(new Date(item.startDate!)))) {
+                    this.agendaArray.get(dateFormat(new Date(item.startDate!)))!.events.push(item)
+                    this.agendaArray.get(dateFormat(new Date(item.startDate!)))!.events.sort(this.orderAsc)
                 } else {
-                    this.agendaArray.set(dateFormat(item.startDate), new DataEvent([item], []))
+                    this.agendaArray.set(dateFormat(new Date(item.startDate!)), new DataEvent([item], []))
                 }
             })
         }
     }
 
     refreshEvents = async (date: Date) => {
-        const from = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
-        const to = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 59)
-        const userId = (await new UserApi().getUser()).id
+        const from = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0).getTime()
+        const to = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 59).getTime()
+        const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
         const events: Event[] = []
 
-        const res = await new EventApi().getByStartDateAndEndDateAndUser(from, to, userId)
+        const res = await this.eventRepository.getByStartDateBetweenAndUserId(from, to, userId!)
 
-        if (res !== false && res.length > 0) {
-            res.map(async (item: any) => {
-                const eventType = this.eventTypes.get(item.event_type_id)
-                events.push(new Event(item.id, item.name, item.notes, new Date(item.start_date), new Date(item.end_date), eventType!, item.user_id))
+        if (res!.length > 0) {
+            res!.map(async (item: any) => {
+                events.push(item)
             })
 
             if (events.length > 0) {
@@ -124,34 +104,34 @@ export class AgendaViewModel {
 
         eventsTemplate.map((item: Event) => {
             if (this.agendaArray!.size === 0) {
-                this.agendaArray.set(dateFormat(item.startDate), new DataEvent([item], []))
+                this.agendaArray.set(dateFormat(new Date(item.startDate!)), new DataEvent([item], []))
                 added = true
             } else {
-                if (this.agendaArray.has(dateFormat(item.startDate))) {
-                    this.agendaArray.get(dateFormat(item.startDate))!.events.map((event: Event) => {
+                if (this.agendaArray.has(dateFormat(new Date(item.startDate!)))) {
+                    this.agendaArray.get(dateFormat(new Date(item.startDate!)))!.events.map((event: Event) => {
                         if (item.id === event.id) {
                             exists = true
                         }
                     })
 
                     if (!exists) {
-                        this.agendaArray.get(dateFormat(item.startDate))!.events.push(item)
+                        this.agendaArray.get(dateFormat(new Date(item.startDate!)))!.events.push(item)
                         added = true
                     }
                 } else {
-                    this.agendaArray.set(dateFormat(item.startDate), new DataEvent([item], []))
+                    this.agendaArray.set(dateFormat(new Date(item.startDate!)), new DataEvent([item], []))
                 }
 
-                this.agendaArray.get(dateFormat(item.startDate))!.events.sort(this.orderAsc)
+                this.agendaArray.get(dateFormat(new Date(item.startDate!)))!.events.sort(this.orderAsc)
                 exists = false
             }
         })
     }
 
     modifyFromAgendaArray = (eventModified: Event) => {
-        this.agendaArray.get(dateFormat(eventModified.startDate))!.events.map((event: Event, key: number) => {
+        this.agendaArray.get(dateFormat(new Date(eventModified.startDate!)))!.events.map((event: Event, key: number) => {
             if (event.id === eventModified.id) {
-                this.agendaArray.get(dateFormat(eventModified.startDate))!.events.splice(key, 1, eventModified)
+                this.agendaArray.get(dateFormat(new Date(eventModified.startDate!)))!.events.splice(key, 1, eventModified)
             }
         })
     }
@@ -169,28 +149,10 @@ export class AgendaViewModel {
     }
 
     @action deleteEvent = async (event: any) => {
-        await new EventApi().delete(event.id)
+        await this.eventRepository.delete(event.id)
 
         this.deleteFromAgendaArray(event.id, dateFormat(event.signDate))
         this.markedDatesToJson()
-    }
-
-    setDots = (date: string) => {
-        const events = this.agendaArray.get(date)!.events
-        const dots = this.agendaArray.get(date)!.dots
-        this.agendaArray.get(date)!.dots = []
-        let exists = false
-
-        events.map(item => {
-            dots.map(dot => {
-                if (dot.key === item.eventType.type) {
-                    exists = true
-                }
-            })
-            if (!exists) {
-                this.agendaArray.get(date)!.dots.push(new Dot(item.eventType.type, item.eventType.color!))
-            }
-        })
     }
 
     @action markedDatesToJson = () => {
@@ -202,15 +164,14 @@ export class AgendaViewModel {
 
         if (this.agendaArray !== undefined && this.agendaArray.size > 0) {
             for (let [key, item] of this.agendaArray!) {
-                this.setDots(key)
                 if (this.dateSelected === key) {
-                    this.renderMarkedDates.push({ [key.toString()]: { marked: true, selected: true, selectedColor: COLORS.touchables, selectedTextColor: COLORS.textButtons, dots: item.dots, disabled: false } })
+                    this.renderMarkedDates.push({ [key.toString()]: { marked: true, selected: true, selectedColor: COLORS.touchables, selectedTextColor: COLORS.textButtons, dotColor: COLORS.textButtons, disabled: false } })
                 }
                 else {
                     if (this.dateSelected === dateFormat(new Date())) {
-                        this.renderMarkedDates.push({ [key.toString()]: { marked: true, selected: false, dots: item.dots, disabled: false } })
+                        this.renderMarkedDates.push({ [key.toString()]: { marked: true, selected: false, dotColor: COLORS.text, disabled: false } })
                     }
-                    this.renderMarkedDates.push({ [key.toString()]: { marked: true, selected: false, dots: item.dots, disabled: false } })
+                    this.renderMarkedDates.push({ [key.toString()]: { marked: true, selected: false, dotColor: COLORS.text, disabled: false } })
                 }
             }
         }

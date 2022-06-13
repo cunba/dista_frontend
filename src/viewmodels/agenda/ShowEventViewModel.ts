@@ -1,8 +1,8 @@
-import { action, makeAutoObservable } from "mobx"
-import { Event } from "../../data/model/Event"
+import { action, makeAutoObservable, observable } from "mobx"
+import {Event} from "client/disheap/models/Event"
 
 export class ShowEventViewModel {
-    eventPressed?: Event
+    @observable eventPressed?: Event
 
     constructor() {
         makeAutoObservable(this)

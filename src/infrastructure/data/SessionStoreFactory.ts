@@ -1,28 +1,11 @@
-import { NotImplementedException } from '../exceptions/NotImplementedException';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Disband } from "client/disband/models/Disband";
+import { UserModel } from 'client/disheap/models/UserModel';
+import { ICredentials } from './ICredentials';
+import { SessionStore } from './ISessionStore';
 
 export enum SessionStoreType {
   SessionAsyncStorage, ContextStorage, LocalStorage, SessionStorage
-}
-
-export interface ICredentials {
-  name: string,
-  surname: string,
-  birthday: string,
-  schoolYearId: string,
-  disorderId: string,
-  email: string,
-  password: string
-}
-
-export interface SessionStore {
-  getToken(): Promise<string | undefined | null>
-  setToken(token: string | undefined): void
-  getUser(): Promise<ICredentials | undefined | null>
-  setUser(user: ICredentials | undefined): void
-  isLoggedIn(): Promise<boolean>
-  setRecoverPassword(recoverPassword: string): void
-  getRecoverPassword(): Promise<boolean>
 }
 
 export class SessionStoreFactory {
@@ -53,14 +36,32 @@ const sessionAsyncStorage = (): SessionStore => {
     setToken: (token: string) => {
       AsyncStorage.setItem("token", token)
     },
+    getCredentials: async () => {
+      const credentials = await AsyncStorage.getItem("credentials")
+      if (credentials)
+        return JSON.parse(credentials)
+      return undefined
+    },
+    setCredentials: (credentials: ICredentials | undefined) => {
+      credentials ? AsyncStorage.setItem("credentials", JSON.stringify(credentials)) : AsyncStorage.removeItem("credentials")
+    },
     getUser: async () => {
       const user = await AsyncStorage.getItem("user")
       if (user)
         return JSON.parse(user)
       return undefined
     },
-    setUser: (user: ICredentials | undefined) => {
+    setUser: (user: UserModel | undefined) => {
       user ? AsyncStorage.setItem("user", JSON.stringify(user)) : AsyncStorage.removeItem("user")
+    },
+    getDisband: async () => {
+      const disband = await AsyncStorage.getItem("disband")
+      if (disband)
+        return JSON.parse(disband)
+      return undefined
+    },
+    setDisband: (disband: Disband) => {
+      disband ? AsyncStorage.setItem("disband", JSON.stringify(disband)) : AsyncStorage.removeItem("disband")
     },
     isLoggedIn: async () => {
       const logged = await AsyncStorage.getItem("token")
