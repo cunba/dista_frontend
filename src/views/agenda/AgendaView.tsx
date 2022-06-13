@@ -1,4 +1,4 @@
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useRoute } from '@react-navigation/native';
 import { Event } from 'client/disheap';
 import Toolbar, { IconProps } from 'components/Toolbar/Toolbar';
 import { COLORS } from 'config/Colors';
@@ -22,6 +22,8 @@ import { agendaStyles } from './AgendaStyles';
 import { RenderItem } from './component/RenderItem';
 
 export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => {
+    const route = useRoute()
+
     const [startDay, setStartDay] = useState(new XDate(new Date()))
     const [firstDay, setFirstDay] = useState(new Date())
     const [selected, setSelected] = useState(new Date())
@@ -41,6 +43,10 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
         vm.setDateFrom()
         vm.constructorFunctions()
     }, [])
+
+    useEffect(() => {
+        refreshItems()
+    }, [route.params!])
 
     useEffect(() => {
         vm.dateSelected = dateFormat(selected)
@@ -63,7 +69,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
 
     const onPressEvent = (item: Event) => {
         vm.setEventPressed(item)
-        navigate(ROUTES.SHOW_EVENT, {event: item})
+        navigate(ROUTES.SHOW_EVENT, { event: item })
     }
 
     const renderItem = (type: any, item: Event) => {
@@ -199,7 +205,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     }
 
     const iconRightProps: IconProps = {
-        onPress: () => { navigate(ROUTES.ADD_EVENT, null) },
+        onPress: () => { navigate(ROUTES.ADD_EVENT, { date: selected }) },
         name: 'plus',
         type: 'AntDesign'
     }
@@ -230,11 +236,10 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                 onDayPress={(date) => setSelected(new Date(date.timestamp))}
                 futureScrollRange={1}
                 topDay={startDay}
-                maxDate={dateFormat(new Date())}
                 onVisibleMonthsChange={onMonthChange}
                 renderEmptyData={renderDate}
                 hideKnob={false}
-                allowSelectionOutOfRange={false}
+                allowSelectionOutOfRange={true}
                 onCalendarToggled={(calendarOpened) => setCalendarOpened(!calendarOpened)}
                 showClosingKnob={false}
                 firstDay={1}

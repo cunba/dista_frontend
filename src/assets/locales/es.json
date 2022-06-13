@@ -63,6 +63,7 @@
 
     "agenda.title": "Agenda",
     "agenda.empty": "No hay eventos para hoy",
+    "agenda.selectDate": "Selecciona la fecha",
 
     "addEvent.title": "Añadir evento",
     "addEvent.name.label": "Nombre",

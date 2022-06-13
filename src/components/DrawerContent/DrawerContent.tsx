@@ -115,7 +115,7 @@ export default function DrawerContent(props: any) {
                     }}
                     onPress={() => dispatch(DrawerActions.closeDrawer())}>
                 </TouchableOpacity>
-                <View style={styles.userInfoSection}>
+                <TouchableOpacity style={styles.userInfoSection}>
                     <Avatar.Text
                         style={{ backgroundColor: COLORS.button }}
                         label={name.substring(0, 1).toUpperCase() + '' + surname.substring(0, 1).toUpperCase()}
@@ -123,7 +123,7 @@ export default function DrawerContent(props: any) {
                     />
                     <Title style={styles.title}>{name} {surname}</Title>
                     <Text style={{ color: 'black' }}>{email}</Text>
-                </View>
+                </TouchableOpacity>
                 <View
                     style={{
                         backgroundColor: COLORS.button,

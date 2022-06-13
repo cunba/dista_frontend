@@ -12,7 +12,7 @@ export class AgendaViewModel {
     @observable markedDatesToAgenda: any = {}
     @observable dateSelected: string = dateFormat(new Date())
     @observable eventPressed?: Event
-    @observable dateTo: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 59)
+    @observable dateTo: Date = new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate(), 23, 59, 59, 59)
     @observable dateFrom: Date = new Date().getMonth() + 1 > 2 ?
         new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1, 0, 0, 0, 0)
         :
@@ -42,9 +42,6 @@ export class AgendaViewModel {
 
     @action getAllEvents = async () => {
         const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
-        console.log(this.dateFrom.getTime())
-        console.log(this.dateTo.getTime())
-        console.log(userId)
         let events: Event[] = []
         await this.eventRepository.getByStartDateBetweenAndUserId(this.dateFrom.getTime(), this.dateTo.getTime(), userId!).then(list => {
             events = list ?? []

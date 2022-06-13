@@ -4,9 +4,9 @@ import { commonStyles, formStyles } from "config/Styles"
 import i18n from "infrastructure/localization/i18n"
 import { FunctionalView } from "infrastructure/views/FunctionalView"
 import { observer } from "mobx-react-lite"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { back } from "RootNavigation"
+import { back, navigate } from "RootNavigation"
 import { dateFormat, timeFormatter } from "utils/datetimeFormatterHelper"
 import { signUpStyles } from "views/signUp/SignUpStyles"
 import { AddEndTimeTimetableProps } from "views/timetable/component/AddEndTimeTimetable"
@@ -15,16 +15,28 @@ import { AddEventViewModel } from '../../viewmodels/agenda/AddEventViewModel'
 import { agendaStyles } from "./AgendaStyles"
 import { AddDateProps } from "./component/AddDate"
 import { ModalAgenda } from "./component/ModalAgenda"
+import { useRoute } from '@react-navigation/native';
+import { ROUTES } from "config/Constants"
 
 export const AddEventView: FunctionalView<AddEventViewModel> = observer(({ vm }) => {
+    const route = useRoute()
+    
     const [visible, setVisible] = useState(false)
     const [addDate, setAddDate] = useState(false)
     const [addEndTime, setAddEndTime] = useState(false)
     const [addStartTime, setAddStartTime] = useState(false)
-    const [dateSelected, setDateSelected] = useState(vm.startDate)
-    const [startDateSelected, setStartDateSelected] = useState(new Date(vm.startDate.setHours(0, 0, 0, 0)))
-    const [endDateSelected, setEndDateSelected] = useState(new Date(vm.endDate.setHours(0, 0, 0, 0)))
+    const [dateSelected, setDateSelected] = useState(new Date())
+    const [startDateSelected, setStartDateSelected] = useState(new Date())
+    const [endDateSelected, setEndDateSelected] = useState(new Date())
     const [showSpinner, setShowSpinner] = useState(false)
+
+    useEffect(() => {
+        vm.setStartDate(route.params!.date)
+        vm.setEndDate(route.params!.date)
+        setStartDateSelected(route.params!.date)
+        setDateSelected(route.params!.date)
+        setEndDateSelected(route.params!.date)
+    }, [route.params!.date])
 
     const onRequestClose = () => {
         setAddDate(false)
@@ -37,6 +49,11 @@ export const AddEventView: FunctionalView<AddEventViewModel> = observer(({ vm })
         vm.setStartDate(startDateSelected)
         vm.setEndDate(endDateSelected)
         onRequestClose()
+    }
+    
+    const save = async () => {
+        await vm.saveEvent()
+        navigate(ROUTES.AGENDA, {refresh: true})
     }
 
     const toolbarProps: ToolbarProps = {
@@ -128,7 +145,7 @@ export const AddEventView: FunctionalView<AddEventViewModel> = observer(({ vm })
                 {showSpinner ?
                     <ActivityIndicator style={commonStyles.spinner} size='large' animating={true} color={COLORS.button} />
                     :
-                    <TouchableOpacity style={formStyles.button} onPress={vm.saveEvent} >
+                    <TouchableOpacity style={formStyles.button} onPress={save} >
                         <Text style={commonStyles.textButton}>{i18n.t('addEvent.save')}</Text>
                     </TouchableOpacity>
                 }

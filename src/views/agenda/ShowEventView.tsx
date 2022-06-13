@@ -23,9 +23,8 @@ export const ShowEventView: FunctionalView<ShowEventViewModel> = observer(({ vm 
     }
 
     useEffect(() => {
-        console.log(route.params.event)
-        vm.setEventPressed(route.params.event)
-    }, [])
+        vm.setEventPressed(route.params!.event)
+    }, [route.params!.event])
 
     return (
         <>

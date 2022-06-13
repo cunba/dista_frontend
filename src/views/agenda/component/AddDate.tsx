@@ -14,7 +14,7 @@ export interface AddDateProps {
 export const AddDate = (props: AddDateProps) => {
     return (
         <>
-            <Text style={timetableStyles.title}>{i18n.t('timetable.selectTime.start')}</Text>
+            <Text style={timetableStyles.title}>{i18n.t('agenda.selectDate')}</Text>
             <DatePicker
                 modal={false}
                 date={props.startDate}

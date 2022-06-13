@@ -40,6 +40,7 @@ export class AddEventViewModel {
             type: ' ',
             userId: user!.id!
         }
+        console.log(eventDTO)
         await this.eventRepository.save(eventDTO)
 
         this.setName('')
