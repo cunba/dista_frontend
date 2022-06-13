@@ -72,7 +72,7 @@ export const LightningPlotView: FunctionalView<LightningPlotViewModel> = observe
                 iconLeft={iconLeftProps}
 
                 color={COLORS.touchables}
-                title={i18n.t('data.ambient.title').toUpperCase()}
+                title={i18n.t('data.lightning.title').toUpperCase()}
                 textStyle={commonStyles.titleToolbar}
 
                 isIconRight={false}
@@ -96,8 +96,7 @@ export const LightningPlotView: FunctionalView<LightningPlotViewModel> = observe
                         />
                     </Card.Content>
                     <Card.Content style={ambientDataPlotViewStyle.cardContent}>
-                        <Title style={ambientDataPlotViewStyle.title}>{i18n.t('data.lightning.title').toUpperCase()}</Title>
-                        <Title style={ambientDataPlotViewStyle.dataSelected}>{dataSelected} K</Title>
+                        <Title style={[ambientDataPlotViewStyle.dataSelected, { marginTop: 0 }]}>{dataSelected} K</Title>
                         {vm.finishGetLightning && daySelected && vm.dayData ?
                             <>
                                 <Text style={ambientDataPlotViewStyle.text}>{dateFormat(new Date(vm.dateInterval!.maxDay!), 'DD/MM/YYYY')} {dateSelected}</Text>

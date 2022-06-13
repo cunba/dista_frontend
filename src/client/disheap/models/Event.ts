@@ -43,7 +43,7 @@ export interface Event {
      * @type {string}
      * @memberof Event
      */
-    note?: string;
+    notes?: string;
     /**
      * 
      * @type {number}
@@ -82,7 +82,7 @@ export function EventFromJSONTyped(json: any, ignoreDiscriminator: boolean): Eve
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'note': !exists(json, 'note') ? undefined : json['note'],
+        'notes': !exists(json, 'notes') ? undefined : json['notes'],
         'startDate': !exists(json, 'startDate') ? undefined : json['startDate'],
         'endDate': !exists(json, 'endDate') ? undefined : json['endDate'],
         'type': !exists(json, 'type') ? undefined : json['type'],
@@ -101,7 +101,7 @@ export function EventToJSON(value?: Event | null): any {
         
         'id': value.id,
         'name': value.name,
-        'note': value.note,
+        'notes': value.notes,
         'startDate': value.startDate,
         'endDate': value.endDate,
         'type': value.type,

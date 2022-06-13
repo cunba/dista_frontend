@@ -72,7 +72,7 @@ export const OxygenPlotView: FunctionalView<OxygenPlotViewModel> = observer(({ v
                 iconLeft={iconLeftProps}
 
                 color={COLORS.touchables}
-                title={i18n.t('data.ambient.title').toUpperCase()}
+                title={i18n.t('data.oxygen.title').toUpperCase()}
                 textStyle={commonStyles.titleToolbar}
 
                 isIconRight={false}
@@ -96,8 +96,7 @@ export const OxygenPlotView: FunctionalView<OxygenPlotViewModel> = observer(({ v
                         />
                     </Card.Content>
                     <Card.Content style={ambientDataPlotViewStyle.cardContent}>
-                        <Title style={ambientDataPlotViewStyle.title}>{i18n.t('data.oxygen.title').toUpperCase()}</Title>
-                        <Title style={ambientDataPlotViewStyle.dataSelected}>{dataSelected} %</Title>
+                        <Title style={[ambientDataPlotViewStyle.dataSelected, { marginTop: 0 }]}>{dataSelected} %</Title>
                         {vm.finishGetOxygen && daySelected && vm.dayData ?
                             <>
                                 <Text style={ambientDataPlotViewStyle.text}>{dateFormat(new Date(vm.dateInterval!.maxDay!), 'DD/MM/YYYY')} {dateSelected}</Text>

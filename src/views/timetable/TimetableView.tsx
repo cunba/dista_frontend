@@ -9,17 +9,23 @@ import i18n from "infrastructure/localization/i18n";
 import { FunctionalView } from "infrastructure/views/FunctionalView";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { Alert, Modal, Text, View } from 'react-native';
-import BouncyCheckboxGroup, { ICheckboxButton } from "react-native-bouncy-checkbox-group";
-import DatePicker from "react-native-date-picker";
+import { Alert, Text, View } from 'react-native';
+import { ICheckboxButton } from "react-native-bouncy-checkbox-group";
 import DropDownPicker, { ItemType, ValueType } from "react-native-dropdown-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
 import TimeTableView, { genTimeBlock } from "react-native-timetable";
 import { dispatch } from "RootNavigation";
-import { getWeekDayFullString, getWeekDayString, timeFormatter } from "utils/datetimeFormatterHelper";
+import { timeFormatter } from "utils/datetimeFormatterHelper";
+import { getWeekDayFullString, getWeekDayString } from "utils/utils";
 import { TimetableViewModel } from "viewmodels/TimetableViewModel";
 import { DataTimetable } from '../../viewmodels/TimetableViewModel';
+import { AddDayTimetableProps } from "./component/AddDayTimetable";
+import { AddEndTimeTimetableProps } from "./component/AddEndTimeTimetable";
+import { AddStartTimeTimetableProps } from "./component/AddStartTimeTimetable";
+import { AddView, AddViewProps } from "./component/AddView";
+import { ModalTimetable } from "./component/ModalTimetable";
+import { RenderChildProps } from "./component/RenderChild";
 import { timetableStyles } from "./TimetableStyles";
 
 export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm }) => {
@@ -41,6 +47,7 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
     const [removeTime, setRemoveTime] = useState<DataTimetable>()
 
     useEffect(() => {
+        vm.constructorFunctions()
         if (weekdays.length === 0) {
             weekdays.push({ id: 0, size: 15, text: i18n.t('monday'), fillColor: COLORS.touchables, unfillColor: 'transparent', textStyle: { color: COLORS.text, textDecorationLine: 'none' } })
             weekdays.push({ id: 1, size: 15, text: i18n.t('tuesday'), fillColor: COLORS.touchables, unfillColor: 'transparent', textStyle: { color: COLORS.text, textDecorationLine: 'none' } })
@@ -57,7 +64,6 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
             timetableData.push(item)
         })
 
-        await vm.getAllSubjectsBySchoolYear()
         vm.allSubjects.map((item: Subject) => {
             const subject: ItemType = { label: item.name, value: item.id }
             subjects.push(subject)
@@ -93,13 +99,18 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
         let subject = ''
         onCloseModal()
 
+        console.log(daySelected)
         const start = genTimeBlock(getWeekDayString(daySelected), startTime.getHours(), startTime.getMinutes())
         const end = genTimeBlock(getWeekDayString(daySelected), endTime.getHours(), endTime.getMinutes())
         const data = new DataTimetable(subject, start, end)
-        timetableData.push(data)
+        const newDataTimetable = timetableData
+        newDataTimetable.push(data)
+        setTimetableData(newDataTimetable)
 
         data.setId(subjectId!.toString())
-        newData.push(data)
+        const newDataToPush = newData
+        newDataToPush.push(data)
+        setNewData(newDataToPush)
         setRemoveTime(data)
 
         const timetableStart = timeFormatter(startTime.getHours(), startTime.getMinutes())
@@ -131,12 +142,12 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
 
         newData.map((item: DataTimetable, index: number) => {
             if (item === data) {
-                newData.splice(index, 1)
+                setNewData(newData.splice(index, 1))
             }
         })
         timetableData.map((item: DataTimetable, index: number) => {
             if (item === data) {
-                timetableData.splice(index, 1)
+                setTimetableData(timetableData.splice(index, 1))
             }
         })
         vm.newData.map((item: TimetableDTO, index: number) => {
@@ -173,6 +184,45 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
         type: 'AntDesign'
     }
 
+    const renderChildProps: RenderChildProps = {
+        removeTime: removeTime!,
+        onPressRemove: (item) => setRemoveTime(item)
+    }
+
+    const addDayTimetable: AddDayTimetableProps = {
+        onChange: (selectedItem: ICheckboxButton) => setDaySelected(selectedItem.id),
+        onCloseModal: () => onCloseModal(),
+        onPressOk: () => { if (daySelected !== 10) { setAddDay(false); setAddStartTime(true); } },
+        weekdays: weekdays
+    }
+
+    const addStartTimeProps: AddStartTimeTimetableProps = {
+        onDateChange: (time: Date) => setStartTime(time),
+        onPressCancel: () => { setAddStartTime(false); setAddDay(true) },
+        onPressOk: () => { setAddStartTime(false); setAddEndTime(true) },
+        startTime: startTime
+    }
+
+    const addEndTimeProps: AddEndTimeTimetableProps = {
+        endTime: endTime,
+        onDateChange: (time: Date) => setEndTime(time),
+        onPressCancel: () => { setAddEndTime(false); setAddStartTime(true) },
+        onPressOk: () => { addClassDay() }
+    }
+
+    const addView: AddViewProps = {
+        loading: loading,
+        newData: newData,
+        onPressMinus: () => removeTimeData(removeTime!),
+        onPressPlus: () => { setPlus(true); setAddDay(true) },
+        openPicker: openPicker,
+        setOpenPicker: setOpenPicker,
+        setSubjectId: setSubjectId,
+        subjectId: subjectId!,
+        subjects: subjects,
+        renderChild: renderChildProps,
+    }
+
     return (
         <>
             <Toolbar
@@ -197,133 +247,31 @@ export const TimetableView: FunctionalView<TimetableViewModel> = observer(({ vm 
                 locale={i18n.language}
             />
             {add ?
-                <View style={timetableStyles.addContainer}>
-                    <View style={timetableStyles.containerInput}>
-                        <Text style={timetableStyles.addText}>{i18n.t('timetable.title.subject')}:</Text>
-                        <DropDownPicker
-                            open={openPicker}
-                            setOpen={setOpenPicker}
-                            value={subjectId}
-                            setValue={setSubjectId}
-                            multiple={false}
-                            items={subjects}
-                            listMode={'MODAL'}
-                            placeholder={i18n.t('timetable.title.subject.select')}
-                            modalTitle={i18n.t('timetable.title.subject.select')}
-                            loading={loading}
-                            searchable={true}
-                            containerStyle={{ width: '70%' }}
-                            style={{ height: '100%', borderColor: 'grey' }}
-                            placeholderStyle={{ color: 'grey' }}
-                            dropDownContainerStyle={{ borderColor: 'grey' }}
-                        />
-                    </View>
-                    <View style={timetableStyles.containerInput}>
-                        <View style={{ flexDirection: 'row', width: 200, height: 50 }}>
-                            <Text style={timetableStyles.addText}>{i18n.t('timetable.title')}:</Text>
-                            {newData.length > 0 ?
-                                newData.map((item: DataTimetable, index: number) => {
-                                    return (renderChild(item, index))
-                                })
-                                :
-                                null
-                            }
-                        </View>
-                        <View style={[timetableStyles.timeButtonsContainer, newData.length < 0 ? { justifyContent: 'flex-start' } : null]}>
-                            <TouchableOpacity style={timetableStyles.timeAdd} onPress={() => { setPlus(true); setAddDay(true) }}>
-                                <Text style={[timetableStyles.addText, { fontWeight: 'bold' }]}>+</Text>
-                            </TouchableOpacity>
-                            {newData.length > 0 ?
-                                <TouchableOpacity style={timetableStyles.timeRemove} onPress={() => removeTimeData(removeTime!)}>
-                                    <Text style={[timetableStyles.addText, { fontWeight: 'bold' }]}>-</Text>
-                                </TouchableOpacity>
-                                : null
-                            }
-                        </View>
-                    </View>
-                </View>
+                <AddView
+                    loading={loading}
+                    newData={newData}
+                    onPressMinus={() => removeTimeData(removeTime!)}
+                    onPressPlus={() => { setPlus(true); setAddDay(true) }}
+                    openPicker={openPicker}
+                    setOpenPicker={setOpenPicker}
+                    setSubjectId={setSubjectId}
+                    subjectId={subjectId!}
+                    subjects={subjects}
+                    renderChild={renderChildProps}
+                />
                 :
                 <></>
             }
-            <Modal animationType={'fade'} transparent={true} visible={plus} onRequestClose={() => onCloseModal()} >
-                <View style={timetableStyles.alertContainer} />
-                <View style={timetableStyles.containerAdd}>
-                    {addDay ?
-                        <>
-                            <Text style={timetableStyles.title}>{i18n.t('timetable.selectDay')}</Text>
-                            <BouncyCheckboxGroup
-                                data={weekdays}
-                                onChange={(selectedItem: ICheckboxButton) => setDaySelected(selectedItem.id)}
-                                style={{ flexDirection: 'column' }}
-                            />
-                            <View style={timetableStyles.containerOkCancel}>
-                                <TouchableOpacity
-                                    style={timetableStyles.modalCancelContainer}
-                                    onPress={() => onCloseModal()}>
-                                    <Text style={timetableStyles.textButton}>{i18n.t("cancel")}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={timetableStyles.modalOkContainer}
-                                    onPress={() => { if (daySelected !== 10) { setAddDay(false); setAddStartTime(true); } }}>
-                                    <Text style={timetableStyles.textButton}>{i18n.t("continue")}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </>
-                        :
-                        addStartTime ?
-                            <>
-                                <Text style={timetableStyles.title}>{i18n.t('timetable.selectTime.start')}</Text>
-                                <DatePicker
-                                    modal={false}
-                                    date={startTime}
-                                    onDateChange={(time: Date) => setStartTime(time)}
-                                    mode={"time"}
-                                    theme={"auto"}
-                                    minuteInterval={5}
-                                />
-                                <View style={timetableStyles.containerOkCancel}>
-                                    <TouchableOpacity
-                                        style={timetableStyles.modalCancelContainer}
-                                        onPress={() => { setAddStartTime(false); setAddDay(true) }}>
-                                        <Text style={timetableStyles.textButton}>{i18n.t("back")}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={timetableStyles.modalOkContainer}
-                                        onPress={() => { setAddStartTime(false); setAddEndTime(true) }}>
-                                        <Text style={timetableStyles.textButton}>{i18n.t("continue")}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </>
-                            :
-                            addEndTime ?
-                                <>
-                                    <Text style={timetableStyles.title}>{i18n.t('timetable.selectTime.end')}</Text>
-                                    <DatePicker
-                                        modal={false}
-                                        date={endTime}
-                                        onDateChange={(time: Date) => setEndTime(time)}
-                                        mode={"time"}
-                                        theme={"auto"}
-                                        minuteInterval={5}
-                                    />
-                                    <View style={timetableStyles.containerOkCancel}>
-                                        <TouchableOpacity
-                                            style={timetableStyles.modalCancelContainer}
-                                            onPress={() => { setAddEndTime(false); setAddStartTime(true) }}>
-                                            <Text style={timetableStyles.textButton}>{i18n.t("back")}</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            style={timetableStyles.modalOkContainer}
-                                            onPress={() => { addClassDay() }}>
-                                            <Text style={timetableStyles.textButton}>{i18n.t("ok")}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </>
-                                :
-                                null
-                    }
-                </View>
-            </Modal>
+            <ModalTimetable
+                addDay={addDay}
+                addEndTime={addEndTime}
+                addStartTime={addStartTime}
+                onRequestClose={() => onCloseModal()}
+                plus={plus}
+                addDayTimetableProps={addDayTimetable}
+                addEndTimeProps={addEndTimeProps}
+                addStartTimeProps={addStartTimeProps}
+            />
         </>
     )
 })

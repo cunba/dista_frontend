@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 
 export const homeStyles = StyleSheet.create({
     container: {
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'flex-start',
         paddingTop: 10
@@ -27,7 +27,7 @@ export const homeStyles = StyleSheet.create({
     },
     eventsContainer: {
         paddingTop: 10,
-        width: '93%',
+        width: '100%',
         height: 200,
         alignSelf: 'center',
         marginTop: 15,

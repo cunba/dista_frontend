@@ -104,7 +104,7 @@ export const formStyles = StyleSheet.create({
 })
 
 export const commonStyles = StyleSheet.create({
-    container: {    
+    container: {
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -171,4 +171,12 @@ export const commonStyles = StyleSheet.create({
         height: 'auto',
         marginRight: -7
     },
+    labelContainer: {
+        position: 'absolute',
+        backgroundColor: '#FFF',
+        top: -7,
+        left: 10,
+        paddingHorizontal: 5,
+        zIndex: 50
+    }
 })

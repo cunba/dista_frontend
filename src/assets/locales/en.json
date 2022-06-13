@@ -59,6 +59,7 @@
 
     "home.title" : "Home",
     "home.event.title" : "Today's events",
+    "home.noEvents": "No events",
     
     "agenda.title": "Agenda",
     "agenda.empty": "No events for today",
@@ -66,6 +67,8 @@
     "addEvent.title": "Add event",
     "addEvent.name.label": "Name",
     "addEvent.notes.label": "Notes",
+    "addEvent.date.label": "Date",
+    "addEvent.save": "Save event",
 
     "showEvent.title": "Details",
     

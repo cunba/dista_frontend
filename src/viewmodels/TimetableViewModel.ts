@@ -1,4 +1,4 @@
-import { TimetableDTO } from "client/disheap";
+import { TimetableDTO, UserModel } from "client/disheap";
 import { Subject } from "client/disheap/models/Subject";
 import { Timetable } from "client/disheap/models/Timetable";
 import { SubjectRepository } from "data/repository/disheap/impl/SubjectRepository";
@@ -9,6 +9,9 @@ import { genTimeBlock } from 'react-native-timetable';
 import { getWeekDayString } from "utils/utils";
 
 export class TimetableViewModel {
+    subjectRepository = new SubjectRepository()
+    timetableRepository = new TimetableRepository()
+
     @observable allSubjects: Array<Subject> = observable([])
     @observable dataTimetable: Array<DataTimetable> = observable([])
     @observable newData: Array<Timetable> = observable([])
@@ -19,16 +22,15 @@ export class TimetableViewModel {
     }
 
     @action constructorFunctions = async () => {
-        await this.getTimetable()
+        const user = await SessionStoreFactory.getSessionStore().getUser()
+        this.getTimetable(user!)
+        this.getAllSubjectsBySchoolYear(user!)
     }
 
-    @action getTimetable = async () => {
-        const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
-        const res = await new TimetableRepository().getByUserId(userId!)
+    @action getTimetable = async (user: UserModel) => {
+        const res = await this.timetableRepository.getByUserId(user.id!)
 
         res!.map(async (item: Timetable) => {
-            // const subject = await new Subject().getById(item.subject_id)
-
             const data = new DataTimetable(
                 item.subject!.name!,
                 genTimeBlock(getWeekDayString(item.weekDay!), item.startTime!.substring(0, 2), item.startTime!.substring(3, 5)),
@@ -40,26 +42,14 @@ export class TimetableViewModel {
         })
     }
 
-    @action getAllSubjectsBySchoolYear = async () => {
-        const schoolYearId = (await SessionStoreFactory.getSessionStore().getUser())?.schoolYear?.id
-        const res = await new SubjectRepository().getBySchoolYearId(schoolYearId!)
-        let exists = false
+    @action getAllSubjectsBySchoolYear = async (user: UserModel) => {
+        await this.subjectRepository.getBySchoolYearId(user.schoolYear!.id!).then(items => {
+            this.setAllSubjects(items ?? [])
+        })
+    }
 
-        await Promise.all(res!.map(async (item: Subject) => {
-            this.allSubjects.map((item2: Subject) => {
-                if (item2.id === item.id) {
-                    exists = true
-                }
-            })
-
-            if (!exists) {
-                runInAction(() => {
-                    this.allSubjects.push(item)
-                })
-            } else {
-                exists = false
-            }
-        }))
+    @action setAllSubjects(subjects: Subject[]) {
+        this.allSubjects = subjects
     }
 
     @action clearNewData = () => {
@@ -67,9 +57,10 @@ export class TimetableViewModel {
     }
 
     @action saveNewData = async () => {
+        console.log('entra')
         Promise.all(this.newData.map(async (item: TimetableDTO) => {
-            await new TimetableRepository().save(item)
-            const subject = await new SubjectRepository().getById(item.subjectId!)
+            await this.timetableRepository.save(item)
+            const subject = await this.subjectRepository.getById(item.subjectId!)
             runInAction(() => {
                 this.dataTimetable.push(new DataTimetable(
                     subject!.name!,

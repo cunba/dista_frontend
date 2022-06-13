@@ -1,12 +1,12 @@
 import { EventDTO } from "client/disheap";
 import { LoginRepository } from "data/repository/LoginRepository";
-import DisheapApiClient, { DisheapApi } from "infrastructure/data/DisheapApiClient";
+import { DisheapApi } from "infrastructure/data/DisheapApiClient";
 import { DisheapBaseRepository } from "infrastructure/data/repository/DisheapBaseRepository";
 import { SessionStoreFactory } from "infrastructure/data/SessionStoreFactory";
 import IEventApi from "../IEventApi";
 
 export class EventRepository extends DisheapBaseRepository<IEventApi> {
-    
+
     static tries = 0
 
     constructor() {
@@ -15,8 +15,8 @@ export class EventRepository extends DisheapBaseRepository<IEventApi> {
 
     async getByStartDateBetweenAndUserId(minDate: number, maxDate: number, userId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IEventApi>(DisheapApi.DisorderApi)
-            const result = await client.getEventsByStartDateBetweenAndUserId(minDate, maxDate, userId)
+            const client = await this.apiClient
+            const result = await client.getEventsByDateBetweenAndUserId(minDate, maxDate, userId)
             EventRepository.tries = 0
             return result
         } catch (e) {
@@ -35,7 +35,7 @@ export class EventRepository extends DisheapBaseRepository<IEventApi> {
 
     async getById(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IEventApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.getEventById(id)
             EventRepository.tries = 0
             return result
@@ -55,7 +55,7 @@ export class EventRepository extends DisheapBaseRepository<IEventApi> {
 
     async save(eventDTO: EventDTO) {
         try {
-            const client = await DisheapApiClient.clientFor<IEventApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.saveEvent(eventDTO)
             EventRepository.tries = 0
             return result
@@ -75,7 +75,7 @@ export class EventRepository extends DisheapBaseRepository<IEventApi> {
 
     async update(id: string, eventDTO: EventDTO) {
         try {
-            const client = await DisheapApiClient.clientFor<IEventApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.updateEvent(id, eventDTO)
             EventRepository.tries = 0
             return result
@@ -95,7 +95,7 @@ export class EventRepository extends DisheapBaseRepository<IEventApi> {
 
     async delete(id: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IEventApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.deleteEvent(id)
             EventRepository.tries = 0
             return result
@@ -115,7 +115,7 @@ export class EventRepository extends DisheapBaseRepository<IEventApi> {
 
     async deleteByUserId(userId: string) {
         try {
-            const client = await DisheapApiClient.clientFor<IEventApi>(DisheapApi.DisorderApi)
+            const client = await this.apiClient
             const result = await client.deleteEventsByUserId(userId)
             EventRepository.tries = 0
             return result

@@ -3,21 +3,17 @@ import Toolbar, { IconProps } from "components/Toolbar/Toolbar"
 import { COLORS } from "config/Colors"
 import i18n from "infrastructure/localization/i18n"
 import { observer } from 'mobx-react'
-import React from "react"
+import React, { useEffect } from "react"
 import { StatusBar, Text, View } from "react-native"
 import { Card, Divider } from "react-native-paper"
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Entypo from 'react-native-vector-icons/Entypo'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import Foundation from 'react-native-vector-icons/Foundation'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { dispatch } from "RootNavigation"
 import { ROUTES } from '../../config/Constants'
 import { commonStyles } from '../../config/Styles'
 import { FunctionalView } from "../../infrastructure/views/FunctionalView"
 import { navigate } from '../../RootNavigation'
 import { HomeViewModel } from "../../viewmodels/HomeViewModel"
+import { CardHome } from "./component/CardHome"
 import { homeStyles } from './HomeStyles'
 
 export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
@@ -29,9 +25,13 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
     };
     */
 
+    useEffect(() => {
+        vm.getTodaysEvents()
+    }, [])
+
     const navigation = (item: string) => {
         switch (item) {
-            case 'calendar':
+            case 'agenda':
                 navigate(ROUTES.AGENDA, null)
                 break
             case 'timetable':
@@ -48,6 +48,15 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
                 break
             case 'complementary':
                 navigate(ROUTES.COMPLEMENTARY_THINGS, null)
+                break
+            case 'psycology':
+                navigate(ROUTES.PSYCOLOGY, null)
+                break
+            case 'academy':
+                navigate(ROUTES.ACADEMY, null)
+                break
+            case 'settings':
+                navigate(ROUTES.SETTINGS, null)
                 break
         }
     }
@@ -76,98 +85,99 @@ export const HomeView: FunctionalView<HomeViewModel> = observer(({ vm }) => {
 
                 isIconRight={false}
             />
-            <Card mode={"outlined"} style={homeStyles.eventsContainer}>
-                <Card.Title title={i18n.t('home.event.title')} style={commonStyles.title} />
-                <Divider />
-                <Card.Content>
-                </Card.Content>
-            </Card>
-            <View style={homeStyles.container}>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('data')}>
-                    <Text style={homeStyles.title}>{i18n.t('data.title')}</Text>
-                    <Entypo
-                        name="line-graph"
-                        size={70}
-                        color={COLORS.text}
-                        style={{ alignSelf: 'center' }}
-                    />
+            <View style={{ paddingHorizontal: 15 }}>
+                <Card mode={"outlined"} style={homeStyles.eventsContainer}>
+                    <Card.Title title={i18n.t('home.event.title')} style={commonStyles.title} />
+                    <Divider />
+                    <Card.Content>
+                        {vm.todaysEvents.length > 0 ?
+                            vm.todaysEvents.map(event => {
+                                return (<Text style={{paddingTop: 20}}>- {event.name}</Text>)
+                            })
+                            :
+                            <Text style={{paddingTop: 20}}>{i18n.t('home.noEvents')}</Text>
+                        }
+                    </Card.Content>
                 </Card>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('timetable.title')}</Text>
-                    <AntDesign
-                        name="table"
-                        size={70}
+                <View style={homeStyles.container}>
+                    <CardHome
+                        title={i18n.t('data.title')}
+                        onPress={() => navigation('data')}
+                        iconDirectory='Entypo'
+                        iconName='line-graph'
+                        iconStyle={{ alignSelf: 'center', color: COLORS.redTermometer, fontSize: 70 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center' }}
                     />
-                </Card>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('calendar')}>
-                    <Text style={homeStyles.title}>{i18n.t('agenda.title')}</Text>
-                    <AntDesign
-                        name="calendar"
-                        size={70}
+                    <CardHome
+                        title={i18n.t('timetable.title')}
+                        onPress={() => navigation('timetable')}
+                        iconDirectory='AntDesign'
+                        iconName='table'
+                        iconStyle={{ alignSelf: 'center', color: COLORS.touchables, fontSize: 70 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center' }}
                     />
-                </Card>
-            </View>
-            <View style={homeStyles.container}>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('tasks.title')}</Text>
-                    <MaterialCommunityIcons
-                        name="format-list-checkbox"
-                        size={70}
+                    <CardHome
+                        title={i18n.t('agenda.title')}
+                        onPress={() => navigation('agenda')}
+                        iconDirectory='AntDesign'
+                        iconName='calendar'
+                        iconStyle={{ alignSelf: 'center', color: COLORS.CGBlue, fontSize: 70 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center' }}
                     />
-                </Card>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('additional.title')}</Text>
-                    <MaterialCommunityIcons
-                        name="fountain-pen-tip"
-                        size={50}
+                </View>
+                <View style={homeStyles.container}>
+                    <CardHome
+                        title={i18n.t('tasks.title')}
+                        onPress={() => navigation('timetable')}
+                        iconDirectory='MaterialCommunityIcons'
+                        iconName='format-list-checkbox'
+                        iconStyle={{ alignSelf: 'center', color: COLORS.OperaMauve, fontSize: 70 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center' }}
                     />
-                </Card>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('tips.title')}</Text>
-                    <Foundation
-                        name="clipboard-pencil"
-                        size={55}
+                    <CardHome
+                        title={i18n.t('additional.title')}
+                        onPress={() => navigation('timetable')}
+                        iconDirectory='MaterialCommunityIcons'
+                        iconName='fountain-pen-tip'
+                        iconStyle={{ alignSelf: 'center', color: 'grey', fontSize: 55 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center' }}
                     />
-                </Card>
-            </View>
-            <View style={homeStyles.container}>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('psycology.title')}</Text>
-                    <Fontisto
-                        name="person"
-                        size={55}
+                    <CardHome
+                        title={i18n.t('tips.title')}
+                        onPress={() => navigation('timetable')}
+                        iconDirectory='Foundation'
+                        iconName='clipboard-pencil'
+                        iconStyle={{ alignSelf: 'center', color: COLORS.MaximumYellowRed, fontSize: 70 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center', paddingTop: 10 }}
                     />
-                </Card>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('academy.title')}</Text>
-                    <FontAwesome5
-                        name="chalkboard-teacher"
-                        size={55}
+                </View>
+                <View style={homeStyles.container}>
+                    <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
+                        <Text style={homeStyles.title}>{i18n.t('psycology.title')}</Text>
+                        <Fontisto
+                            name="person"
+                            size={55}
+                            color={COLORS.text}
+                            style={{ alignSelf: 'center', paddingTop: 10 }}
+                        />
+                    </Card>
+                    <CardHome
+                        title={i18n.t('academy.title')}
+                        onPress={() => navigation('timetable')}
+                        iconDirectory='FontAwesome5'
+                        iconName='chalkboard-teacher'
+                        iconStyle={{ alignSelf: 'center', paddingTop: 10, color: COLORS.orangeTermometer, fontSize: 55 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center', paddingTop: 10 }}
                     />
-                </Card>
-                <Card elevation={10} mode={"elevated"} style={homeStyles.card} onPress={() => navigation('timetable')}>
-                    <Text style={homeStyles.title}>{i18n.t('settings.title')}</Text>
-                    <AntDesign
-                        name="setting"
-                        size={55}
+                    <CardHome
+                        title={i18n.t('settings.title')}
+                        onPress={() => navigation('timetable')}
+                        iconDirectory='AntDesign'
+                        iconName='setting'
+                        iconStyle={{ alignSelf: 'center', paddingTop: 5, color: COLORS.primaryDark, fontSize: 60 }}
                         color={COLORS.text}
-                        style={{ alignSelf: 'center', paddingTop: 10 }}
                     />
-                </Card>
+                </View>
             </View>
         </>
     )

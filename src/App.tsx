@@ -269,7 +269,6 @@ const App = () => {
 				SessionStoreFactory.getSessionStore().setToken(response.token!);
 				SessionStoreFactory.getSessionStore().setCredentials({ email: email, password: password } as ICredentials)
 				const user = await new UserRepository().getByEmail(email)
-				console.log(user)
 				SessionStoreFactory.getSessionStore().setUser(user)
 				const disband = await new DisbandRepository().getByUserId(user!.id!)
 				SessionStoreFactory.getSessionStore().setDisband(disband![0])

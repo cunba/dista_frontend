@@ -3,7 +3,7 @@ import { Event } from "client/disheap/models/Event"
 
 export default interface IEventApi {
 
-    getEventsByStartDateBetweenAndUserId(minDate: number, maxDate: number, userId: string): Promise<Event[]>
+    getEventsByDateBetweenAndUserId(minDate: number, maxDate: number, userId: string): Promise<Event[]>
 
     getEventById(id: string): Promise<Event>
 

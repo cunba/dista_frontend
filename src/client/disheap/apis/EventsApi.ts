@@ -356,7 +356,7 @@ export class EventsApi extends runtime.BaseAPI implements EventsApiInterface {
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
-
+console.log(response)
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventFromJSON));
     }
 

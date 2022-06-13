@@ -96,12 +96,12 @@ export interface SubjectsApiInterface {
      * @throws {RequiredError}
      * @memberof SubjectsApiInterface
      */
-    getSubjctesBySchoolYearIdRaw(requestParameters: GetSubjctesBySchoolYearIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Subject>>>;
+    getSubjectsBySchoolYearIdRaw(requestParameters: GetSubjctesBySchoolYearIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Subject>>>;
 
     /**
      * Get subjects by school year ID
      */
-    getSubjctesBySchoolYearId(schoolYearId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Subject>>;
+    getSubjectsBySchoolYearId(schoolYearId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Subject>>;
 
     /**
      * 
@@ -235,7 +235,7 @@ export class SubjectsApi extends runtime.BaseAPI implements SubjectsApiInterface
     /**
      * Get subjects by school year ID
      */
-    async getSubjctesBySchoolYearIdRaw(requestParameters: GetSubjctesBySchoolYearIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Subject>>> {
+    async getSubjectsBySchoolYearIdRaw(requestParameters: GetSubjctesBySchoolYearIdRequest, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<runtime.ApiResponse<Array<Subject>>> {
         if (requestParameters.schoolYearId === null || requestParameters.schoolYearId === undefined) {
             throw new runtime.RequiredError('schoolYearId','Required parameter requestParameters.schoolYearId was null or undefined when calling getSubjctesBySchoolYearId.');
         }
@@ -265,8 +265,8 @@ export class SubjectsApi extends runtime.BaseAPI implements SubjectsApiInterface
     /**
      * Get subjects by school year ID
      */
-    async getSubjctesBySchoolYearId(schoolYearId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Subject>> {
-        const response = await this.getSubjctesBySchoolYearIdRaw({ schoolYearId: schoolYearId }, initOverrides);
+    async getSubjectsBySchoolYearId(schoolYearId: string, initOverrides?: RequestInit | runtime.InitOverideFunction): Promise<Array<Subject>> {
+        const response = await this.getSubjectsBySchoolYearIdRaw({ schoolYearId: schoolYearId }, initOverrides);
         return await response.value();
     }
 

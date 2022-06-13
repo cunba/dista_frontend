@@ -6,6 +6,7 @@ import { dateFormat } from 'utils/datetimeFormatterHelper';
 import { Event } from 'client/disheap/models/Event'
 
 export class AgendaViewModel {
+    eventRepository = new EventRepository()
     @observable agendaArray: Map<string, DataEvent> = new Map()
     @observable renderMarkedDates: any = []
     @observable markedDatesToAgenda: any = {}
@@ -22,7 +23,7 @@ export class AgendaViewModel {
     }
 
     @action async constructorFunctions() {
-        const events = await this.getAllEvents()
+        const events: Event[] = await this.getAllEvents()
         this.eventsToAgenda(events)
         this.markedDatesToJson()
     }
@@ -41,8 +42,11 @@ export class AgendaViewModel {
 
     @action getAllEvents = async () => {
         const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
+        console.log(this.dateFrom.getTime())
+        console.log(this.dateTo.getTime())
+        console.log(userId)
         let events: Event[] = []
-        await new EventRepository().getByStartDateBetweenAndUserId(this.dateFrom.getTime(), this.dateTo.getTime(), userId!).then(list => {
+        await this.eventRepository.getByStartDateBetweenAndUserId(this.dateFrom.getTime(), this.dateTo.getTime(), userId!).then(list => {
             events = list ?? []
         })
 
@@ -78,7 +82,7 @@ export class AgendaViewModel {
         const userId = (await SessionStoreFactory.getSessionStore().getUser())!.id
         const events: Event[] = []
 
-        const res = await new EventRepository().getByStartDateBetweenAndUserId(from, to, userId!)
+        const res = await this.eventRepository.getByStartDateBetweenAndUserId(from, to, userId!)
 
         if (res!.length > 0) {
             res!.map(async (item: any) => {
@@ -145,7 +149,7 @@ export class AgendaViewModel {
     }
 
     @action deleteEvent = async (event: any) => {
-        await new EventRepository().delete(event.id)
+        await this.eventRepository.delete(event.id)
 
         this.deleteFromAgendaArray(event.id, dateFormat(event.signDate))
         this.markedDatesToJson()

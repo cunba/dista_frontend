@@ -1,26 +1,25 @@
 import { DrawerActions } from '@react-navigation/native';
+import { Event } from 'client/disheap';
 import Toolbar, { IconProps } from 'components/Toolbar/Toolbar';
 import { COLORS } from 'config/Colors';
 import { commonStyles, stylesRicyclerList } from 'config/Styles';
 import i18n from 'infrastructure/localization/i18n';
 import { FunctionalView } from 'infrastructure/views/FunctionalView';
 import { observer } from 'mobx-react-lite';
-import { Title } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Swipeable } from 'react-native-gesture-handler';
-import { Card } from 'react-native-paper';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { dispatch } from 'RootNavigation';
 import { dateFormat } from 'utils/datetimeFormatterHelper';
-import { getMonthText, hexToRgb } from 'utils/utils';
+import { getMonthText } from 'utils/utils';
 import { AgendaViewModel } from 'viewmodels/agenda/AgendaViewModel';
 import XDate from 'xdate';
-import { agendaStyles } from './AgendaStyles';
-import { navigate } from '../../RootNavigation';
 import { ROUTES } from '../../config/Constants';
-import { Event } from 'client/disheap';
+import { navigate } from '../../RootNavigation';
+import { agendaStyles } from './AgendaStyles';
+import { RenderItem } from './component/RenderItem';
 
 export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => {
     const [startDay, setStartDay] = useState(new XDate(new Date()))
@@ -59,29 +58,20 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     )
 
     const getDataSource = (): DataProvider => {
-        return dataSource.cloneWithRows(vm.agendaArray.get(dateFormat(selected))!.events)
+        return dataSource.cloneWithRows(vm.agendaArray.has(dateFormat(selected)) ? vm.agendaArray.get(dateFormat(selected))!.events : [])
     }
 
     const onPressEvent = (item: Event) => {
         vm.setEventPressed(item)
-        console.log(vm.eventPressed)
-        navigate(ROUTES.SHOW_EVENT, null)
+        navigate(ROUTES.SHOW_EVENT, {event: item})
     }
 
     const renderItem = (type: any, item: Event) => {
         return (
-            <Card elevation={3} mode={"elevated"} style={stylesRicyclerList.card}
-                onPress={() => onPressEvent(item)}
-            >
-                <Card.Content style={stylesRicyclerList.rowCellContainerCalendar}>
-                    <Title style={stylesRicyclerList.title}>{item.name}</Title>
-                    <View >
-                        <Text >{dateFormat(new Date(item.startDate!), 'HH:mm')}</Text>
-                        <Text style={{ textAlign: 'center' }}>-</Text>
-                        <Text >{dateFormat(new Date(item.endDate!), 'HH:mm')}</Text>
-                    </View>
-                </Card.Content>
-            </Card>
+            <RenderItem
+                item={item}
+                onPressEvent={() => onPressEvent(item)}
+            />
         )
     }
 

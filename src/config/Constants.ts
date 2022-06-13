@@ -19,8 +19,10 @@ export enum ROUTES {
     AMBIENT_DATA = "AmbientDataPlot",
     HEART_RATE = "HeartRatePlot",
     OXYGEN = "OxygenPlot",
-    LIGHTNING = "LightningPlot"
-
+    LIGHTNING = "LightningPlot",
+    PSYCOLOGY = "Psycology",
+    ACADEMY = "Academy",
+    SETTINGS = "Settings"
 }
 
 export const isAndroid = Platform.OS === 'android'
