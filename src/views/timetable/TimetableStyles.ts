@@ -68,7 +68,7 @@ export const timetableStyles = StyleSheet.create({
         display: "flex",
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 60,
+        marginHorizontal: 30,
         position: 'relative',
         borderRadius: 2,
         backgroundColor: COLORS.background,
@@ -106,7 +106,7 @@ export const timetableStyles = StyleSheet.create({
     modalCancelContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: Dimensions.get('window').width / 2 - 60,
+        width: Dimensions.get('window').width / 2 - 30,
         height: '100%',
         borderRightColor: 'grey',
         borderRightWidth: 1
@@ -114,7 +114,7 @@ export const timetableStyles = StyleSheet.create({
     modalOkContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: Dimensions.get('window').width / 2 - 60,
+        width: Dimensions.get('window').width / 2 - 30,
         height: '100%'
     },
     timeButtonsContainer: {

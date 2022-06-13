@@ -1,3 +1,4 @@
+import { ErrorResponse } from "client/disheap";
 import { COLORS } from "config/Colors";
 import { commonStyles, formStyles } from "config/Styles";
 import i18n from "infrastructure/localization/i18n";

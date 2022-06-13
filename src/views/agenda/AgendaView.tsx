@@ -1,4 +1,5 @@
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useRoute } from '@react-navigation/native';
+import { Event } from 'client/disheap';
 import Toolbar, { IconProps } from 'components/Toolbar/Toolbar';
 import { COLORS } from 'config/Colors';
 import { commonStyles, stylesRicyclerList } from 'config/Styles';
@@ -9,15 +10,20 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Swipeable } from 'react-native-gesture-handler';
-import { Card } from 'react-native-paper';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { dispatch } from 'RootNavigation';
-import { dateFormat, getMonthText } from 'utils/datetimeFormatterHelper';
-import { AgendaViewModel } from 'viewmodels/AgendaViewModel';
+import { dateFormat } from 'utils/datetimeFormatterHelper';
+import { getMonthText } from 'utils/utils';
+import { AgendaViewModel } from 'viewmodels/agenda/AgendaViewModel';
 import XDate from 'xdate';
+import { ROUTES } from '../../config/Constants';
+import { navigate } from '../../RootNavigation';
 import { agendaStyles } from './AgendaStyles';
+import { RenderItem } from './component/RenderItem';
 
 export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => {
+    const route = useRoute()
+
     const [startDay, setStartDay] = useState(new XDate(new Date()))
     const [firstDay, setFirstDay] = useState(new Date())
     const [selected, setSelected] = useState(new Date())
@@ -32,6 +38,15 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
             return r1 !== r2;
         })
     )
+
+    useEffect(() => {
+        vm.setDateFrom()
+        vm.constructorFunctions()
+    }, [])
+
+    useEffect(() => {
+        refreshItems()
+    }, [route.params!])
 
     useEffect(() => {
         vm.dateSelected = dateFormat(selected)
@@ -49,18 +64,20 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     )
 
     const getDataSource = (): DataProvider => {
-        return dataSource.cloneWithRows(vm.agendaArray.get(dateFormat(selected))!)
+        return dataSource.cloneWithRows(vm.agendaArray.has(dateFormat(selected)) ? vm.agendaArray.get(dateFormat(selected))!.events : [])
+    }
+
+    const onPressEvent = (item: Event) => {
+        vm.setEventPressed(item)
+        navigate(ROUTES.SHOW_EVENT, { event: item })
     }
 
     const renderItem = (type: any, item: Event) => {
         return (
-            <Card elevation={3} mode={"elevated"} style={stylesRicyclerList.card}
-            // onPress={() => onPressEditItem(item)} onLongPress={() => onPressTrashItem(item)}
-            >
-                <Card.Content style={stylesRicyclerList.rowCellContainerCalendar}>
-
-                </Card.Content>
-            </Card>
+            <RenderItem
+                item={item}
+                onPressEvent={() => onPressEvent(item)}
+            />
         )
     }
 
@@ -97,7 +114,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                     renderLeftActions={(progress, dragX) => renderSwipeLeftDay(progress, dragX)}
 
                     onSwipeableRightOpen={() => {
-                        selected.getDay() === 0 || dateFormat(selected) === dateFormat(new Date()) ?
+                        selected.getDay() === 0 ?
                             refDate?.close()
                             :
                             onSwipeRightOpen()
@@ -115,7 +132,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                     containerStyle={{ width: '100%', height: '100%' }}
                 >
                     <View style={agendaStyles.recyclerListViewContainer}>
-                        {vm.agendaArray?.has(dateFormat(selected)) && vm.agendaArray.get(dateFormat(selected))!.length > 0 ?
+                        {vm.agendaArray?.has(dateFormat(selected)) && vm.agendaArray.get(dateFormat(selected))!.events.length > 0 ?
                             <RecyclerListView
                                 ref={(c) => { setScroll(c) }}
                                 showsVerticalScrollIndicator={false}
@@ -144,7 +161,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                                     />
                                 }
                             >
-                                <Text style={stylesRicyclerList.emptyList}>{i18n.t('emptySignings')}</Text>
+                                <Text style={stylesRicyclerList.emptyList}>{i18n.t('agenda.empty')}</Text>
                             </ScrollView>
                         }
                     </View>
@@ -188,7 +205,7 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
     }
 
     const iconRightProps: IconProps = {
-        onPress: () => { },
+        onPress: () => { navigate(ROUTES.ADD_EVENT, { date: selected }) },
         name: 'plus',
         type: 'AntDesign'
     }
@@ -219,16 +236,16 @@ export const AgendaView: FunctionalView<AgendaViewModel> = observer(({ vm }) => 
                 onDayPress={(date) => setSelected(new Date(date.timestamp))}
                 futureScrollRange={1}
                 topDay={startDay}
-                maxDate={dateFormat(new Date())}
                 onVisibleMonthsChange={onMonthChange}
-                /* renderEmptyData={renderDate} */
+                renderEmptyData={renderDate}
                 hideKnob={false}
-                allowSelectionOutOfRange={false}
+                allowSelectionOutOfRange={true}
                 onCalendarToggled={(calendarOpened) => setCalendarOpened(!calendarOpened)}
                 showClosingKnob={false}
                 firstDay={1}
                 animateScroll={false}
                 markedDates={vm.markedDatesToAgenda}
+                markingType={'dot'}
                 theme={{
                     selectedDayBackgroundColor: 'transparent',
                     selectedDayTextColor: COLORS.text

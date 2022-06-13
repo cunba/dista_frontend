@@ -4,10 +4,10 @@ import { StyleSheet } from "react-native";
 
 export const homeStyles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: COLORS.background
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        paddingTop: 10
     },
     card: {
         alignItems: "center",
@@ -27,7 +27,7 @@ export const homeStyles = StyleSheet.create({
     },
     eventsContainer: {
         paddingTop: 10,
-        width: '93%',
+        width: '100%',
         height: 200,
         alignSelf: 'center',
         marginTop: 15,
