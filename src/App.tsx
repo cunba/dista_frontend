@@ -138,7 +138,8 @@ const OxygenPlotScreen = () => <OxygenPlotView vm={new OxygenPlotViewModel()} />
 const LightningPlotScreen = () => <LightningPlotView vm={new LightningPlotViewModel()} />
 
 // Agenda
-const AgendaScreen = () => <AgendaView vm={new AgendaViewModel()} />
+const agendaViewModel = new AgendaViewModel()
+const AgendaScreen = () => <AgendaView vm={agendaViewModel} />
 const AddEventScreen = () => <AddEventView vm={new AddEventViewModel()} />
 const ShowEventScreen = () => <ShowEventView vm={new ShowEventViewModel()} />
 
